@@ -14,6 +14,7 @@ module.exports = {
       'firstName',
       {
         type: Sequelize.STRING,
+        allowNull: false,
       }
     );
     await queryInterface.addColumn(
@@ -21,6 +22,7 @@ module.exports = {
       'lastName',
       {
         type: Sequelize.STRING,
+        allowNull: false,
       }
     );
   },
