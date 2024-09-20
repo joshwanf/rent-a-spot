@@ -14,6 +14,7 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
+    console.log('prod?', options);
     await queryInterface.addColumn(
       "Users",
       'firstName',
