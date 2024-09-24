@@ -18,12 +18,12 @@ router.get('/current', async (req, res, next) => {
 
 router.delete('/spot/:spotId', async (req, res) => {
     const spot = await models.Spot.findByPk(Number(req.params.spotId));
-    // await spot.destroy();
+    await spot.destroy();
     res.json({
         message: "Spot deleted",
         Spot: spot
-    })
-})
+    });
+});
 
 // Edit a booking
 router.put('/:bookingId', async (req, res, next) => {

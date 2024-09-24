@@ -11,26 +11,22 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // Booking.belongsTo(models.User, { foreignKey: 'userId' });
       Booking.belongsTo(models.User);
-      // Booking.belongsTo(models.Spot, { foreignKey: 'spotId' });
-      Booking.belongsTo(models.Spot);
+      Booking.belongsTo(models.Spot, { onDelete: 'CASCADE', hooks: true });
     }
   }
   Booking.init({
     spotId: {
       type: DataTypes.INTEGER,
-      references: {
-        model: 'Spot'
-      },
-      // onDelete: 'cascade',
+      references: { model: 'Spots' },
+      // onDelete: 'CASCADE', // commented: foreign key constraint error, uncommented: sqlite_readonly error
     },
     userId: {
       type: DataTypes.INTEGER,
-      references: {
-        model: 'User'
-      },
-      onDelete: 'cascade',
+      // references: {
+      //   model: 'User'
+      // },
+      onDelete: 'CASCADE',
     },
     startDate: {
       type: DataTypes.DATE,

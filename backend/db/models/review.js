@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       // Review.belongsTo(models.User, { foreignKey: 'userId' });
       Review.belongsTo(models.User);
       // Review.belongsTo(models.Spot, { foreignKey: 'spotId' });
-      Review.belongsTo(models.Spot);
+      Review.belongsTo(models.Spot, { onDelete: 'CASCADE', hooks: true });
     }
   }
   Review.init({
@@ -23,14 +23,12 @@ module.exports = (sequelize, DataTypes) => {
       // references: {
       //   model: 'Users',
       // },
-      onDelete: 'cascade',
+      onDelete: 'CASCADE',
     },
     spotId: {
       type: DataTypes.INTEGER,
-      // references: {
-      //   model: 'Spots',
-      // },
-      onDelete: 'cascade',
+      references: { model: 'Spots' },
+      onDelete: 'CASCADE',
     },
     review: {
       type: DataTypes.STRING,

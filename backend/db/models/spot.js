@@ -11,9 +11,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Spot.belongsTo(models.User, { foreignKey: 'ownerId', as: 'Owner' });
+      // Spot.belongsTo(models.User);
+      // Spot.belongsTo(models.User, { foreignKey: 'ownerId' });
+      Spot.belongsTo(models.User, { foreignKey: 'ownerId', as: 'Owners', onDelete: 'cascade' });
       Spot.hasMany(models.Review);
+      // Spot.hasMany(models.Review, { foreignKey: 'reviewId' });
       Spot.hasMany(models.Booking);
+      // Spot.hasMany(models.Booking, { foreignKey: 'bookingId' });
       Spot.hasMany(models.SpotImage);
     }
   }
@@ -22,7 +26,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'User',
+        model: 'Users',
+        as: 'Owners'
       },
       // onDelete: 'cascade',
     },

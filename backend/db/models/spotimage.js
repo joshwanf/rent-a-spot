@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-const { Spot } = require('../models');
+// const { Spot } = require('../models');
 module.exports = (sequelize, DataTypes) => {
   class SpotImage extends Model {
     /**
@@ -12,14 +12,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      SpotImage.belongsTo(models.Spot, { onDelete: 'cascade' });
+      SpotImage.belongsTo(models.Spot, { onDelete: 'CASCADE', hooks: true });
     }
   }
   SpotImage.init({
     spotId: {
       type: DataTypes.INTEGER,
-      onDelete: 'cascade',
-      // references: { model: Spot }
+      references: { model: 'Spots' },
+      onDelete: 'CASCADE',
     },
     url: {
       type: DataTypes.STRING,

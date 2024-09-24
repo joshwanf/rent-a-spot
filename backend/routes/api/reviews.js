@@ -4,6 +4,7 @@ router.get('/current', async (req, res, next) => {
     const user = req.user;
     if (user) {
         const userId = user.id;
+        console.log(userId);
         const reviews = await Review.findAll({
             where: {
                 userId: userId
