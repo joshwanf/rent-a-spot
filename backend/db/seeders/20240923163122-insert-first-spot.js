@@ -113,7 +113,7 @@ module.exports = {
               ...spot
             }
           );
-          console.log(newSpot);
+          // console.log(newSpot);
         }
       }
     }
