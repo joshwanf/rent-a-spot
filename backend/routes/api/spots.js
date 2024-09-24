@@ -53,8 +53,7 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
     const spot = await Spot.create(req.params);
     // handle validation errors
-    /*
-    if (//some code//) {
+    if (spot) {
         res.status(400).json({
             message: 'Bad Request',
             errors: {
@@ -62,7 +61,7 @@ router.post('/', async (req, res, next) => {
                 city: 'City is required',
                 state: 'State is required',
                 country: 'Country is required',
-                lat: 'Latitude must be within -90 and 90'
+                lat: 'Latitude must be within -90 and 90',
                 lng: 'Longitude must be within -180 and 180',
                 name: 'Name must be less than 50 characters',
                 description: 'Description is required',
@@ -70,7 +69,6 @@ router.post('/', async (req, res, next) => {
             }
         });
     }
-    */
     res.status(201).json(spot);
 });
 
@@ -87,11 +85,15 @@ router.put('/:spotId', async (req, res, next) => {
     } = req.body;
     const spotInstance = await Spot.findByPk(req.params.spotId);
     if (!spotInstance) res.status(404).json({ message: `Spot couldn't be found` });
-    /*
-    second guessed myself too much
-    
-    this section should add params to instance
-    */
+    for (const [k, v] of Object.entries({ 
+        address, city, state,
+        country, lat, lng,
+        name, description, price
+    })) {
+        if (v) {
+            reviewInstance[k] = v;
+        }
+    }
     try {
         await spotInstance.save();
     } catch (e) {
