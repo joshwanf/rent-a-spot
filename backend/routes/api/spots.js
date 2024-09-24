@@ -80,10 +80,36 @@ router.post('/', async (req, res, next) => {
 // edit a spot
 // /api/spots/:spotId
 router.put('/:spotId', async (req, res, next) => {
-    // const { //something// } = req.body;
+    const {
+        address, city, state,
+        country, lat, lng,
+        name, description, price
+    } = req.body;
     const spotInstance = await Spot.findByPk(req.params.spotId);
     if (!spotInstance) res.status(404).json({ message: `Spot couldn't be found` });
-    // more code here
+    /*
+    second guessed myself too much
+    
+    this section should add params to instance
+    */
+    try {
+        await spotInstance.save();
+    } catch (e) {
+        res.status(400).json({
+            message: 'Bad Request',
+            errors: {
+                address: 'Street address is required',
+                city: 'City is required',
+                state: 'State is required',
+                country: 'Country is required',
+                lat: 'Latitude must be within -90 and 90',
+                lng: 'Longitude must be within -180 and 180',
+                name: 'Name must be less than 50 characters',
+                description: 'Description is required',
+                price: 'Price per day must be a positive number'
+            }
+        });
+    }
     res.status(200).json(spotInstance);
 });
 
