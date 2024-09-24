@@ -25,6 +25,16 @@ router.get('/current', async (req, res, next) => {
     }
 });
 
+router.get('/user/:userId', async (req, res, next) => {
+    const reviews = await Review.findAll({
+        where: { userId: req.params.userId },
+        include: [
+            { model: Spot }
+        ]
+    });
+    res.status(200).json(reviews);
+})
+
 router.get('/:reviewId/images', async (req, res, next) => {
 
 });

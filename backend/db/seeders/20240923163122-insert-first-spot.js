@@ -113,6 +113,7 @@ module.exports = {
               ...spot
             }
           );
+          console.log(newSpot);
         }
       }
     }
@@ -140,8 +141,7 @@ module.exports = {
             ownerId: ownerRecord.id,
             ...spot
           }
-        }
-        );
+        });
       }
     }
     // return queryInterface.bulkDelete(

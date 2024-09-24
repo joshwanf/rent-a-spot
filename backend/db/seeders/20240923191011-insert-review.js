@@ -13,6 +13,18 @@ const reviewArray = [
     stars: 5
   },
   {
+    spotId: 2,
+    userId: 3,
+    review: 'Kid friendly environment for our celebrations',
+    stars: 4
+  },
+  {
+    spotId: 2,
+    userId: 2,
+    review: 'Staff was rude an unaccomodating',
+    stars: 2
+  },
+  {
     spotId: 3,
     userId: 2,
     review: 'The staff were so nice!',
@@ -39,6 +51,7 @@ module.exports = {
      */
     for (const review of reviewArray) {
       const newReview = await Review.create(review);
+      // console.log(newReview);
     }
   },
 

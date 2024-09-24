@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Booking.belongsTo(models.User);
-      Booking.belongsTo(models.Spot, { onDelete: 'CASCADE', hooks: true });
+      Booking.belongsTo(models.Spot, { onDelete: 'cascade', hooks: true });
     }
   }
   Booking.init({
@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       // references: {
       //   model: 'User'
       // },
-      onDelete: 'CASCADE',
+      // onDelete: 'CASCADE',
     },
     startDate: {
       type: DataTypes.DATE,
