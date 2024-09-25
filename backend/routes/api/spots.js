@@ -1,50 +1,91 @@
 const router = require('express').Router();
-const { Spot, User } = require('../../db/models');
+const models = require('../../db/models');
+const { Op, fn, col, literal } = require('sequelize');
+// const { Review, Spot, User } = require('../../db/models');
+const { Review, Spot, User } = models;
 
+// Get all spots
 router.get('/', async (req, res, next) => {
-    const spots = await Spot.findAll();
-    // Need to add aggregate avgRating after reviews is added in
+    const spots = await Spot.findAll({
+        attributes: {
+            include: [
+                [
+                    literal(`(
+                        SELECT AVG(stars)
+                        FROM Reviews AS Review
+                        WHERE
+                            Review.spotId = Spot.id
+                    )`),
+                    'avgRating',
+                ],
+                [
+                    literal(`(
+                        SELECT (url)
+                        FROM SpotImages AS SpotImage
+                        WHERE
+                            SpotImage.spotId = Spot.id
+                            AND
+                            SpotImage.preview = true
+                    )`),
+                    'previewImage',
+                ]
+            ]
+        }
+    });
+    const allSpots = [];
+    for (const spot of spots) {
+        const spotJson = spot.toJSON();
+        spotJson.avgRating = spotJson.avgRating || 0;
+        allSpots.push(spotJson);
+    }
     res.status(200).json({
-        Spots: spots
+        Spots: allSpots
     });
 });
 
+// Get all Spots owned by the current user
 // '/api/spots/current'
 router.get('/current', async (req, res, next) => {
     // const user = getCurrentUserWithAuth();
     const spots = await Spot.findAll({
         where: {
-            // ownerId: user.id;
+            ownerId: req.user.id
         }
     });
+    res.status(200).json(spots);
 });
 
+// Get details of a Spot from an id
 // '/api/spots/1'
-router.get('/:id', async (req, res, next) => {
+router.get('/:spotId', async (req, res, next) => {
     // Make sure id param is a valid number
-    const id = Number(req.params.id);
+    const id = Number(req.params.spotId);
     if (!Number.isInteger(id)) {
         return res.json({
             message: 'Spot couldn\'t be found'
         });
     }
+    // Can the User alias be changed to `Owner` instead?
     const spot = await Spot.findOne({
-        where: {
-            id
-        },
-        include: {
-            model: User,
-            as: 'Owner',
-            attributes: ['id', 'firstName', 'lastName']
-        }
+        where: { id },
+        include: [
+            {
+                model: models.SpotImage,
+                attributes: ['id', 'url', 'preview']
+            },
+            {
+                model: models.User,
+                as: 'Owners',
+                attributes: ['id', 'firstName', 'lastName']
+            },
+        ]
     });
-    if (spot) {
-        res.status(200).json(spot);
-    } else {
+    if (!spot) {
         return res.status(404).json({
             message: 'Spot couldn\'t be found'
         });
     }
+    res.status(200).json(spot);
 });
 
 

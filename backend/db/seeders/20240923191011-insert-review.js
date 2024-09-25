@@ -36,6 +36,12 @@ const reviewArray = [
     review: 'The pool was a great experience!',
     stars: 5
   },
+  {
+    spotId: 1,
+    userId: 1,
+    review: 'Was able to get work done at the business center',
+    stars: 3
+  },
 ];
 
 module.exports = {
