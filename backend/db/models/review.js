@@ -14,8 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       Review.hasMany(models.ReviewImage);
       // Review.belongsTo(models.User, { foreignKey: 'userId' });
       Review.belongsTo(models.User, { onDelete: 'cascade' });
-      // Review.belongsTo(models.Spot, { foreignKey: 'spotId' });
-      Review.belongsTo(models.Spot, { onDelete: 'cascade', foreignKey: 'spotId' });
+      // Review.belongsTo(models.Spot);
+      // Review.belongsTo(models.Spot, { onDelete: 'cascade' });
+      Review.belongsTo(models.Spot, { onDelete: 'cascade', hooks: true });
     }
   }
   Review.init({
@@ -27,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     spotId: {
       type: DataTypes.INTEGER,
       references: { model: 'Spots' },
-      // onDelete: 'CASCADE',
+      onDelete: 'cascade',
     },
     review: {
       type: DataTypes.STRING,

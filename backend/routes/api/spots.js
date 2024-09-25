@@ -169,7 +169,7 @@ router.post('/:spotId/images', async (req, res, next) => {
     res.status(201).json(spotImage)
 });
 
-// edit a spot
+// Edit a spot
 // /api/spots/:spotId
 router.put('/:spotId', async (req, res, next) => {
     const {
@@ -178,7 +178,11 @@ router.put('/:spotId', async (req, res, next) => {
         name, description, price
     } = req.body;
     const spotInstance = await Spot.findByPk(req.params.spotId);
-    if (!spotInstance) res.status(404).json({ message: `Spot couldn't be found` });
+    if (!spotInstance) {
+        res.status(404).json({ 
+            message: "Spot couldn't be found"
+        });
+    }
     for (const [k, v] of Object.entries({ 
         address, city, state,
         country, lat, lng,
@@ -209,11 +213,16 @@ router.put('/:spotId', async (req, res, next) => {
     res.status(200).json(spotInstance);
 });
 
-// delete a spot
+// Delete a spot
 // /api/spots/:spotId
-router.delete('/spotId', async (req, res, next) => {
+router.delete('/:spotId', async (req, res, next) => {
     const spot = await Spot.findByPk(req.params.spotId);
-    if (!spot) res.status(404).json({ message: `Spot couldn't be found` });
+    // const spot = await models.Spot.destroy({ where: { id: req.params.spotId } });
+    if (!spot) {
+        res.status(404).json({ 
+            message: "Spot couldn't be found" 
+        });
+    }
     await spot.destroy();
     res.status(200).json({ message: `Successfully deleted` });
 });
