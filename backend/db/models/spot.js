@@ -77,7 +77,7 @@ module.exports = (sequelize, DataTypes) => {
     indexes: [
       // { unique: true, fields: ['address'] },
       // { unique: true, fields: ['city', 'state', 'country'] },
-      { unique: true, fields: ['lat', 'lng'] },
+      // { unique: true, fields: ['lat', 'lng'] },
     ]
   });
   return Spot;

@@ -65,52 +65,92 @@ router.get('/:spotId', async (req, res, next) => {
             message: 'Spot couldn\'t be found'
         });
     }
-    // Can the User alias be changed to `Owner` instead?
     const spot = await Spot.findOne({
         where: { id },
+        // attributes: {
+        //     include: [
+        //         [fn('COUNT', col('Reviews.stars')), 'numReviews'],
+        //         [fn('AVG', col('Reviews.stars')), 'avgStarRating']
+        //     ]
+        // },
+        // Need to use sub-query calls in raw SQL to get an accurate count
+        attributes: {
+            include: [
+                [
+                    literal(`(
+                        SELECT COUNT(id)
+                        FROM Reviews AS Review
+                        WHERE Review.spotId = Spot.id
+                    )`),
+                    'numReviews',
+                ],
+                [
+                    literal(`(
+                        SELECT AVG(stars)
+                        FROM Reviews AS Review
+                        WHERE Review.spotId = Spot.id
+                    )`),
+                    'avgStarRating',
+                ],
+            ]
+        },
         include: [
             {
+                model: models.Review,
+                attributes: [],
+                required: false,
+            },
+            {
                 model: models.SpotImage,
-                attributes: ['id', 'url', 'preview']
+                attributes: ['id', 'url', 'preview'],
+                required: false,
             },
             {
                 model: models.User,
                 as: 'Owner',
-                attributes: ['id', 'firstName', 'lastName']
+                attributes: ['id', 'firstName', 'lastName'],
+                required: false
             },
         ]
     });
     if (!spot) {
         return res.status(404).json({
-            message: 'Spot couldn\'t be found'
+            message: "Spot couldn't be found"
         });
     }
-    res.status(200).json(spot);
+    const spotJson = spot.toJSON();
+    spotJson.avgStarRating = spotJson.avgStarRating || 0;
+    res.status(200).json(spotJson);
 });
 
 
-// create a spot
+// Create a spot
 // /api/spots
 router.post('/', async (req, res, next) => {
-    const spot = await Spot.create(req.params);
-    // handle validation errors
-    if (spot) {
-        res.status(400).json({
-            message: 'Bad Request',
-            errors: {
-                address: 'Street address is required',
-                city: 'City is required',
-                state: 'State is required',
-                country: 'Country is required',
-                lat: 'Latitude must be within -90 and 90',
-                lng: 'Longitude must be within -180 and 180',
-                name: 'Name must be less than 50 characters',
-                description: 'Description is required',
-                price: 'Price per day must be a positive number'
-            }
+    if (req.user) {
+        const spot = await Spot.create({
+            ownerId: req.user.id,
+            ...req.body
         });
+        // handle validation errors
+        if (!spot) {
+            return res.status(400).json({
+                message: 'Bad Request',
+                errors: {
+                    address: 'Street address is required',
+                    city: 'City is required',
+                    state: 'State is required',
+                    country: 'Country is required',
+                    lat: 'Latitude must be within -90 and 90',
+                    lng: 'Longitude must be within -180 and 180',
+                    name: 'Name must be less than 50 characters',
+                    description: 'Description is required',
+                    price: 'Price per day must be a positive number'
+                }
+            });
+        }
+        res.status(201).json(spot);
     }
-    res.status(201).json(spot);
 });
 
 // add an image to a spot based on the spot's id
