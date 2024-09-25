@@ -6,13 +6,12 @@ const { Review, Spot, User } = models;
 
 // Get all spots
 router.get('/', async (req, res, next) => {
-    const spots = await Spot.findAll({
+    const spots = await models.Spot.findAll({
         attributes: {
             include: [
                 [
                     literal(`(
-                        SELECT AVG(stars)
-                        FROM Reviews AS Review
+                        SELECT AVG(stars) FROM Reviews AS Review
                         WHERE
                             Review.spotId = Spot.id
                     )`),
@@ -20,8 +19,7 @@ router.get('/', async (req, res, next) => {
                 ],
                 [
                     literal(`(
-                        SELECT (url)
-                        FROM SpotImages AS SpotImage
+                        SELECT (url) FROM SpotImages AS SpotImage
                         WHERE
                             SpotImage.spotId = Spot.id
                             AND
@@ -32,12 +30,12 @@ router.get('/', async (req, res, next) => {
             ]
         }
     });
-    const allSpots = [];
-    for (const spot of spots) {
+    const allSpots = spots.map(spot => {
         const spotJson = spot.toJSON();
         spotJson.avgRating = spotJson.avgRating || 0;
-        allSpots.push(spotJson);
-    }
+        spotJson.previewImage = spotJson.previewImage || 'no preview image';
+        return spotJson;
+    });
     res.status(200).json({
         Spots: allSpots
     });
@@ -153,8 +151,23 @@ router.post('/', async (req, res, next) => {
     }
 });
 
-// add an image to a spot based on the spot's id
+// Add an image to a spot based on the spot's id
 // /api/spots/:spotId/images
+router.post('/:spotId/images', async (req, res, next) => {
+    if (req.body.preview) {
+        await models.SpotImage.update(
+            { preview: false },
+            {
+                where: { spotId: req.params.spotId }
+            }
+        );
+    }
+    const spotImage = await models.SpotImage.create({
+        spotId: req.params.spotId,
+        ...req.body
+    });
+    res.status(201).json(spotImage)
+});
 
 // edit a spot
 // /api/spots/:spotId
