@@ -75,7 +75,7 @@ router.get('/:spotId', async (req, res, next) => {
             },
             {
                 model: models.User,
-                as: 'Owners',
+                as: 'Owner',
                 attributes: ['id', 'firstName', 'lastName']
             },
         ]
