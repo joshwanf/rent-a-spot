@@ -1,5 +1,7 @@
 const router = require('express').Router();
-const { Review, Spot, User } = require('../../db/models');
+const models = require('../../db/models');
+const { Review, Spot, User } = models;
+const { literal } = require('sequelize');
 router.get('/current', async (req, res, next) => {
     const user = req.user;
     if (user) {
@@ -16,7 +18,24 @@ router.get('/current', async (req, res, next) => {
                 },
                 {
                     model: Spot,
-                }
+                    attributes: {
+                        exclude: ['description', 'createdAt', 'updatedAt'],
+                        include: [
+                            [
+                                literal(`(
+                                    SELECT url
+                                    FROM SpotImages AS SpotImage
+                                    WHERE
+                                        SpotImage.preview = true
+                                        AND
+                                        SpotImage.spotId = Spot.id
+                                )`),
+                                'previewImage',
+                            ],
+                        ]
+                    },
+                },
+                { model: models.ReviewImage, attributes: ['id', 'url'] }
             ]
         });
         res.status(200).json({
@@ -35,8 +54,18 @@ router.get('/user/:userId', async (req, res, next) => {
     res.status(200).json(reviews);
 })
 
-router.get('/:reviewId/images', async (req, res, next) => {
-
+router.post('/:reviewId/images', async (req, res, next) => {
+    const reviewImage = await models.ReviewImage.create({
+        reviewId: Number(req.params.reviewId),
+        ...req.body
+    });
+    if (!reviewImage) {
+        return res.status(400).json("bad image");
+    }
+    res.status(201).json({
+        id: reviewImage.id,
+        url: reviewImage.url
+    });
 });
 
 router.put('/:reviewId', async (req, res, next) => {

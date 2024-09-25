@@ -14,12 +14,14 @@ module.exports = (sequelize, DataTypes) => {
       // Spot.belongsTo(models.User);
       // Spot.belongsTo(models.User, { foreignKey: 'ownerId' });
       Spot.belongsTo(models.User, { foreignKey: 'ownerId', as: 'Owner', onDelete: 'cascade' });
+
       Spot.hasMany(models.Review);
       Spot.hasMany(models.Booking);
       Spot.hasMany(models.SpotImage);
       // Spot.hasMany(models.Review, { foreignKey: 'reviewId' });
       // Spot.hasMany(models.Booking, { foreignKey: 'bookingId' });
       // Spot.hasMany(models.SpotImage, { foreignKey: 'spotId' });
+      // Spot.belongsToMany(models.User, { through: 'Booking', foreignKey: 'spotId', otherKey: 'userId' })
     }
   }
   Spot.init({

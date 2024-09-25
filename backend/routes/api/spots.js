@@ -44,13 +44,45 @@ router.get('/', async (req, res, next) => {
 // Get all Spots owned by the current user
 // '/api/spots/current'
 router.get('/current', async (req, res, next) => {
-    // const user = getCurrentUserWithAuth();
+    if (!req.user) {
+        return res.status(400).json({
+            message: "Not logged in"
+        })
+    }
     const spots = await Spot.findAll({
-        where: {
-            ownerId: req.user.id
+        where: { ownerId: req.user.id },
+        attributes: {
+            include: [
+                [
+                    literal(`(
+                        SELECT AVG(stars) FROM Reviews AS Review
+                        WHERE
+                            Review.spotId = Spot.id
+                    )`),
+                    'avgRating',
+                ],
+                [
+                    literal(`(
+                        SELECT (url) FROM SpotImages AS SpotImage
+                        WHERE
+                            SpotImage.spotId = Spot.id
+                            AND
+                            SpotImage.preview = true
+                    )`),
+                    'previewImage',
+                ]
+            ]
         }
     });
-    res.status(200).json(spots);
+    const allSpots = spots.map(spot => {
+        const spotJson = spot.toJSON();
+        spotJson.avgRating = spotJson.avgRating || 0;
+        spotJson.previewImage = spotJson.previewImage || 'no preview image';
+        return spotJson;
+    });
+    res.status(200).json({
+        Spots: allSpots
+    });
 });
 
 // Get details of a Spot from an id
@@ -94,20 +126,15 @@ router.get('/:spotId', async (req, res, next) => {
         },
         include: [
             {
-                model: models.Review,
-                attributes: [],
-                required: false,
-            },
-            {
                 model: models.SpotImage,
                 attributes: ['id', 'url', 'preview'],
-                required: false,
+                // required: false,
             },
             {
                 model: models.User,
                 as: 'Owner',
                 attributes: ['id', 'firstName', 'lastName'],
-                required: false
+                // required: false
             },
         ]
     });
@@ -121,6 +148,30 @@ router.get('/:spotId', async (req, res, next) => {
     res.status(200).json(spotJson);
 });
 
+// Get all reviews by a spot's id
+router.get('/:spotId/reviews', async (req, res, next) => {
+    const reviews = await models.Review.findAll({
+        where: { spotId: req.params.spotId },
+        include: [
+            {
+                model: models.User,
+                attributes: ['id', 'firstName', 'lastName']
+            },
+            {
+                model: models.ReviewImage,
+                attributes: ['id', 'url']
+            }
+        ]
+    });
+    if (!reviews) {
+        return res.status(404).json({
+            message: "Couldn't find spot"
+        });
+    }
+    res.status(200).json({
+        Reviews: reviews
+    });
+})
 
 // Create a spot
 // /api/spots
@@ -151,6 +202,21 @@ router.post('/', async (req, res, next) => {
     }
 });
 
+// Create a review for a spot based on the spot's id
+router.post('/:spotId/reviews', async (req, res, next) => {
+    if (req.user) {
+        const review = await models.Review.create({
+            userId: req.user.id,
+            spotId: Number(req.params.spotId),
+            ...req.body
+        });
+        if (!review) {
+            return res.status(201).json("bad review");
+        }
+        res.status(201).json(review);
+    }
+});
+
 // Add an image to a spot based on the spot's id
 // /api/spots/:spotId/images
 router.post('/:spotId/images', async (req, res, next) => {
@@ -166,7 +232,11 @@ router.post('/:spotId/images', async (req, res, next) => {
         spotId: req.params.spotId,
         ...req.body
     });
-    res.status(201).json(spotImage)
+    res.status(201).json({
+        id: spotImage.id,
+        spotId: spotImage.spotId,
+        url: spotImage.url
+    })
 });
 
 // Edit a spot
@@ -189,13 +259,13 @@ router.put('/:spotId', async (req, res, next) => {
         name, description, price
     })) {
         if (v) {
-            reviewInstance[k] = v;
+            spotInstance[k] = v;
         }
     }
     try {
         await spotInstance.save();
     } catch (e) {
-        res.status(400).json({
+        return res.status(400).json({
             message: 'Bad Request',
             errors: {
                 address: 'Street address is required',
@@ -219,7 +289,7 @@ router.delete('/:spotId', async (req, res, next) => {
     const spot = await Spot.findByPk(req.params.spotId);
     // const spot = await models.Spot.destroy({ where: { id: req.params.spotId } });
     if (!spot) {
-        res.status(404).json({ 
+        return res.status(404).json({ 
             message: "Spot couldn't be found" 
         });
     }

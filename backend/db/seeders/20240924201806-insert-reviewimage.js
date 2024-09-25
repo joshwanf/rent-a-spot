@@ -1,12 +1,12 @@
 'use strict';
-
+const { ReviewImage } = require('../models');
 /** @type {import('sequelize-cli').Migration} */
 const imageArray = [
   {
     reviewId: 1,
     images: [
       { url: 'image-1.png' },
-      { url: 'image-2.png' },
+      { url: 'image-2.png', preview: true },
       { url: 'image-1.png' },
     ]
   },
@@ -15,13 +15,13 @@ const imageArray = [
     images: [
       { url: 'image-1.png' },
       { url: 'image-2.png' },
-      { url: 'image-1.png' },
+      { url: 'image-1.png', preview: true },
     ]
   },
   {
     reviewId: 3,
     images: [
-      { url: 'image-1.png' },
+      { url: 'image-1.png', preview: true },
       { url: 'image-2.png' },
       { url: 'image-1.png' },
     ]
@@ -29,7 +29,7 @@ const imageArray = [
   {
     reviewId: 4,
     images: [
-      { url: 'image-1.png' },
+      { url: 'image-1.png', preview: true },
       { url: 'image-2.png' },
       { url: 'image-1.png' },
     ]
@@ -39,7 +39,7 @@ const imageArray = [
     images: [
       { url: 'image-1.png' },
       { url: 'image-2.png' },
-      { url: 'image-1.png' },
+      { url: 'image-1.png', preview: true },
     ]
   },
 ]
@@ -54,6 +54,15 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
+    for (const reviewImage of imageArray) {
+      for (const image of reviewImage.images) {
+        ReviewImage.create({
+          reviewId: reviewImage.reviewId,
+          url: image.url,
+          preview: image.preview || false
+        });
+      }
+    }
   },
 
   async down (queryInterface, Sequelize) {
@@ -63,5 +72,16 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+    for (const reviewImage of imageArray) {
+      for (const image of reviewImage.images) {
+        ReviewImage.destroy({
+          where: {
+            reviewId: reviewImage.reviewId,
+            url: image.url,
+            preview: image.preview || false
+          }
+        });
+      }
+    }
   }
 };

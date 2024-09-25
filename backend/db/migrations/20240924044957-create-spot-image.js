@@ -13,8 +13,8 @@ module.exports = {
         },
         spotId: {
           type: Sequelize.INTEGER,
+          references: { model: 'Spots' },
           onDelete: 'cascade',
-          references: { model: 'Spots' }
         },
         url: {
           type: Sequelize.STRING

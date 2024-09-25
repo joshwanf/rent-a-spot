@@ -11,12 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Review.hasMany(models.ReviewImage);
       // Review.belongsTo(models.User, { foreignKey: 'userId' });
-      Review.belongsTo(models.User, { onDelete: 'cascade' });
+      Review.belongsTo(models.User, { foreignKey: 'userId', onDelete: 'cascade' });
       // Review.belongsTo(models.Spot);
-      // Review.belongsTo(models.Spot, { onDelete: 'cascade' });
-      Review.belongsTo(models.Spot, { onDelete: 'cascade', hooks: true });
+      Review.belongsTo(models.Spot, { foreignKey: 'spotId', onDelete: 'cascade' });
+      // Review.belongsTo(models.Spot, { onDelete: 'cascade', hooks: true });
+      Review.hasMany(models.ReviewImage);
     }
   }
   Review.init({
@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     spotId: {
       type: DataTypes.INTEGER,
       references: { model: 'Spots' },
-      onDelete: 'cascade',
+      // onDelete: 'cascade',
     },
     review: {
       type: DataTypes.STRING,
