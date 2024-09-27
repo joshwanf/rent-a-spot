@@ -1,10 +1,12 @@
 'use strict';
 const { Review } = require('../models');
+const { demoReviews } = require('../../utils/demo-data');
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
 /** @type {import('sequelize-cli').Migration} */
+
 module.exports = {
   async up (queryInterface, Sequelize) {
     /**
@@ -16,23 +18,9 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
-    await Review.bulkCreate(
-      [        
-        {
-          spotId: 1,
-          userId: 1,
-          review: 'Fantastic experience! Really enjoyed the amenities provided!',
-          stars: 5
-        },
-        {
-          spotId: 2,
-          userId: 2,
-          review: 'Fantastic experience! Really enjoyed the amenities provided!',
-          stars: 5
-        },
-      ],
-      options
-    );
+    for (const review of demoReviews) {
+      const newReview = await Review.create(review);
+    }
   },
 
   async down (queryInterface, Sequelize) {
@@ -42,12 +30,10 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    await Review.destroy(
-      {
-        where: {
-          id: 1,
-        }
-      }
-    );
+    for (const review of demoReviews) {
+      const curReview = await Review.destroy({
+        where: review
+      });
+    }
   }
 };

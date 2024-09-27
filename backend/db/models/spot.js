@@ -11,8 +11,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Spot.belongsTo(models.User, { foreignKey: 'ownerId', as: 'Owner' });
-      Spot.hasMany(models.Review, { foreignKey: 'spotId' });
+      // Spot.belongsTo(models.User);
+      // Spot.belongsTo(models.User, { foreignKey: 'ownerId' });
+      Spot.belongsTo(models.User, { foreignKey: 'ownerId', as: 'Owner', onDelete: 'cascade' });
+
+      Spot.hasMany(models.Review);
+      Spot.hasMany(models.Booking);
+      Spot.hasMany(models.SpotImage);
+      // Spot.hasMany(models.Review, { foreignKey: 'reviewId' });
+      // Spot.hasMany(models.Booking, { foreignKey: 'bookingId' });
+      // Spot.hasMany(models.SpotImage, { foreignKey: 'spotId' });
+      // Spot.belongsToMany(models.User, { through: 'Booking', foreignKey: 'spotId', otherKey: 'userId' })
     }
   }
   Spot.init({
@@ -21,7 +30,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       references: {
         model: 'Users',
+        as: 'Owner'
       },
+      // onDelete: 'cascade',
     },
     address: {
       type: DataTypes.TEXT,
@@ -69,7 +80,7 @@ module.exports = (sequelize, DataTypes) => {
     indexes: [
       // { unique: true, fields: ['address'] },
       // { unique: true, fields: ['city', 'state', 'country'] },
-      { unique: true, fields: ['lat', 'lng'] },
+      // { unique: true, fields: ['lat', 'lng'] },
     ]
   });
   return Spot;

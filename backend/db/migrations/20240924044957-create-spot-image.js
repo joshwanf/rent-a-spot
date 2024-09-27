@@ -9,10 +9,10 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
       {
-        tableName: 'Reviews',
+        tableName: 'SpotImages',
         schema: process.env.SCHEMA
       },
-      // 'Reviews', 
+      // 'SpotImages', 
       {
         id: {
           allowNull: false,
@@ -22,23 +22,14 @@ module.exports = {
         },
         spotId: {
           type: Sequelize.INTEGER,
-          allowNull: false,
           references: { model: 'Spots' },
           onDelete: 'cascade',
         },
-        userId: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-          references: { model: 'Users' },
-          onDelete: 'cascade',
+        url: {
+          type: Sequelize.STRING
         },
-        review: {
-          type: Sequelize.STRING,
-          allowNull: false,
-        },
-        stars: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
+        preview: {
+          type: Sequelize.BOOLEAN
         },
         createdAt: {
           allowNull: false,
@@ -53,7 +44,7 @@ module.exports = {
     );
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "Reviews";
-    await queryInterface.dropTable('Reviews', options);
+    options.tableName = "Users";
+    await queryInterface.dropTable('SpotImages');
   }
 };
