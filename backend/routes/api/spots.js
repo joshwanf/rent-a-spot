@@ -58,7 +58,7 @@ router.get('/', allSpotsValidation, async (req, res, next) => {
             include: [
                 [
                     literal(`(
-                        SELECT AVG(stars) FROM Reviews AS Review
+                        SELECT AVG("stars") FROM "Reviews" AS "Review"
                         WHERE
                             "Review"."spotId" = "Spot"."id"
                     )`),
@@ -66,7 +66,7 @@ router.get('/', allSpotsValidation, async (req, res, next) => {
                 ],
                 [
                     literal(`(
-                        SELECT (url) FROM SpotImages AS SpotImage
+                        SELECT ("url") FROM "SpotImages" AS "SpotImage"
                         WHERE
                             "SpotImage"."spotId" = "Spot"."id"
                             AND
