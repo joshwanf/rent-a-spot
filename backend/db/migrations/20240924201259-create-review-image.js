@@ -8,7 +8,11 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
-      'ReviewImages', 
+      {
+        tableName: 'ReviewImages',
+        schema: process.env.SCHEMA
+      },
+      // 'ReviewImages', 
       {
         id: {
           allowNull: false,

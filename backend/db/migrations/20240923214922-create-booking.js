@@ -7,7 +7,11 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
-      'Bookings', 
+      {
+        tableName: 'Bookings',
+        schema: process.env.SCHEMA
+      },
+      // 'Bookings', 
       {
         id: {
           allowNull: false,

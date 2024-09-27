@@ -7,7 +7,11 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
-      'Spots', 
+      {
+        tableName: 'Spots',
+        schema: process.env.SCHEMA
+      },
+      // 'Spots', 
       {
         id: {
           allowNull: false,
@@ -60,11 +64,15 @@ module.exports = {
       options
     );
     await queryInterface.addIndex(
-      'Spots',
+      {
+        tableName: 'Spots',
+        schema: process.env.SCHEMA
+      },
+      // 'Spots',
       ['address', 'city', 'state', 'country'],
       {
         unique: true,
-        ...options
+        // ...options
       }
     )
   },
