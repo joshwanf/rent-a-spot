@@ -1,84 +1,9 @@
 'use strict';
 const { SpotImage } = require('../models');
+const { demoSpotImages } = require('../../utils/demo-data');
+
 /** @type {import('sequelize-cli').Migration} */
-const imageArray = [
-  {
-    spotId: 1,
-    images: [
-      { url: 'living-room-1.png' },
-      { url: 'living-room-2.png' },
-      { url: 'bedroom-1.png' },
-      { url: 'bedroom-2.png' },
-      { url: 'bedroom-3.png' },
-      { url: 'bathroom-1.png' },
-      { url: 'bathroom-2.png' },
-      { url: 'front-1.png', preview: true },
-    ]
-  },
-  {
-    spotId: 2,
-    images: [
-      { url: 'living-room-1.png' },
-      { url: 'living-room-2.png' },
-      { url: 'bedroom-1.png' },
-      { url: 'bedroom-2.png' },
-      { url: 'bathroom-1.png' },
-      { url: 'front-1.png', preview: true },
-    ]
-  },
-  {
-    spotId: 3,
-    images: [
-      { url: 'living-room-1.png' },
-      { url: 'living-room-2.png' },
-      { url: 'bedroom-1.png' },
-      { url: 'bedroom-2.png' },
-      { url: 'bedroom-3.png' },
-      { url: 'bathroom-1.png' },
-      { url: 'bathroom-2.png' },
-      { url: 'front-1.png', preview: true },
-    ]
-  },
-  {
-    spotId: 4,
-    images: [
-      { url: 'living-room-1.png' },
-      { url: 'living-room-2.png' },
-      { url: 'bedroom-1.png' },
-      { url: 'bedroom-2.png' },
-      { url: 'bedroom-3.png' },
-      { url: 'bathroom-1.png' },
-      { url: 'bathroom-2.png' },
-      { url: 'front-1.png', preview: true },
-    ]
-  },
-  {
-    spotId: 5,
-    images: [
-      { url: 'living-room-1.png' },
-      { url: 'living-room-2.png' },
-      { url: 'bedroom-1.png' },
-      { url: 'bedroom-2.png' },
-      { url: 'bedroom-3.png' },
-      { url: 'bathroom-1.png' },
-      { url: 'bathroom-2.png' },
-      { url: 'front-1.png', preview: true },
-    ]
-  },
-  {
-    spotId: 6,
-    images: [
-      { url: 'living-room-1.png' },
-      { url: 'living-room-2.png' },
-      { url: 'bedroom-1.png' },
-      { url: 'bedroom-2.png' },
-      { url: 'bedroom-3.png' },
-      { url: 'bathroom-1.png' },
-      { url: 'bathroom-2.png' },
-      { url: 'front-1.png', preview: true },
-    ]
-  },
-];
+
 module.exports = {
   async up (queryInterface, Sequelize) {
     /**
@@ -90,7 +15,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    for (const spotImages of imageArray) {
+    for (const spotImages of demoSpotImages) {
       for (const image of spotImages.images) {
         SpotImage.create({
           spotId: spotImages.spotId,
@@ -108,7 +33,7 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    for (const spotImages of imageArray) {
+    for (const spotImages of demoSpotImage) {
       for (const image of spotImages.images) {
         SpotImage.destroy({
           where: {

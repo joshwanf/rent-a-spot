@@ -1,48 +1,11 @@
 'use strict';
 const { Review } = require('../models');
+const { demoReviews } = require('../../utils/demo-data');
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
 /** @type {import('sequelize-cli').Migration} */
-const reviewArray = [
-  {
-    spotId: 1,
-    userId: 3,
-    review: 'Fantastic experience! Really enjoyed the amenities provided!',
-    stars: 5
-  },
-  {
-    spotId: 2,
-    userId: 3,
-    review: 'Kid friendly environment for our celebrations',
-    stars: 4
-  },
-  {
-    spotId: 2,
-    userId: 2,
-    review: 'Staff was rude an unaccomodating',
-    stars: 2
-  },
-  {
-    spotId: 3,
-    userId: 2,
-    review: 'The staff were so nice!',
-    stars: 5
-  },
-  {
-    spotId: 6,
-    userId: 1,
-    review: 'The pool was a great experience!',
-    stars: 5
-  },
-  {
-    spotId: 1,
-    userId: 1,
-    review: 'Was able to get work done at the business center',
-    stars: 3
-  },
-];
 
 module.exports = {
   async up (queryInterface, Sequelize) {
@@ -55,9 +18,8 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
-    for (const review of reviewArray) {
+    for (const review of demoReviews) {
       const newReview = await Review.create(review);
-      // console.log(newReview);
     }
   },
 
@@ -68,7 +30,7 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    for (const review of reviewArray) {
+    for (const review of demoReviews) {
       const curReview = await Review.destroy({
         where: review
       });
