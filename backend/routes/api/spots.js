@@ -60,7 +60,7 @@ router.get('/', allSpotsValidation, async (req, res, next) => {
                     literal(`(
                         SELECT AVG(stars) FROM Reviews AS Review
                         WHERE
-                            "Review".spotId = "Spot".id
+                            "Review"."spotId" = "Spot"."id"
                     )`),
                     'avgRating',
                 ],
@@ -68,9 +68,9 @@ router.get('/', allSpotsValidation, async (req, res, next) => {
                     literal(`(
                         SELECT (url) FROM SpotImages AS SpotImage
                         WHERE
-                            "SpotImage".spotId = "Spot".id
+                            "SpotImage"."spotId" = "Spot"."id"
                             AND
-                            "SpotImage".preview = true
+                            "SpotImage"."preview" = true
                     )`),
                     'previewImage',
                 ]

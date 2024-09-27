@@ -34,9 +34,9 @@ router.get('/current', requireAuth, async (req, res, next) => {
                                 SELECT url
                                 FROM SpotImages AS SpotImage
                                 WHERE
-                                    SpotImage.preview = true
+                                    "SpotImage"."preview" = true
                                     AND
-                                    SpotImage.spotId = Spot.id
+                                    "SpotImage"."spotId" = "Spot"."id"
                             )`),
                             'previewImage',
                         ],

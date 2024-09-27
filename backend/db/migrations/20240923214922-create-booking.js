@@ -1,5 +1,5 @@
 'use strict';
-let options = {};
+let options = { tableName: 'Bookings' };
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
@@ -7,10 +7,7 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
-      {
-        tableName: 'Bookings',
-        schema: process.env.SCHEMA
-      },
+      options,
       // 'Bookings', 
       {
         id: {
@@ -44,11 +41,11 @@ module.exports = {
           type: Sequelize.DATE
         }
       },
-      options
+      // options
     );
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "Bookings";
+    // options.tableName = "Bookings";
     await queryInterface.dropTable('Bookings', options);
   }
 };
