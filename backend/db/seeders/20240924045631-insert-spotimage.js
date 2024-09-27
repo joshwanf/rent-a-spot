@@ -33,7 +33,7 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    for (const spotImages of demoSpotImage) {
+    for (const spotImages of demoSpotImages) {
       for (const image of spotImages.images) {
         SpotImage.destroy({
           where: {

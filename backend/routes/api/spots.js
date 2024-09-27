@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const models = require('../../db/models');
-const { Op, fn, col, literal } = require('sequelize');
+const { Op, fn, col, literal, query } = require('sequelize');
 const { formatBookingDates, hasNoBookingOverlap } = require('../../utils/booking-dates');
 const { checkSchema } = require('express-validator');
 const { restoreUser, requireAuth } = require('../../utils/auth');
@@ -40,7 +40,22 @@ router.get('/', allSpotsValidation, async (req, res, next) => {
         if (minPrice) where['price'][Op.gte] = minPrice;
         if (maxPrice) where['price'][Op.lte] = maxPrice;
     }
-    
+    // Use prepared statements to handle SQLite vs PostgreSQL differences
+    const preparedSchema = process.env.NODE_ENV === 'production' ? 'rent_a_spot' + '"."' : '';
+    const subq = {
+        avgRating: `( 
+            SELECT AVG("stars") FROM "${preparedSchema}Reviews" AS "Review" 
+            WHERE "Review"."spotId" = "${preparedSchema}Spot"."id" 
+        )`,
+        previewImage: `( 
+            SELECT "url" FROM "${preparedSchema}SpotImages" AS "SpotImage" 
+            WHERE 
+                "SpotImage"."spotId" = "${preparedSchema}Spot"."id" 
+                AND 
+                "SpotImage"."preview" = true 
+        )`,
+        statement: function(subquery) { return this[subquery] }
+    };
     // Get all spots
     const spots = await models.Spot.findAll({
         // attributes: {
@@ -56,24 +71,26 @@ router.get('/', allSpotsValidation, async (req, res, next) => {
         // group: ['Spot.id', 'SpotImages.id'],
         attributes: {
             include: [
-                [
-                    literal(`(
-                        SELECT AVG("stars") FROM "Reviews" AS "Review"
-                        WHERE
-                            "Review"."spotId" = "Spot"."id"
-                    )`),
-                    'avgRating',
-                ],
-                [
-                    literal(`(
-                        SELECT ("url") FROM "SpotImages" AS "SpotImage"
-                        WHERE
-                            "SpotImage"."spotId" = "Spot"."id"
-                            AND
-                            "SpotImage"."preview" = true
-                    )`),
-                    'previewImage',
-                ]
+                [literal(subq.statement('avgRating')), 'avgRating'],
+                [literal(subq.statement('previewImage')), 'previewImage']
+                // [
+                //     literal(`(
+                //         SELECT AVG("stars") FROM "Reviews" AS "Review"
+                //         WHERE
+                //             "Review"."spotId" = "Spot"."id"
+                //     )`),
+                //     'avgRating',
+                // ],
+                // [
+                //     literal(`(
+                //         SELECT ("url") FROM "SpotImages" AS "SpotImage"
+                //         WHERE
+                //             "SpotImage"."spotId" = "Spot"."id"
+                //             AND
+                //             "SpotImage"."preview" = true
+                //     )`),
+                //     'previewImage',
+                // ]
             ]
         },
         ...pagination, where,
