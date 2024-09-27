@@ -20,13 +20,6 @@ module.exports = {
      * }], {});
     */
     for (const owner of demoSpots) {
-      // const ownerRecord = await User.findOne({
-      //   where: {
-      //     firstName: owner.firstName,
-      //     lastName: owner.lastName
-      //   }
-      // });
-      // console.log(owner);
       for (const spot of owner.spots) {
         const newSpot = await Spot.create(
           {
@@ -35,8 +28,6 @@ module.exports = {
           }
         );
       }
-      // if (ownerRecord) {
-      // }
     }
   },
 
@@ -49,28 +40,15 @@ module.exports = {
      */
     options.tableName = 'Spots';
     const Op = Sequelize.Op;
-    for (const owner of spotsArray) {
-      const ownerRecord = await User.findOne({
-        where: {
-          firstName: owner.firstName,
-          lastName: owner.lastName
-        }
-      });
+    for (const owner of demoSpots) {
       for (const spot of owner.spots) {
         const newSpot = await Spot.destroy({
           where: {
-            ownerId: ownerRecord.id,
+            ownerId: owner.id,
             ...spot
           }
         });
       }
     }
-    // return queryInterface.bulkDelete(
-    //   options, 
-    //   {
-    //     name: { [Op.in]: ['App Academy'] }
-    //   }, 
-    //   {}
-    // );
   }
 };

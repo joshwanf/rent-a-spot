@@ -45,12 +45,12 @@ router.get('/', allSpotsValidation, async (req, res, next) => {
     const subq = {
         avgRating: `( 
             SELECT AVG("stars") FROM "${preparedSchema}Reviews" AS "Review" 
-            WHERE "Review"."spotId" = "${preparedSchema}Spot"."id" 
+            WHERE "Review"."spotId" = "Spot"."id" 
         )`,
         previewImage: `( 
             SELECT "url" FROM "${preparedSchema}SpotImages" AS "SpotImage" 
             WHERE 
-                "SpotImage"."spotId" = "${preparedSchema}Spot"."id" 
+                "SpotImage"."spotId" = "Spot"."id" 
                 AND 
                 "SpotImage"."preview" = true 
         )`,
