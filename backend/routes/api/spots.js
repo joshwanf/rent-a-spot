@@ -7,6 +7,7 @@ const { restoreUser, requireAuth } = require('../../utils/auth');
 const { handleValidationErrors } = require('../../utils/validation');
 const {
     isLoggedIn,
+    prepareSubqStatement,
     allSpotsValidation,
     createSpotValidation,
     createReviewValidation
@@ -41,21 +42,33 @@ router.get('/', allSpotsValidation, async (req, res, next) => {
         if (maxPrice) where['price'][Op.lte] = maxPrice;
     }
     // Use prepared statements to handle SQLite vs PostgreSQL differences
-    const preparedSchema = process.env.NODE_ENV === 'production' ? 'rent_a_spot' + '"."' : '';
-    const subq = {
-        avgRating: `( 
-            SELECT AVG("stars") FROM "${preparedSchema}Reviews" AS "Review" 
-            WHERE "Review"."spotId" = "Spot"."id" 
-        )`,
-        previewImage: `( 
-            SELECT "url" FROM "${preparedSchema}SpotImages" AS "SpotImage" 
-            WHERE 
-                "SpotImage"."spotId" = "Spot"."id" 
-                AND 
-                "SpotImage"."preview" = true 
-        )`,
-        statement: function(subquery) { return this[subquery] }
-    };
+    // const preparedSchema = process.env.NODE_ENV === 'production' ? process.env.SCHEMA + '"."' : '';
+    // const subq = {
+    //     avgRating: `( 
+    //         SELECT AVG("stars") FROM "${preparedSchema}Reviews" AS "Review" 
+    //         WHERE "Review"."spotId" = "Spot"."id" 
+    //     )`,
+    //     previewImage: `( 
+    //         SELECT "url" FROM "${preparedSchema}SpotImages" AS "SpotImage" 
+    //         WHERE 
+    //             "SpotImage"."spotId" = "Spot"."id" 
+    //             AND 
+    //             "SpotImage"."preview" = true 
+    //     )`,
+    //     statement: function(subquery) { return this[subquery] }
+    // };
+    const subq = prepareSubqStatement();
+    subq.avgRating = `( 
+        SELECT AVG("stars") FROM "${subq.schema}Reviews" AS "Review" 
+        WHERE "Review"."spotId" = "Spot"."id" 
+    )`;
+    subq.previewImage = `( 
+        SELECT "url" FROM "${subq.schema}SpotImages" AS "SpotImage" 
+        WHERE 
+            "SpotImage"."spotId" = "Spot"."id" 
+            AND 
+            "SpotImage"."preview" = true 
+    )`;
     // Get all spots
     const spots = await models.Spot.findAll({
         // attributes: {
@@ -109,12 +122,23 @@ router.get('/', allSpotsValidation, async (req, res, next) => {
 
 // Get all Spots owned by the current user
 router.get('/current', requireAuth, isLoggedIn, async (req, res, next) => {
-    // if (!req.user) {
-    //     // refactor using next()
-    //     return res.status(400).json({
-    //         message: "Not logged in"
-    //     })
-    // }
+   // Use prepared statements to handle SQLite vs PostgreSQL differences
+   const preparedSchema = process.env.NODE_ENV === 'production' ? process.env.SCHEMA + '"."' : '';
+   const subq = {
+       avgRating: `( 
+            SELECT AVG("stars") FROM "${preparedSchema}Reviews" AS "Review"
+            WHERE
+                "Review"."spotId" = "Spot"."id"
+       )`,
+       previewImage: `( 
+            SELECT ("url") FROM "${preparedSchema}SpotImages" AS "SpotImage"
+            WHERE
+                "SpotImage"."spotId" = "Spot"."id"
+                AND
+                "SpotImage"."preview" = true
+       )`,
+       statement: function(subquery) { return this[subquery] }
+   };
     const spots = await models.Spot.findAll({
         where: { ownerId: req.user.id },
         // attributes: {
@@ -130,24 +154,26 @@ router.get('/current', requireAuth, isLoggedIn, async (req, res, next) => {
         // group: ['SpotImages.id'],
         attributes: {
             include: [
-                [
-                    literal(`(
-                        SELECT AVG(stars) FROM Reviews AS Review
-                        WHERE
-                            "Review".spotId = "Spot".id
-                    )`),
-                    'avgRating',
-                ],
-                [
-                    literal(`(
-                        SELECT (url) FROM SpotImages AS SpotImage
-                        WHERE
-                            "SpotImage".spotId = "Spot".id
-                            AND
-                            "SpotImage".preview = true
-                    )`),
-                    'previewImage',
-                ]
+                [literal(subq.statement('avgRating')), 'avgRating'],
+                [literal(subq.statement('previewImage')), 'previewImage']
+                // [
+                //     literal(`(
+                //         SELECT AVG(stars) FROM Reviews AS Review
+                //         WHERE
+                //             "Review".spotId = "Spot".id
+                //     )`),
+                //     'avgRating',
+                // ],
+                // [
+                //     literal(`(
+                //         SELECT (url) FROM SpotImages AS SpotImage
+                //         WHERE
+                //             "SpotImage".spotId = "Spot".id
+                //             AND
+                //             "SpotImage".preview = true
+                //     )`),
+                //     'previewImage',
+                // ]
             ]
         }
     });
@@ -172,6 +198,32 @@ router.get('/:spotId', async (req, res, next) => {
             message: 'Spot couldn\'t be found'
         });
     }
+    // Use prepared statements to handle SQLite vs PostgreSQL differences
+//    const preparedSchema = process.env.NODE_ENV === 'production' ? process.env.SCHEMA + '"."' : '';
+//    const subq = {
+//        numReviews: `( 
+//             SELECT COUNT("id")
+//             FROM "${preparedSchema}Reviews" AS "Review"
+//             WHERE "Review"."spotId" = "Spot"."id"
+//        )`,
+//        avgStarRating: `( 
+//             SELECT AVG("stars")
+//             FROM "${preparedSchema}Reviews" AS "Review"
+//             WHERE "Review"."spotId" = "Spot"."id"
+//        )`,
+//        statement: function(subquery) { return this[subquery] }
+//    };
+   const subq = prepareSubqStatement();
+   subq.numReviews = `( 
+        SELECT COUNT("id")
+        FROM "${subq.schema}Reviews" AS "Review"
+        WHERE "Review"."spotId" = "Spot"."id"
+    )`;
+   subq.avgStarRating = `( 
+        SELECT AVG("stars")
+        FROM "${subq.schema}Reviews" AS "Review"
+        WHERE "Review"."spotId" = "Spot"."id"
+    )`;
     const spot = await models.Spot.findOne({
         where: { id },
         // attributes: {
@@ -184,22 +236,24 @@ router.get('/:spotId', async (req, res, next) => {
         // Need to use sub-query calls in raw SQL to get an accurate count
         attributes: {
             include: [
-                [
-                    literal(`(
-                        SELECT COUNT(id)
-                        FROM Reviews AS Review
-                        WHERE "Review".spotId = "Spot".id
-                    )`),
-                    'numReviews',
-                ],
-                [
-                    literal(`(
-                        SELECT AVG(stars)
-                        FROM Reviews AS Review
-                        WHERE "Review".spotId = "Spot".id
-                    )`),
-                    'avgStarRating',
-                ],
+                [literal(subq.statement('numReviews')), 'numReviews'],
+                [literal(subq.statement('avgStarRating')), 'avgStarRating']
+            //     [
+            //         literal(`(
+            //             SELECT COUNT(id)
+            //             FROM Reviews AS Review
+            //             WHERE "Review".spotId = "Spot".id
+            //         )`),
+            //         'numReviews',
+            //     ],
+            //     [
+            //         literal(`(
+            //             SELECT AVG(stars)
+            //             FROM Reviews AS Review
+            //             WHERE "Review".spotId = "Spot".id
+            //         )`),
+            //         'avgStarRating',
+            //     ],
             ]
         },
         include: [

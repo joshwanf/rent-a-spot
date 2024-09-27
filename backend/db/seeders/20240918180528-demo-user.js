@@ -24,8 +24,8 @@ module.exports = {
     //   username: { [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2'] }
     // }, {});
     for (const user of demoUsers) {
-      User.destroy(
-        options,
+      await User.destroy(
+        // options,
         { where: { username: user.username } }
       )
     }

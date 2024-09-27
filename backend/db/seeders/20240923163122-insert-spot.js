@@ -43,9 +43,8 @@ module.exports = {
     for (const owner of demoSpots) {
       for (const spot of owner.spots) {
         const newSpot = await Spot.destroy({
-          where: {
-            ownerId: owner.id,
-            ...spot
+          where: { ownerId: owner.ownerId,
+            // ...spot
           }
         });
       }

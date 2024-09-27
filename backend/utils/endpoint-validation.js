@@ -12,6 +12,16 @@ const isLoggedIn = (req, res, next) => {
     next();
 }
 
+const prepareSubqStatement = () => {
+    // Use prepared statements to handle SQLite vs PostgreSQL differences
+    const schema = process.env.NODE_ENV === 'production' ? process.env.SCHEMA + '"."' : '';
+    const subq = {
+        get schema() { return schema },
+        statement: function(subquery) { return this[subquery] }
+    }
+   return subq;
+}
+
 const allSpotsValidation = [
     checkSchema({
         page: {
@@ -101,6 +111,7 @@ const createReviewValidation = [
 
 module.exports = {
     isLoggedIn,
+    prepareSubqStatement,
     allSpotsValidation,
     createSpotValidation,
     createReviewValidation
