@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const models = require('../../db/models');
 const { formatBookingDates, hasNoBookingOverlap } = require('../../utils/booking-dates');
-// const { Spot } = require('../../db/models');
+
 router.get('/current', async (req, res, next) => {
     const user = req.user;
     if (user) {

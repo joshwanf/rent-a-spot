@@ -1,5 +1,4 @@
 const router = require('express').Router();
-// const { literal } = require('sequelize');
 const models = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const { isLoggedIn, prepareSubqStatement, createReviewValidation } = require('../../utils/endpoint-validation');

@@ -1,10 +1,7 @@
 const router = require('express').Router();
 const models = require('../../db/models');
-const { Op, fn, col, literal, query } = require('sequelize');
-const { formatBookingDates, hasNoBookingOverlap } = require('../../utils/booking-dates');
-const { checkSchema } = require('express-validator');
-const { restoreUser, requireAuth } = require('../../utils/auth');
-const { handleValidationErrors } = require('../../utils/validation');
+const { requireAuth } = require('../../utils/auth');
+const { Op } = models.Sequelize;
 const {
     isLoggedIn,
     prepareSubqStatement,
@@ -12,6 +9,7 @@ const {
     createSpotValidation,
     createReviewValidation
 } = require('../../utils/endpoint-validation');
+const { formatBookingDates, hasNoBookingOverlap } = require('../../utils/booking-dates');
 
 
 // Get all spots
@@ -42,21 +40,6 @@ router.get('/', allSpotsValidation, async (req, res, next) => {
         if (maxPrice) where['price'][Op.lte] = maxPrice;
     }
     // Use prepared statements to handle SQLite vs PostgreSQL differences
-    // const preparedSchema = process.env.NODE_ENV === 'production' ? process.env.SCHEMA + '"."' : '';
-    // const subq = {
-    //     avgRating: `( 
-    //         SELECT AVG("stars") FROM "${preparedSchema}Reviews" AS "Review" 
-    //         WHERE "Review"."spotId" = "Spot"."id" 
-    //     )`,
-    //     previewImage: `( 
-    //         SELECT "url" FROM "${preparedSchema}SpotImages" AS "SpotImage" 
-    //         WHERE 
-    //             "SpotImage"."spotId" = "Spot"."id" 
-    //             AND 
-    //             "SpotImage"."preview" = true 
-    //     )`,
-    //     statement: function(subquery) { return this[subquery] }
-    // };
     const subq = prepareSubqStatement();
     subq.avgRating = `( 
         SELECT AVG("stars") FROM "${subq.schema}Reviews" AS "Review" 
@@ -84,26 +67,8 @@ router.get('/', allSpotsValidation, async (req, res, next) => {
         // group: ['Spot.id', 'SpotImages.id'],
         attributes: {
             include: [
-                [literal(subq.statement('avgRating')), 'avgRating'],
-                [literal(subq.statement('previewImage')), 'previewImage']
-                // [
-                //     literal(`(
-                //         SELECT AVG("stars") FROM "Reviews" AS "Review"
-                //         WHERE
-                //             "Review"."spotId" = "Spot"."id"
-                //     )`),
-                //     'avgRating',
-                // ],
-                // [
-                //     literal(`(
-                //         SELECT ("url") FROM "SpotImages" AS "SpotImage"
-                //         WHERE
-                //             "SpotImage"."spotId" = "Spot"."id"
-                //             AND
-                //             "SpotImage"."preview" = true
-                //     )`),
-                //     'previewImage',
-                // ]
+                [models.sequelize.literal(subq.statement('avgRating')), 'avgRating'],
+                [models.sequelize.literal(subq.statement('previewImage')), 'previewImage']
             ]
         },
         ...pagination, where,
@@ -123,22 +88,19 @@ router.get('/', allSpotsValidation, async (req, res, next) => {
 // Get all Spots owned by the current user
 router.get('/current', requireAuth, isLoggedIn, async (req, res, next) => {
    // Use prepared statements to handle SQLite vs PostgreSQL differences
-   const preparedSchema = process.env.NODE_ENV === 'production' ? process.env.SCHEMA + '"."' : '';
-   const subq = {
-       avgRating: `( 
-            SELECT AVG("stars") FROM "${preparedSchema}Reviews" AS "Review"
-            WHERE
-                "Review"."spotId" = "Spot"."id"
-       )`,
-       previewImage: `( 
-            SELECT ("url") FROM "${preparedSchema}SpotImages" AS "SpotImage"
-            WHERE
-                "SpotImage"."spotId" = "Spot"."id"
-                AND
-                "SpotImage"."preview" = true
-       )`,
-       statement: function(subquery) { return this[subquery] }
-   };
+   const subq = prepareSubqStatement();
+   subq.avgRating = `( 
+        SELECT AVG("stars") FROM "${subq.schema}Reviews" AS "Review"
+        WHERE
+            "Review"."spotId" = "Spot"."id"
+    )`;
+    subq.previewImage = `( 
+        SELECT ("url") FROM "${subq.schema}SpotImages" AS "SpotImage"
+        WHERE
+            "SpotImage"."spotId" = "Spot"."id"
+            AND
+            "SpotImage"."preview" = true
+    )`;
     const spots = await models.Spot.findAll({
         where: { ownerId: req.user.id },
         // attributes: {
@@ -154,26 +116,8 @@ router.get('/current', requireAuth, isLoggedIn, async (req, res, next) => {
         // group: ['SpotImages.id'],
         attributes: {
             include: [
-                [literal(subq.statement('avgRating')), 'avgRating'],
-                [literal(subq.statement('previewImage')), 'previewImage']
-                // [
-                //     literal(`(
-                //         SELECT AVG(stars) FROM Reviews AS Review
-                //         WHERE
-                //             "Review".spotId = "Spot".id
-                //     )`),
-                //     'avgRating',
-                // ],
-                // [
-                //     literal(`(
-                //         SELECT (url) FROM SpotImages AS SpotImage
-                //         WHERE
-                //             "SpotImage".spotId = "Spot".id
-                //             AND
-                //             "SpotImage".preview = true
-                //     )`),
-                //     'previewImage',
-                // ]
+                [models.sequelize.literal(subq.statement('avgRating')), 'avgRating'],
+                [models.sequelize.literal(subq.statement('previewImage')), 'previewImage']
             ]
         }
     });
@@ -190,6 +134,9 @@ router.get('/current', requireAuth, isLoggedIn, async (req, res, next) => {
 
 // Get details of a Spot from an id
 router.get('/:spotId', async (req, res, next) => {
+    const err = new Error();
+    err.title = "Get details of a spot from an id"
+
     // Make sure id param is a valid number
     const id = Number(req.params.spotId);
     // refactor using next()
@@ -199,20 +146,6 @@ router.get('/:spotId', async (req, res, next) => {
         });
     }
     // Use prepared statements to handle SQLite vs PostgreSQL differences
-//    const preparedSchema = process.env.NODE_ENV === 'production' ? process.env.SCHEMA + '"."' : '';
-//    const subq = {
-//        numReviews: `( 
-//             SELECT COUNT("id")
-//             FROM "${preparedSchema}Reviews" AS "Review"
-//             WHERE "Review"."spotId" = "Spot"."id"
-//        )`,
-//        avgStarRating: `( 
-//             SELECT AVG("stars")
-//             FROM "${preparedSchema}Reviews" AS "Review"
-//             WHERE "Review"."spotId" = "Spot"."id"
-//        )`,
-//        statement: function(subquery) { return this[subquery] }
-//    };
    const subq = prepareSubqStatement();
    subq.numReviews = `( 
         SELECT COUNT("id")
@@ -236,45 +169,20 @@ router.get('/:spotId', async (req, res, next) => {
         // Need to use sub-query calls in raw SQL to get an accurate count
         attributes: {
             include: [
-                [literal(subq.statement('numReviews')), 'numReviews'],
-                [literal(subq.statement('avgStarRating')), 'avgStarRating']
-            //     [
-            //         literal(`(
-            //             SELECT COUNT(id)
-            //             FROM Reviews AS Review
-            //             WHERE "Review".spotId = "Spot".id
-            //         )`),
-            //         'numReviews',
-            //     ],
-            //     [
-            //         literal(`(
-            //             SELECT AVG(stars)
-            //             FROM Reviews AS Review
-            //             WHERE "Review".spotId = "Spot".id
-            //         )`),
-            //         'avgStarRating',
-            //     ],
+                [models.sequelize.literal(subq.statement('numReviews')), 'numReviews'],
+                [models.sequelize.literal(subq.statement('avgStarRating')), 'avgStarRating']
             ]
         },
         include: [
             { model: models.Review, attributes: [] },
-            {
-                model: models.SpotImage,
-                attributes: ['id', 'url', 'preview'],
-                // required: false,
-            },
-            {
-                model: models.User,
-                as: 'Owner',
-                attributes: ['id', 'firstName', 'lastName'],
-                // required: false
-            },
+            { model: models.SpotImage, attributes: ['id', 'url', 'preview'], },
+            { model: models.User, as: 'Owner', attributes: ['id', 'firstName', 'lastName'], },
         ],
     });
     if (!spot) {
-        return res.status(404).json({
-            message: "Spot couldn't be found"
-        });
+        err.status = 404;
+        err.message = "Spot couldn't be found";
+        next(err);
     }
     const spotJson = spot.toJSON();
     spotJson.avgStarRating = spotJson.avgStarRating || 0;
@@ -283,12 +191,10 @@ router.get('/:spotId', async (req, res, next) => {
 
 // Get all bookings for a spot based on the spot's id
 router.get('/:spotId/bookings', async (req, res, next) => {
-    const { ownerId } = await models.Spot.findByPk(
-        req.params.spotId,
-        {
-            attributes: ['ownerId']
-        }
-    );
+    const err = new Error();
+    err.title = "Get all bookings for a spot based on the spot's id";
+
+    const { ownerId } = await models.Spot.findByPk( req.params.spotId, { attributes: ['ownerId'] } );
     const bookingProps = ['spotId', 'startDate', 'endDate'];
     const userProps = [];
     if (req.user.id === ownerId) {
@@ -297,44 +203,42 @@ router.get('/:spotId/bookings', async (req, res, next) => {
     }
     const bookings = await models.Booking.findAll({
         where: { spotId: req.params.spotId },
-        include: [
-            { model: models.User, attributes: userProps },
-        ],
+        include: [ { model: models.User, attributes: userProps } ],
         attributes: bookingProps,
     });
     if (!bookings) {
-        return res.status(404).json({
-            message: "Spot couldn't be found"
-        })
+        err.status = 404;
+        err.message = "Spot couldn't be found";
+        next(err);
     }
 
     res.status(200).json(bookings);
 });
 
 // Create a booking from a spot based on the spot's id
-router.post('/:spotId/bookings', async (req, res, next) => {
-    if (req.user) {
-        const { startDate:start, endDate:end } = req.body;
-        const { startDate, endDate } = formatBookingDates({ start, end });
-        // req.body.startDate = new Date(req.body.startDate + 'T15:00:00');
-        // req.body.endDate = new Date(req.body.endDate + 'T11:00:00');
-        const pastBookings = await models.Booking.findAll({
-            where: { spotId: req.params.spotId }
+router.post('/:spotId/bookings', isLoggedIn, async (req, res, next) => {
+    const err = new Error();
+    err.title = "Create a booking from a spot based on the spot's id";
+
+    const { startDate:start, endDate:end } = req.body;
+    const { startDate, endDate } = formatBookingDates({ start, end });
+    
+    const pastBookings = await models.Booking.findAll({
+        where: { spotId: req.params.spotId }
+    });
+    const isValidBookingDate = startDate < endDate;
+    const isAllowedToBook = hasNoBookingOverlap(pastBookings, startDate, endDate);
+    if (!isValidBookingDate || !isAllowedToBook) {
+        return res.status(404).json({
+            message: "Incompatible booking days"
         });
-        const isValidBookingDate = startDate < endDate;
-        const isAllowedToBook = hasNoBookingOverlap(pastBookings, startDate, endDate);
-        if (!isValidBookingDate || !isAllowedToBook) {
-            return res.status(404).json({
-                message: "Incompatile booking days"
-            });
-        }
-        const newBooking = await models.Booking.create({
-            spotId: Number(req.params.spotId),
-            userId: req.user.id,
-            startDate, endDate
-        })
-        return res.status(200).json(newBooking);
     }
+    const newBooking = await models.Booking.create({
+        spotId: Number(req.params.spotId),
+        userId: req.user.id,
+        startDate, endDate
+    })
+    return res.status(200).json(newBooking);
 });
 
 // Get all reviews by a spot's id
@@ -351,64 +255,29 @@ router.get('/:spotId/reviews', requireAuth, async (req, res, next) => {
     const reviews = await models.Review.findAll({
         where: { spotId: req.params.spotId },
         include: [
-            {
-                model: models.User,
-                attributes: ['id', 'firstName', 'lastName']
-            },
-            {
-                model: models.ReviewImage,
-                attributes: ['id', 'url']
-            }
+            { model: models.User, attributes: ['id', 'firstName', 'lastName'] },
+            { model: models.ReviewImage, attributes: ['id', 'url'] }
         ]
     });
     if (!reviews) {
-        // refactor using next
-        return res.status(404).json({
-            message: "Couldn't find spot"
-        });
+        err.status = 404;
+        err.message = "Couldn't find spot";
+        next(err);
     }
-    res.status(200).json({
-        Reviews: reviews
-    });
+    res.status(200).json({ Reviews: reviews });
 })
 
 // Create a spot
-router.post('/', requireAuth, createSpotValidation, async (req, res, next) => {
-    // if (req.user) {
-    const spot = await models.Spot.create({
-        ownerId: req.user.id,
-        ...req.body
-    });
-        // handle validation errors
-        // if (!spot) {
-        //     return res.status(400).json({
-        //         message: 'Bad Request',
-        //         errors: {
-        //             address: 'Street address is required',
-        //             city: 'City is required',
-        //             state: 'State is required',
-        //             country: 'Country is required',
-        //             lat: 'Latitude must be within -90 and 90',
-        //             lng: 'Longitude must be within -180 and 180',
-        //             name: 'Name must be less than 50 characters',
-        //             description: 'Description is required',
-        //             price: 'Price per day must be a positive number'
-        //         }
-        //     });
-        // }
+router.post('/', requireAuth, isLoggedIn, createSpotValidation, async (req, res, next) => {
+    const spot = await models.Spot.create({ ownerId: req.user.id, ...req.body });
     res.status(201).json(spot);
-    // }
 });
 
 // Create a review for a spot based on the spot's id
 router.post('/:spotId/reviews', requireAuth, isLoggedIn, createReviewValidation, async (req, res, next) => {
     const err = new Error();
     err.title = "Couldn't get reviews for a spot!";
-    // if (!req.user) {
-    //     err.message = "Forbidden";
-    //     err.status = 201;
-    //     next(err);
-    // }
+
     const spot = await models.Spot.findByPk(req.params.spotId);
     if (!spot) {
         err.message = "Spot couldn't be found";
@@ -424,45 +293,32 @@ router.post('/:spotId/reviews', requireAuth, isLoggedIn, createReviewValidation,
         err.status = 500;
         next(err);
     }
-    // refactor to use spot.addReview() ?
-    const review = await models.Review.create({
-        userId: req.user.id,
-        spotId: Number(req.params.spotId),
-        ...req.body
-    });
-
+    const review = await spot.createReview({ userId: req.user.id, ...req.body });
     res.status(201).json(review);
 });
 
 // Add an image to a spot based on the spot's id
-// /api/spots/:spotId/images
 router.post('/:spotId/images', requireAuth, isLoggedIn, async (req, res, next) => {
     const err = new Error();
     err.title = "Couldn't add an image to a spot";
-    // if (!req.user) {
-    //     err.message = "Forbidden";
-    //     err.status = 403;
-    //     next(err);
-    // }
+
     const spot = await models.Spot.findByPk(req.params.spotId);
     if (!spot) {
         err.message = "Spot couldn't be found";
         err.status = 404;
         next(err);
     } else if (req.user.id !== spot.ownerId) {
-        err.message = "The user is not the spot's owner";
-        err.status = 403;
-        next(err);
+        req.throwErr = true;
+        return isLoggedIn(req, res, next);
     }
     if (req.body.preview) {
-        const where = { spotId: req.params.spotId }
-        await models.SpotImage.update( { preview: false }, { where } );
+        await models.SpotImage.update( { preview: false }, { where: { spotId: req.params.spotId } } );
     }
     const spotImage = await models.SpotImage.create( { spotId: req.params.spotId, ...req.body } );
     if (!spotImage) {
-        return res.status(404).json({
-            message: "Image couldn't be created"
-        });
+        err.status = 404;
+        err.message = "Image couldn't be created";
+        next(err);
     }
     res.status(201).json({ id: spotImage.id, url: spotImage.url, preview: spotImage.preview });
 });
@@ -471,31 +327,17 @@ router.post('/:spotId/images', requireAuth, isLoggedIn, async (req, res, next) =
 router.put('/:spotId', requireAuth, isLoggedIn, createSpotValidation, async (req, res, next) => {
     const err = new Error();
     err.title = "Couldn't edit a spot!";
-    // if (!req.user) {
-    //     err.status = 403;
-    //     err.message = "Forbidden";
-    //     next(err);
-    // }
-    const {
-        address, city, state,
-        country, lat, lng,
-        name, description, price
-    } = req.body;
+    const { address, city, state, country, lat, lng, name, description, price } = req.body;
     const spotInstance = await models.Spot.findByPk(req.params.spotId);
     if (!spotInstance) {
         err.status = 404;
         err.message = "Spot couldn't be found";
         next(err);
     } else if (req.user.id !== spotInstance.ownerId) {
-        err.status = 403;
-        err.message = "Forbidden";
-        next(err);
+        req.throwErr = true;
+        return isLoggedIn(req, res, next);
     }
-    for (const [k, v] of Object.entries({ 
-        address, city, state,
-        country, lat, lng,
-        name, description, price
-    })) {
+    for (const [k, v] of Object.entries({ address, city, state, country, lat, lng, name, description, price })) {
         if (v) {
             spotInstance[k] = v;
         }
@@ -503,20 +345,9 @@ router.put('/:spotId', requireAuth, isLoggedIn, createSpotValidation, async (req
     try {
         await spotInstance.save();
     } catch (e) {
-        return res.status(400).json({
-            message: 'Bad Request',
-            errors: {
-                address: 'Street address is required',
-                city: 'City is required',
-                state: 'State is required',
-                country: 'Country is required',
-                lat: 'Latitude must be within -90 and 90',
-                lng: 'Longitude must be within -180 and 180',
-                name: 'Name must be less than 50 characters',
-                description: 'Description is required',
-                price: 'Price per day must be a positive number'
-            }
-        });
+        err.status = 400;
+        err.message = e.message;
+        return next(err);
     }
     res.status(200).json(spotInstance);
 });
@@ -525,21 +356,15 @@ router.put('/:spotId', requireAuth, isLoggedIn, createSpotValidation, async (req
 router.delete('/:spotId', requireAuth, isLoggedIn, async (req, res, next) => {
     const err = new Error();
     err.title = "Couldn't delete a spot!";
-    // if (!req.user) {
-    //     err.status = 403;
-    //     err.message = "Forbidden";
-    //     next(err);
-    // }
+
     const spot = await models.Spot.findByPk(req.params.spotId);
-    // const spot = await models.Spot.destroy({ where: { id: req.params.spotId } });
     if (!spot) {
         err.status = 404;
         err.message = "Spot couldn't be found";
         next(err);
     } else if (req.user.id !== spot.ownerId) {
-        err.status = 403;
-        err.message = "Forbidden";
-        next(err);
+        req.throwErr = true;
+        return isLoggedIn(req, res, next);
     }
     await spot.destroy();
     res.status(200).json({ message: `Successfully deleted` });
