@@ -1,0 +1,53 @@
+.profile-button {
+  border: 1px solid red;
+  background-color: lightsteelblue;
+  display: grid;
+  grid-template-columns: 25% 30%;
+  align-items: start;
+  padding: 1em 0em;
+}
+
+.hidden {
+  display: none;
+}
+.profile-icon {
+  border: 1px solid red;
+  /* width: 25%; */
+  text-align: center;
+}
+.profile-icon:hover {
+  cursor: pointer;
+}
+.profile-icon * {
+  max-width: 100%;
+  max-height: 100%;
+  fill: red;
+  size: 1em;
+}
+
+.profile-button ul {
+  /* border: 1px solid red; */
+  border-radius: 10px;
+  background-color: white;
+  margin: 0;
+  padding: 1em;
+  list-style: none;
+  /* width: 5em; */
+}
+
+.profile-button li {
+  padding: 0.2em 0em;
+}
+
+.logout {
+  width: 100%;
+  border-radius: 10px;
+  padding: 1em;
+  border: none;
+  background-color: lightgray;
+}
+
+.logout:hover {
+  background-color: lightskyblue;
+  cursor: pointer;
+}

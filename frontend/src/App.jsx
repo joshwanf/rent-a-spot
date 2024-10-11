@@ -1,12 +1,8 @@
 import { useState, useEffect } from "react";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Outlet,
-  NavLink,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
+import { Navigation } from "./components/Navigation";
 import { LoginFormPage } from "./components/LoginFormPage";
 import { SignupFormPage } from "./components/SignupFormPage";
 
@@ -14,43 +10,36 @@ import { restoreUser } from "./store";
 
 const Layout = () => {
   const dispatch = useDispatch();
-  const [isUserLoaded, setIsUserLoaded] = useState(false);
+  const [isLoadedUser, setIsLoadedUser] = useState(false);
 
   useEffect(() => {
     (() => {
       dispatch(restoreUser()).then((r) => {
-        setIsUserLoaded(Boolean(r.user));
+        setIsLoadedUser(true);
       });
     })();
   }, [dispatch]);
-
-  // if (!isUserLoaded) {
-  //   return <h1>Must be logged in!</h1>;
-  // }
 
   return (
     <>
       <h1>Hello from App</h1>
       <nav>
-        <NavLink to="/login">Login</NavLink>
-        <NavLink to="/signup">Sign up</NavLink>
+        <Navigation />
       </nav>
-      {isUserLoaded && <Outlet />}
+      {isLoadedUser && <Outlet />}
     </>
   );
 };
 
 const router = createBrowserRouter([
   {
-    path: "/",
     element: <Layout />,
-    children: [],
+    children: [
+      { path: "/", element: <h1>hello</h1> },
+      { path: "login", element: <LoginFormPage /> },
+      { path: "signup", element: <SignupFormPage /> },
+    ],
   },
-  {
-    path: "/login",
-    element: <LoginFormPage />,
-  },
-  { path: "/signup", element: <SignupFormPage /> },
   { path: "*", element: <h1>Uh oh!</h1> },
 ]);
 
