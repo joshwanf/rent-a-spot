@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Error } from "./Error";
 import { signupUser } from "../store";
 
+import "../css/SignupFormPage.css";
+
 export const SignupFormPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
