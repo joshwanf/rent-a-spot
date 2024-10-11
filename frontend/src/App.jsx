@@ -8,6 +8,7 @@ import {
 import { useDispatch } from "react-redux";
 
 import { LoginFormPage } from "./components/LoginFormPage";
+import { SignupFormPage } from "./components/SignupFormPage";
 
 import { restoreUser } from "./store";
 
@@ -32,6 +33,7 @@ const Layout = () => {
       <h1>Hello from App</h1>
       <nav>
         <NavLink to="/login">Login</NavLink>
+        <NavLink to="/signup">Sign up</NavLink>
       </nav>
       {isUserLoaded && <Outlet />}
     </>
@@ -48,6 +50,7 @@ const router = createBrowserRouter([
     path: "/login",
     element: <LoginFormPage />,
   },
+  { path: "/signup", element: <SignupFormPage /> },
   { path: "*", element: <h1>Uh oh!</h1> },
 ]);
 
