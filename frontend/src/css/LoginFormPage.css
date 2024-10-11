@@ -1,0 +1,17 @@
+.login-form form {
+  background-color: lightgray;
+  width: 100%;
+}
+.login-form-item {
+  /* display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  text-align: left; */
+  display: inline-grid;
+  grid-template-columns: 50% 50%;
+  column-gap: 50px;
+}
+
+.login-form-item * {
+  text-align: left;
+}
