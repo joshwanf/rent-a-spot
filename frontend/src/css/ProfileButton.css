@@ -1,9 +1,9 @@
 .profile-button {
   border: 1px solid red;
   background-color: lightsteelblue;
-  display: grid;
-  grid-template-columns: 25% 30%;
-  align-items: start;
+  /* display: grid; */
+  /* grid-template-columns: 10%; */
+  /* align-items: start; */
   padding: 1em 0em;
 }
 
@@ -12,7 +12,10 @@
 }
 .profile-icon {
   border: 1px solid red;
-  /* width: 25%; */
+  width: 10%;
+  /* max-height: 10%; */
+  padding: 0;
+  margin: 0;
   text-align: center;
 }
 .profile-icon:hover {
@@ -20,7 +23,6 @@
 }
 .profile-icon * {
   max-width: 100%;
-  max-height: 100%;
   fill: red;
   size: 1em;
 }
