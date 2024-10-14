@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === "production") {
     "express.static dirname:",
     path.resolve(__dirname, "../../frontend/dist")
   );
-  router.use(express.static(path.resolve(__dirname, "../../frontend/dist")));
+  router.use(express.static(path.resolve("../frontend/dist")));
 
   // Serve the frontend's index.html file at all other routes NOT starting with /api
   router.get(/^(?!\/?api).*/, (req, res) => {
