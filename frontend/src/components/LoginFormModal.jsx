@@ -1,28 +1,20 @@
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import { loginUser } from "../store";
+import { useModal } from "../context/Modal";
 import { Error } from "./Error";
 
-import "../css/LoginFormPage.css";
+import "../css/LoginFormModal.css";
 
 /** @typedef {import('../store').SessionState} SessionState */
 
-export const LoginFormPage = () => {
+export const LoginFormModal = () => {
   const dispatch = useDispatch();
-
-  /** @type {SessionState} */
-  const loggedInUser = useSelector((state) => state.session);
-
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
-
   const [errors, setErrors] = useState({});
-
-  if (loggedInUser.user !== null) {
-    return <Navigate to="/" replace={true} />;
-  }
+  const { closeModal } = useModal();
 
   const handleChange = (setState) => (e) => {
     setState(e.target.value);
@@ -34,6 +26,8 @@ export const LoginFormPage = () => {
     const response = await dispatch(loginUser({ credential, password }));
     if (response?.errors) {
       setErrors(response.errors);
+    } else {
+      closeModal();
     }
   };
 

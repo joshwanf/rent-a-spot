@@ -8,14 +8,6 @@ import "../../css/ProfileButton.css";
 
 /** @typedef {import('../../store').SessionState} SessionState */
 
-const Icon = () => {
-  return (
-    <div style={{ color: "blue", fontSize: "100px" }}>
-      <VscAccount />
-    </div>
-  );
-};
-
 /**
  * @param {SessionState} Param0.user
  */

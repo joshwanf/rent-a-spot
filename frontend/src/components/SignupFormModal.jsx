@@ -1,15 +1,14 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
+import { useModal } from "../context/Modal";
 import { Error } from "./Error";
 import { signupUser } from "../store";
 
-import "../css/SignupFormPage.css";
+import "../css/SignupFormModal.css";
 
-export const SignupFormPage = () => {
+export const SignupFormModal = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
@@ -19,6 +18,7 @@ export const SignupFormPage = () => {
     email: "",
   });
   const [errors, setErrors] = useState({});
+  const { closeModal } = useModal();
 
   const handleChange = (field) => (e) => {
     setUser({ ...user, [field]: e.target.value });
@@ -27,20 +27,24 @@ export const SignupFormPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
-
-    if (user.password !== user.confirmPassword) {
+    if (
+      !user.password ||
+      !user.confirmPassword ||
+      user.password !== user.confirmPassword
+    ) {
       return setErrors({ confirmPassword: "Passwords must match!" });
     }
 
     const response = await dispatch(signupUser(user));
     if (response?.errors) {
-      setErrors(response.errors);
+      return setErrors(response.errors);
     } else if (response?.ok) {
-      navigate("/");
+      return response;
+      closeModal();
     }
   };
   return (
-    <div>
+    <div className="signup-form">
       <Error errors={errors} />
       <form onSubmit={handleSubmit}>
         <div>

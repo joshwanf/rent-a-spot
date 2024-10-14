@@ -2,6 +2,9 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+import OpenModalButton from "../OpenModalButton";
+import { LoginFormModal } from "../LoginFormModal";
+import { SignupFormModal } from "../SignupFormModal";
 import { ProfileButton } from "./ProfileButton";
 
 export const Navigation = () => {
@@ -15,12 +18,18 @@ export const Navigation = () => {
         </li>
         {!session.user && (
           <li>
-            <NavLink to="/login">Log in</NavLink>
+            <OpenModalButton
+              buttonText="Log In"
+              modalComponent={<LoginFormModal />}
+            />
           </li>
         )}
         {!session.user && (
           <li>
-            <NavLink to="/signup">Sign up</NavLink>
+            <OpenModalButton
+              buttonText="Sign Up"
+              modalComponent={<SignupFormModal />}
+            />
           </li>
         )}
       </ul>

@@ -3,8 +3,6 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { Navigation } from "./components/Navigation";
-import { LoginFormPage } from "./components/LoginFormPage";
-import { SignupFormPage } from "./components/SignupFormPage";
 
 import { restoreUser } from "./store";
 
@@ -34,11 +32,7 @@ const Layout = () => {
 const router = createBrowserRouter([
   {
     element: <Layout />,
-    children: [
-      { path: "/", element: <h1>hello</h1> },
-      { path: "login", element: <LoginFormPage /> },
-      { path: "signup", element: <SignupFormPage /> },
-    ],
+    children: [{ path: "/", element: <h1>hello</h1> }],
   },
   { path: "*", element: <h1>Uh oh!</h1> },
 ]);
