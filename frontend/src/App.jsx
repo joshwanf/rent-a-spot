@@ -12,7 +12,7 @@ const Layout = () => {
 
   useEffect(() => {
     (() => {
-      dispatch(restoreUser()).then((r) => {
+      dispatch(restoreUser()).then(() => {
         setIsLoadedUser(true);
       });
     })();

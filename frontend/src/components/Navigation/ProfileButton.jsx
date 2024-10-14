@@ -29,7 +29,7 @@ export const ProfileButton = ({ user }) => {
 
     const closeMenu = (e) => {
       if (!profileRef.current.contains(e.target)) {
-        console.log("window clicked");
+        // console.log("window clicked");
         setShowMenu(false);
       }
     };

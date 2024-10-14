@@ -39,8 +39,8 @@ export const SignupFormModal = () => {
     if (response?.errors) {
       return setErrors(response.errors);
     } else if (response?.ok) {
-      return response;
       closeModal();
+      return response;
     }
   };
   return (
