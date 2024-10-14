@@ -9,9 +9,9 @@ router.use("/api", apiRouter);
 // Serve React build files in production
 if (process.env.NODE_ENV === "production") {
   const path = require("path");
-  console.log(__dirname);
   // Serve the frontend's index.html file at the root route
   router.get("/", (req, res) => {
+    console.log("/ route", __dirname);
     res.cookie("XSRF-TOKEN", req.csrfToken());
     res.sendFile(
       path.resolve(__dirname, "../../frontend", "dist", "index.html")
