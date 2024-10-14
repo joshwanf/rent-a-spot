@@ -11,17 +11,29 @@ if (process.env.NODE_ENV === "production") {
   const path = require("path");
   // Serve the frontend's index.html file at the root route
   router.get("/", (req, res) => {
-    console.log("/ route", __dirname);
+    console.log("__dirname:", __dirname);
+    console.log(
+      "sendFile:",
+      path.resolve(__dirname, "../../frontend", "dist", "index.html")
+    );
     res.cookie("XSRF-TOKEN", req.csrfToken());
     res.sendFile(
       path.resolve(__dirname, "../../frontend", "dist", "index.html")
     );
   });
   // Serve the static assets in the frontend's build folder
+  console.log(
+    "express.static:",
+    path.resolve("../../frontend", "dist", "index.html")
+  );
   router.use(express.static(path.resolve("../../frontend/dist")));
 
   // Serve the frontend's index.html file at all other routes NOT starting with /api
   router.get(/^(?!\/?api).*/, (req, res) => {
+    console.log(
+      "not API route:",
+      path.resolve(__dirname, "../../frontend", "dist", "index.html")
+    );
     res.cookie("XSRF-TOKEN", req.csrfToken());
     res.sendFile(
       path.resolve(__dirname, "../../frontend", "dist", "index.html")
