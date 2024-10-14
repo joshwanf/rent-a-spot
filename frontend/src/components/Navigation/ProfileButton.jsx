@@ -3,6 +3,9 @@ import { useDispatch } from "react-redux";
 import { VscAccount } from "react-icons/vsc";
 
 import { logoutUser } from "../../store";
+import OpenModalMenuItem from "./OpenModalMenuItem";
+import { LoginFormModal } from "../LoginFormModal";
+import { SignupFormModal } from "../SignupFormModal";
 
 import "../../css/ProfileButton.css";
 
@@ -24,20 +27,23 @@ export const ProfileButton = ({ user }) => {
   useEffect(() => {
     if (!showMenu) return;
 
-    const closeProfile = (e) => {
-      if (profileRef.current && !profileRef.current.contains(e.target)) {
+    const closeMenu = (e) => {
+      if (!profileRef.current.contains(e.target)) {
         console.log("window clicked");
         setShowMenu(false);
       }
     };
 
-    document.addEventListener("click", closeProfile);
-    return () => document.removeEventListener("click", closeProfile);
+    document.addEventListener("click", closeMenu);
+    return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
+
+  const closeMenu = () => setShowMenu(false);
 
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logoutUser());
+    closeMenu();
   };
   return (
     <div className="profile-button">
@@ -45,16 +51,31 @@ export const ProfileButton = ({ user }) => {
         <VscAccount size="5em" />
       </div>
       <div ref={profileRef} className={showMenu ? "" : "hidden"}>
-        <ul>
-          <li>{user.username}</li>
-          <li>{`${user.firstName} ${user.lastName}`}</li>
-          <li>{user.email}</li>
-          <li>
-            <button onClick={handleLogout} className="logout">
-              Log out
-            </button>
-          </li>
-        </ul>
+        {!user ? (
+          <ul>
+            <OpenModalMenuItem
+              itemText="Log In"
+              modalComponent={<LoginFormModal />}
+              onItemClick={closeMenu}
+            />
+            <OpenModalMenuItem
+              itemText="Sign Up"
+              modalComponent={<SignupFormModal />}
+              onItemClick={{ closeMenu }}
+            />
+          </ul>
+        ) : (
+          <ul>
+            <li>{user.username}</li>
+            <li>{`${user.firstName} ${user.lastName}`}</li>
+            <li>{user.email}</li>
+            <li>
+              <button onClick={handleLogout} className="logout">
+                Log out
+              </button>
+            </li>
+          </ul>
+        )}
       </div>
     </div>
   );

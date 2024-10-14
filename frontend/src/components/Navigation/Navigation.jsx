@@ -16,24 +16,12 @@ export const Navigation = () => {
         <li>
           <NavLink to="/">Home</NavLink>
         </li>
-        {!session.user && (
+        {session && (
           <li>
-            <OpenModalButton
-              buttonText="Log In"
-              modalComponent={<LoginFormModal />}
-            />
-          </li>
-        )}
-        {!session.user && (
-          <li>
-            <OpenModalButton
-              buttonText="Sign Up"
-              modalComponent={<SignupFormModal />}
-            />
+            <ProfileButton user={session.user} />
           </li>
         )}
       </ul>
-      {session.user && <ProfileButton user={session.user} />}
     </div>
   );
 };
