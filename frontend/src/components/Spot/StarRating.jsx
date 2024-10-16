@@ -7,7 +7,7 @@ import { IoIosStar } from "react-icons/io";
 export const StarRating = ({ rating }) => {
   return (
     <div className="spot-rating">
-      <IoIosStar /> {rating ? rating : "New"}
+      <IoIosStar /> {rating ? rating.toFixed(1) : "New"}
     </div>
   );
 };
