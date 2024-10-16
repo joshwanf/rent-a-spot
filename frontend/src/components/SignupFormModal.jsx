@@ -20,6 +20,10 @@ export const SignupFormModal = () => {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
+  const isDisabledSubmit =
+    Object.values(user).some((value) => value.length === 0) ||
+    user.username.length < 4 ||
+    user.password.length < 6;
   const handleChange = (field) => (e) => {
     setUser({ ...user, [field]: e.target.value });
   };
@@ -49,11 +53,11 @@ export const SignupFormModal = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <label className="login-form-item">
-            <div>First name</div>
+            <div>First Name</div>
             <input
               onChange={handleChange("firstName")}
               defaultValue={user.firstName}
-              placeholder="First name"
+              placeholder="First Name"
               name="firstName"
               type="text"
             />
@@ -61,11 +65,11 @@ export const SignupFormModal = () => {
         </div>
         <div>
           <label className="login-form-item">
-            <div>Last name</div>
+            <div>Last Name</div>
             <input
               onChange={handleChange("lastName")}
               defaultValue={user.lastName}
-              placeholder="Last name"
+              placeholder="Last Name"
               name="lastName"
               type="text"
             />
@@ -109,17 +113,17 @@ export const SignupFormModal = () => {
         </div>
         <div>
           <label className="login-form-item">
-            <div>Confirm password</div>
+            <div>Confirm Password</div>
             <input
               onChange={handleChange("confirmPassword")}
               defaultValue={user.confirmPassword}
-              placeholder="Confirm password"
+              placeholder="Confirm Password"
               name="confirmPassword"
               type="text"
             />
           </label>
         </div>
-        <button>Submit</button>
+        <button disabled={isDisabledSubmit}>Submit</button>
       </form>
     </div>
   );
