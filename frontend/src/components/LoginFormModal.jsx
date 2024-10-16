@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-import { loginUser, logInDemoUser, useAppSelector } from "../store";
+import { loginUser, logInDemoUser } from "../store";
 import { useModal } from "../context/Modal";
 import { Error } from "./Error";
 
@@ -19,7 +19,6 @@ export const LoginFormModal = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
-  const user = useAppSelector((state) => state.session);
 
   const isDisabledSubmit = credential.length < 4 || password.length < 6;
 

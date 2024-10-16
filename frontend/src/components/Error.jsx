@@ -1,5 +1,11 @@
 import "../css/Error.css";
 
+/**
+ *
+ * @param {object} props
+ * @param {object} props.errors
+ * @returns
+ */
 export const Error = (props) => {
   const errors = Object.entries(props.errors);
   return (

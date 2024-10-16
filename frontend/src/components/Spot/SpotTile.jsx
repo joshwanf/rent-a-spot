@@ -12,6 +12,12 @@ import { Price } from "./Price";
  */
 export const SpotTile = ({ spot }) => {
   const navigate = useNavigate();
+
+  /**
+   *
+   * @param {number} spotId
+   * @returns
+   */
   const handleClick = (spotId) => () => {
     navigate(`/spots/${spotId}`);
   };

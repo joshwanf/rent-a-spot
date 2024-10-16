@@ -1,13 +1,13 @@
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { FaAirbnb } from "react-icons/fa6";
 
+import { useAppSelector } from "../../store";
 import { ProfileButton } from "./ProfileButton";
 
 import "../../css/Navigation.css";
 
 export const Navigation = () => {
-  const session = useSelector((state) => state.session);
+  const session = useAppSelector((state) => state.session);
 
   return (
     <nav className="navbar">

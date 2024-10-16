@@ -1,6 +1,6 @@
 /**
  * @param {object} props
- * @param {App.ReviewAPI} props.review
+ * @param {App.ReviewsBySpotIdAPI['Reviews'][*]} props.review
  */
 export const ReviewItem = ({ review }) => {
   // if (!review) return <div>No Reviews!</div>;

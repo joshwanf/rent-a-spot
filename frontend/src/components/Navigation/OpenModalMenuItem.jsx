@@ -2,6 +2,15 @@ import { useModal } from "../../context/Modal";
 
 import "../../css/openModalMenuItem.css";
 
+/**
+ *
+ * @param {object} props
+ * @param {any} [props.modalComponent]
+ * @param {string} [props.itemText]
+ * @param {() => void} [props.onItemClick]
+ * @param {() => void} [props.onModalClose]
+ * @returns
+ */
 function OpenModalMenuItem({
   modalComponent, // component to render inside the modal
   itemText, // text of the menu item that opens the modal

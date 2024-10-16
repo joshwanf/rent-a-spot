@@ -14,5 +14,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@types/react-redux": "^7.1.34"
+  }
 }

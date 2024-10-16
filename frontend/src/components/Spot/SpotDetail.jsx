@@ -1,42 +1,41 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 
 import { getOneSpot } from "../../store";
 import { getReviewsBySpot } from "../../store";
-import { useAppSelector } from "../../store";
+import { useAppSelector, useAppDispatch } from "../../store";
 
 import { Price } from "./Price";
-import { StarRating } from "./StarRating";
 import { ReviewSummary } from "./ReviewPreview";
 import { SpotDetailImages } from "./SpotDetailImages";
 import { Review } from "./Review";
-import { ReviewItem } from "./ReviewItem";
 
 import "../../css/SpotDetail.css";
 
 export const SpotDetail = () => {
   const { spotId } = useParams();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const thisUser = useAppSelector((state) => state.session.user);
   const spot = useAppSelector((state) => state.spot.CurrentSpot);
 
-  /** @type {App.SpotImage} */
-  const spotImages = spot.SpotImages;
+  // /** @type {App.SpotImage} */
+  // const spotImages = spot.SpotImages;
 
-  /** @type {App.ReviewsBySpotIdAPI['Reviews']} */
-  const spotReviews = useSelector((state) =>
+  // /** @type {App.ReviewsBySpotIdAPI['Reviews']} */
+  // const spotReviews = useAppSelector((state) =>
+  //   Object.values(state.review.spotReviews)
+  // ).filter((review) => review.spotId === Number(spotId));
+
+  // const sortedReviews = spotReviews.sort(
+  //   (prev, next) => prev.createdAt < next.createdAt
+  // );
+
+  const thisReviews = useAppSelector((state) =>
     Object.values(state.review.spotReviews)
-  ).filter((review) => review.spotId === Number(spotId));
-
-  const thisReviews = useAppSelector((state) => state.review.spotReviews);
-
-  const sortedReviews = spotReviews.sort(
-    (prev, next) => prev.createdAt < next.createdAt
   );
 
-  // console.log("spotReviews", { spotReviews });
+  console.log("thisReviews", { thisReviews });
 
   useEffect(() => {
     console.log("in use effect");
@@ -46,6 +45,11 @@ export const SpotDetail = () => {
     })();
   }, [dispatch, spotId]);
 
+  /**
+   *
+   * @param {React.MouseEvent<HTMLElement>} e
+   * @returns {void}
+   */
   const handleReserveBooking = (e) => {
     e.preventDefault();
     alert("Feature coming soon");
@@ -89,7 +93,7 @@ export const SpotDetail = () => {
           </div>
           {
             <Review
-              reviews={Object.values(thisReviews)}
+              reviews={thisReviews}
               user={thisUser}
               ownerId={spot.Owner.id}
             />

@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { VscAccount } from "react-icons/vsc";
 import { RxHamburgerMenu } from "react-icons/rx";
 
-import { logoutUser } from "../../store";
+import { useAppDispatch, logoutUser } from "../../store";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import { LoginFormModal } from "../LoginFormModal";
 import { SignupFormModal } from "../SignupFormModal";
@@ -15,11 +14,12 @@ import "../../css/ProfileButton.css";
  * @param {App.RootState['session']} props.user
  */
 export const ProfileButton = ({ user }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
-  const profileRef = useRef();
-  //   const user = useSelector((state) => state.session);
+
+  /** @type {React.MutableRefObject<HTMLUListElement | null>} */
+  const profileRef = useRef(null);
 
   const handleToggleProfile = (e) => {
     e.stopPropagation();
@@ -42,8 +42,8 @@ export const ProfileButton = ({ user }) => {
 
   const closeMenu = () => setShowMenu(false);
 
-  const handleLogout = (e) => {
-    e.preventDefault();
+  const handleLogout = () => {
+    // e.preventDefault();
     dispatch(logoutUser());
     closeMenu();
     navigate("/");

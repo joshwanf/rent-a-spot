@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 
-import { getAllSpots } from "./store";
+import { useAppDispatch, getAllSpots } from "./store";
 
 import { Navigation } from "./components/Navigation";
 import { restoreUser } from "./store";
@@ -10,7 +9,7 @@ import { AllSpots } from "./components/Spot/AllSpots";
 import { SpotDetail } from "./components/Spot/SpotDetail";
 
 const Layout = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [isLoadedUser, setIsLoadedUser] = useState(false);
   const [isLoadedSpots, setIsLoadedSpots] = useState(false);
   // const spots = useSelector((state) => state.spots.Spots);

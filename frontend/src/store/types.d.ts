@@ -70,7 +70,14 @@ declare namespace App {
       >;
     })[];
   }
-  interface ReviewsBySpotIdAPI extends ReviewsByCurrentUserAPI {}
+  interface ReviewsBySpotIdAPI {
+    Reviews: (Review & {
+      User: Omit<UserAPI["user"], "username" | "email">;
+      ReviewImages: Array<
+        Omit<ReviewImage, "createdAt" | "updatedAt" | "reviewId">
+      >;
+    })[];
+  }
 
   // Normalized data in store
   interface SpotsByIdNorm {}
@@ -83,7 +90,7 @@ declare namespace App {
 
   // Store data
   interface RootState {
-    session: { user: User | null };
+    session: { user: App.User | null };
     spot: {
       page: number;
       size: number;
@@ -91,7 +98,9 @@ declare namespace App {
       CurrentSpot: SpotByIdAPI;
     };
     review: {
-      spotReviews: ReviewsBySpotIdNorm;
+      //   spotReviews: App.ReviewsBySpotIdNorm;
+      spotReviews: Record<number, ReviewsBySpotIdAPI["Reviews"][*]>;
+      //   spotReviews: ReviewsBySpotIdAPI["Reviews"][*];
     };
   }
 }

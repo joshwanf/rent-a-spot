@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 
 import { useModal } from "../context/Modal";
 import { Error } from "./Error";
 import { signupUser } from "../store";
+import { useAppDispatch } from "../store";
 
 import "../css/SignupFormModal.css";
 
 export const SignupFormModal = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
@@ -24,10 +24,19 @@ export const SignupFormModal = () => {
     Object.values(user).some((value) => value.length === 0) ||
     user.username.length < 4 ||
     user.password.length < 6;
+
+  /**
+   * @param {string} field
+   * @returns {(e: React.ChangeEvent<HTMLInputElement>) => void}
+   */
   const handleChange = (field) => (e) => {
-    setUser({ ...user, [field]: e.target.value });
+    setUser({ ...user, [field]: e.currentTarget.value });
   };
 
+  /**
+   * @param {React.FormEvent<HTMLFormElement>} e
+   * @returns {Promise<any>}
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});

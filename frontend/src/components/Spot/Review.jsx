@@ -2,7 +2,6 @@ import { ReviewItem } from "./ReviewItem";
 /**
  * @param {object} props
  * @param {App.ReviewsBySpotIdAPI['Reviews']} props.reviews
- * @param {App.RootState['review']['spotReviews']} props.reviews_old
  * @param {App.RootState['session']['user']} props.user
  * @param {number} props.ownerId
  */

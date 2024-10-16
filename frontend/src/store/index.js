@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 // Imports
 import configureStore from "./store";
@@ -12,14 +12,29 @@ import configureStore from "./store";
 
 // Exports
 
-/**
- * @typedef {ReturnType<typeof rootReducer>} RootState
- */
+// Custom hoooks
 
 /**
  * @type {<T>(_: (_: App.RootState) => T) => T}
  */
 export const useAppSelector = useSelector;
+
+/**
+ * @typedef {import('react').Dispatch<AnyAction>} Dispatch
+ * @typedef {import('redux').AnyAction} AnyAction
+ */
+
+/**
+ * @typedef {{
+ * (inp:AnyAction): AnyAction;
+ * <T>(inp: (_: Dispatch) => Promise<T>): Promise<T>;
+ * }} DispatchTy
+ */
+
+/**
+ * @type {() => DispatchTy}
+ */
+export const useAppDispatch = useDispatch;
 
 export * from "./session";
 export * from "./spot";
