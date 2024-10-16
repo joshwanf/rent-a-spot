@@ -1,6 +1,6 @@
 import { useModal } from "../../context/Modal";
 
-import "../../css/openModalMenuItem.css";
+import "../../css/OpenModalMenuItem.css";
 
 /**
  *
