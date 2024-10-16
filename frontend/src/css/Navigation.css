@@ -1,0 +1,13 @@
+.navbar {
+  /* background-color: lightgray; */
+  border-bottom: 1px solid darkgray;
+}
+.navbar ul {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+}
+
+.navbar ul > li {
+  /* width: max-content; */
+}

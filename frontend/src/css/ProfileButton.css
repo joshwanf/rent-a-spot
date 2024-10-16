@@ -1,44 +1,53 @@
 .profile-button {
-  border: 1px solid red;
-  background-color: lightsteelblue;
-  /* display: grid; */
+  /* border: 1px solid red; */
+  /* background-color: lightsteelblue; */
+  position: relative;
+  display: inline-block;
   /* grid-template-columns: 10%; */
   /* align-items: start; */
-  padding: 1em 0em;
+  /* padding: 1em 0em; */
 }
 
 .hidden {
   display: none;
 }
 .profile-icon {
-  border: 1px solid red;
-  width: 10%;
+  border: 1px solid black;
+  border-radius: 25px;
+  /* float: right; */
+  /* width: 10%; */
   /* max-height: 10%; */
-  padding: 0;
-  margin: 0;
-  text-align: center;
+  padding: 0.5em 1em;
+  /* text-align: center; */
 }
 .profile-icon:hover {
   cursor: pointer;
 }
 .profile-icon * {
-  max-width: 100%;
-  fill: red;
-  size: 1em;
+  /* max-width: 100%; */
+  /* fill: red; */
+  /* size: 1em; */
 }
-
-.profile-button ul {
+.profile-menu {
+  /* float: bottom; */
+  width: max-content;
+  position: absolute;
+  z-index: 1;
+  right: 0;
+}
+.profile-menu > * {
   /* border: 1px solid red; */
   border-radius: 10px;
-  background-color: white;
+  background-color: darkgray;
   margin: 0;
   padding: 1em;
   list-style: none;
   /* width: 5em; */
 }
 
-.profile-button li {
+.profile-menu li {
   padding: 0.2em 0em;
+  display: block;
 }
 
 .logout {

@@ -1,23 +1,27 @@
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { FaAirbnb } from "react-icons/fa6";
 
+import { useAppSelector } from "../../store";
 import { ProfileButton } from "./ProfileButton";
 
+import "../../css/Navigation.css";
+
 export const Navigation = () => {
-  const session = useSelector((state) => state.session);
+  const session = useAppSelector((state) => state.session);
 
   return (
-    <div>
+    <nav className="navbar">
       <ul>
         <li>
-          <NavLink to="/">Home</NavLink>
+          <NavLink to="/">
+            <FaAirbnb />
+            Home
+          </NavLink>
         </li>
-        {session && (
-          <li>
-            <ProfileButton user={session.user} />
-          </li>
-        )}
+        <li>
+          <ProfileButton user={session.user} />
+        </li>
       </ul>
-    </div>
+    </nav>
   );
 };

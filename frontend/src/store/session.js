@@ -19,7 +19,7 @@ import { csrfFetch } from "./csrf";
 
 const SET_USER = "session/addSession";
 const REMOVE_USER = "session/removeSession";
-// const LOGIN_SESSION = "session/logInSession";
+// const LOG_IN_DEMO_USER = "session/logInDemoUser";
 
 // Action creators
 
@@ -42,27 +42,7 @@ export const loginUser = (user) => async (dispatch) => {
   } catch (err) {
     const error = await err.json();
     return error;
-    // console.log({ error });
   }
-
-  // console.log({ response });
-  // if (response.ok) {
-  // } else {
-  //   return "uh oh";
-  // }
-  // csrfFetch("/api/session", {
-  //   method: "POST",
-  //   body: JSON.stringify({
-  //     credential: user.credential,
-  //     password: user.password,
-  //   }),
-  // })
-  //   .then((r) => r.json())
-  //   .then((r) => {
-  //     console.log(r);
-  //   })
-  //   .catch((e) => e.json())
-  //   .then((e) => console.log(e));
 };
 
 export const restoreUser = () => async (dispatch) => {
@@ -97,6 +77,23 @@ export const logoutUser = () => async (dispatch) => {
   return response;
 };
 
+export const logInDemoUser = () => async (dispatch) => {
+  try {
+    const response = await csrfFetch("/api/session", {
+      method: "POST",
+      body: JSON.stringify({
+        credential: "demo@user.io",
+        password: "password",
+      }),
+    });
+    const data = await response.json();
+    dispatch(setUser(data.user));
+    return response;
+  } catch (err) {
+    const error = await err.json();
+    return error;
+  }
+};
 // Reducers
 
 const sessionReducer = (state = { user: null }, action) => {

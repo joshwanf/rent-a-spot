@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { loginUser } from "../store";
+import { loginUser, logInDemoUser } from "../store";
 import { useModal } from "../context/Modal";
 import { Error } from "./Error";
 
@@ -11,10 +11,16 @@ import "../css/LoginFormModal.css";
 
 export const LoginFormModal = () => {
   const dispatch = useDispatch();
+  // const [loginUser, setLoginUser] = useState({
+  //   credential: "",
+  //   password: "",
+  // });
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
+
+  const isDisabledSubmit = credential.length < 4 || password.length < 6;
 
   const handleChange = (setState) => (e) => {
     setState(e.target.value);
@@ -24,6 +30,17 @@ export const LoginFormModal = () => {
     e.preventDefault();
     setErrors({});
     const response = await dispatch(loginUser({ credential, password }));
+    if (response?.errors) {
+      setErrors(response.errors);
+    } else {
+      closeModal();
+    }
+  };
+
+  const handleLogInDemo = async (e) => {
+    e.preventDefault();
+    setErrors({});
+    const response = await dispatch(logInDemoUser());
     if (response?.errors) {
       setErrors(response.errors);
     } else {
@@ -59,8 +76,9 @@ export const LoginFormModal = () => {
             />
           </label>
         </div>
-        <button>Submit</button>
+        <button disabled={isDisabledSubmit}>Submit</button>
       </form>
+      <button onClick={handleLogInDemo}>Log in Demo User</button>
     </div>
   );
 };

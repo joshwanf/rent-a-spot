@@ -1,30 +1,32 @@
 import { useState, useEffect } from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import { useDispatch } from "react-redux";
+
+import { useAppDispatch, getAllSpots } from "./store";
 
 import { Navigation } from "./components/Navigation";
-
 import { restoreUser } from "./store";
+import { AllSpots } from "./components/Spot/AllSpots";
+import { SpotDetail } from "./components/Spot/SpotDetail";
 
 const Layout = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [isLoadedUser, setIsLoadedUser] = useState(false);
+  const [isLoadedSpots, setIsLoadedSpots] = useState(false);
+  // const spots = useSelector((state) => state.spots.Spots);
 
   useEffect(() => {
     (() => {
       dispatch(restoreUser()).then(() => {
         setIsLoadedUser(true);
       });
+      dispatch(getAllSpots()).then(() => setIsLoadedSpots(true));
     })();
   }, [dispatch]);
 
   return (
     <>
-      <h1>Hello from App</h1>
-      <nav>
-        <Navigation />
-      </nav>
-      {isLoadedUser && <Outlet />}
+      <Navigation />
+      {isLoadedUser && isLoadedSpots && <Outlet />}
     </>
   );
 };
@@ -32,7 +34,16 @@ const Layout = () => {
 const router = createBrowserRouter([
   {
     element: <Layout />,
-    children: [{ path: "/", element: <h1>hello</h1> }],
+    children: [
+      { path: "/", element: <AllSpots /> },
+      {
+        path: "spots",
+        children: [
+          { path: ":spotId", element: <SpotDetail /> },
+          { path: "", element: <h2>spots parent</h2> },
+        ],
+      },
+    ],
   },
   { path: "*", element: <h1>Uh oh!</h1> },
 ]);

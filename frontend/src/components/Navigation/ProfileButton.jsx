@@ -1,23 +1,25 @@
 import { useState, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { VscAccount } from "react-icons/vsc";
+import { RxHamburgerMenu } from "react-icons/rx";
 
-import { logoutUser } from "../../store";
+import { useAppDispatch, logoutUser } from "../../store";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import { LoginFormModal } from "../LoginFormModal";
 import { SignupFormModal } from "../SignupFormModal";
 
 import "../../css/ProfileButton.css";
 
-/** @typedef {import('../../store').SessionState} SessionState */
-
 /**
- * @param {SessionState} Param0.user
+ * @param {App.RootState['session']} props.user
  */
 export const ProfileButton = ({ user }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
-  const profileRef = useRef();
+
+  /** @type {React.MutableRefObject<HTMLUListElement | null>} */
+  const profileRef = useRef(null);
 
   const handleToggleProfile = (e) => {
     e.stopPropagation();
@@ -40,19 +42,24 @@ export const ProfileButton = ({ user }) => {
 
   const closeMenu = () => setShowMenu(false);
 
-  const handleLogout = (e) => {
-    e.preventDefault();
+  const handleLogout = () => {
+    // e.preventDefault();
     dispatch(logoutUser());
     closeMenu();
+    navigate("/");
   };
   return (
-    <div className="profile-button">
+    <div className="profile-button" style={{ float: "right" }}>
       <div className="profile-icon" onClick={handleToggleProfile}>
-        <VscAccount size="5em" />
+        <RxHamburgerMenu />
+        <VscAccount />
       </div>
-      <div ref={profileRef} className={showMenu ? "" : "hidden"}>
+      <div
+        ref={profileRef}
+        className={`profile-menu ${showMenu ? "" : "hidden"}`}
+      >
         {!user ? (
-          <ul>
+          <div>
             <OpenModalMenuItem
               itemText="Log In"
               modalComponent={<LoginFormModal />}
@@ -61,20 +68,20 @@ export const ProfileButton = ({ user }) => {
             <OpenModalMenuItem
               itemText="Sign Up"
               modalComponent={<SignupFormModal />}
-              onItemClick={{ closeMenu }}
+              onItemClick={closeMenu}
             />
-          </ul>
+          </div>
         ) : (
-          <ul>
-            <li>{user.username}</li>
-            <li>{`${user.firstName} ${user.lastName}`}</li>
-            <li>{user.email}</li>
-            <li>
+          <div>
+            <div>{user.username}</div>
+            <div>Hello, {user.firstName}</div>
+            <div>{user.email}</div>
+            <div>
               <button onClick={handleLogout} className="logout">
                 Log out
               </button>
-            </li>
-          </ul>
+            </div>
+          </div>
         )}
       </div>
     </div>

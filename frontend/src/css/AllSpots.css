@@ -1,0 +1,25 @@
+.allSpots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 1em;
+}
+
+.spot-tile {
+  border: 1px solid red;
+  width: calc(100% * (1 / 4) - 10px - 1px);
+  cursor: pointer;
+  /* height: 15em; */
+}
+
+.spot-tile img {
+  width: 90%;
+  /* height: 75%; */
+  margin: auto;
+  display: block;
+}
+
+.spot-tile-details {
+  display: flex;
+  justify-content: space-between;
+}
