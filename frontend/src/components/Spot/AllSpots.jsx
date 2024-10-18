@@ -12,8 +12,10 @@ export const AllSpots = () => {
   //       setIsLoadedSpots(true);
   //     })();
   //   }, [dispatch]);
+
   if (!spots) {
     return <div className="allSpots">Loading all spots...</div>;
+
   }
   return (
     <div className="allSpots">
