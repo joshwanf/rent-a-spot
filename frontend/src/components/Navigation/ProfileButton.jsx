@@ -59,7 +59,7 @@ export const ProfileButton = ({ user }) => {
         className={`profile-menu ${showMenu ? "" : "hidden"}`}
       >
         {!user ? (
-          <div>
+          <ul>
             <OpenModalMenuItem
               itemText="Log In"
               modalComponent={<LoginFormModal />}
@@ -70,12 +70,12 @@ export const ProfileButton = ({ user }) => {
               modalComponent={<SignupFormModal />}
               onItemClick={closeMenu}
             />
-          </div>
+          </ul>
         ) : (
           <div>
-            <div>{user.username}</div>
-            <div>Hello, {user.firstName}</div>
+            <div>Hello, {user.username}</div>
             <div>{user.email}</div>
+            <div>Manage Spots</div>
             <div>
               <button onClick={handleLogout} className="logout">
                 Log out

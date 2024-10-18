@@ -1,7 +1,7 @@
 /**
  *
  * @param {object} props
- * @param {number} props.price
+ * @param {number | undefined} props.price
  * @returns {JSX.Element}
  */
 export const Price = ({ price }) => {
