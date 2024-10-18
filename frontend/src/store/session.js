@@ -96,6 +96,12 @@ export const logInDemoUser = () => async (dispatch) => {
 };
 // Reducers
 
+/**
+ *
+ * @param {App.RootState['session']} state
+ * @param {*} action
+ * @returns
+ */
 const sessionReducer = (state = { user: null }, action) => {
   switch (action.type) {
     case SET_USER: {

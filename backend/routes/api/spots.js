@@ -78,6 +78,7 @@ router.get("/", allSpotsValidation, async (req, res, next) => {
     },
     ...pagination,
     where,
+    order: [["id", "DESC"]],
   });
   if (spots.length === 0) {
   }
@@ -276,6 +277,7 @@ router.get("/:spotId/reviews", async (req, res, next) => {
       { model: models.User, attributes: ["id", "firstName", "lastName"] },
       { model: models.ReviewImage, attributes: ["id", "url"] },
     ],
+    order: [["id", "DESC"]],
   });
   if (!reviews) {
     err.status = 404;
@@ -366,13 +368,11 @@ router.post(
       err.message = "Image couldn't be created";
       next(err);
     }
-    res
-      .status(201)
-      .json({
-        id: spotImage.id,
-        url: spotImage.url,
-        preview: spotImage.preview,
-      });
+    res.status(201).json({
+      id: spotImage.id,
+      url: spotImage.url,
+      preview: spotImage.preview,
+    });
   }
 );
 

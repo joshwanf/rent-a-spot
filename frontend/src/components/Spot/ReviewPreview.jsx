@@ -2,7 +2,7 @@ import { StarRating } from "./StarRating";
 /**
  *
  * @param {object} props
- * @param {number} props.numReviews
+ * @param {number | undefined} props.numReviews
  * @param {number} props.rating
  * @returns {JSX.Element}
  */

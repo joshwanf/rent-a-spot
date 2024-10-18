@@ -1,26 +1,23 @@
-import { useAppSelector } from "../../store";
+import { useAppSelector, selectAllSpots } from "../../store";
 import { SpotTile } from "./SpotTile";
 import "../../css/AllSpots.css";
 
-/** @typedef {import('../../store').AllSpotsState} AllSpotsState */
-
 export const AllSpots = () => {
+  const spots = Object.values(useAppSelector(selectAllSpots));
+
   //   const [isLoadedSpots, setIsLoadedSpots] = useState(false);
-
-  /** @type {AllSpotsState['Spots']} */
-  //   const spotsArr = Object.values(spots);
-  const spots = Object.values(useAppSelector((state) => state.spot.AllSpots));
-
   //   useEffect(() => {
   //     (async () => {
   //       dispatch(getAllSpots());
   //       setIsLoadedSpots(true);
   //     })();
   //   }, [dispatch]);
-
+  if (!spots) {
+    return <div className="allSpots">Loading all spots...</div>;
+  }
   return (
     <div className="allSpots">
-      {spots.map((spot) => (
+      {spots.reverse().map((spot) => (
         <SpotTile key={spot.id} spot={spot} />
       ))}
     </div>

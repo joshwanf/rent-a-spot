@@ -1,7 +1,9 @@
 import { ReviewItem } from "./ReviewItem";
+
+import "../../css/Review.css";
 /**
  * @param {object} props
- * @param {App.ReviewsBySpotIdAPI['Reviews']} props.reviews
+ * @param {App.ReviewSlice[]} props.reviews
  * @param {App.RootState['session']['user']} props.user
  * @param {number} props.ownerId
  */
@@ -11,7 +13,7 @@ export const Review = ({ reviews, user, ownerId }) => {
   }
   return (
     <div>
-      {reviews.map((review) => (
+      {reviews.toReversed().map((review) => (
         <ReviewItem key={review.id} review={review} />
       ))}
     </div>

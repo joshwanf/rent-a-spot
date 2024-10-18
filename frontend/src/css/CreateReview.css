@@ -1,0 +1,11 @@
+.create-review {
+  background-color: white;
+}
+
+.review-star {
+  fill: gray;
+}
+.review-star-active {
+  /* background-color: gray; */
+  fill: red;
+}
