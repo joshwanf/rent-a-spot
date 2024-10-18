@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
-import { useAppDispatch, getAllSpots } from "./store";
+import { useAppDispatch, selectAllSpots, getAllSpots } from "./store";
 
 import { Navigation } from "./components/Navigation";
 import { restoreUser } from "./store";
+import { CreateSpot } from "./components/Spot/CreateSpot";
 import { AllSpots } from "./components/Spot/AllSpots";
 import { SpotDetail } from "./components/Spot/SpotDetail";
+import { ManageSpots } from "./components/Spot/ManageSpots";
 
 const Layout = () => {
   const dispatch = useAppDispatch();
   const [isLoadedUser, setIsLoadedUser] = useState(false);
   const [isLoadedSpots, setIsLoadedSpots] = useState(false);
-  // const spots = useSelector((state) => state.spots.Spots);
 
   useEffect(() => {
     (() => {
@@ -40,6 +41,8 @@ const router = createBrowserRouter([
         path: "spots",
         children: [
           { path: ":spotId", element: <SpotDetail /> },
+          { path: "new", element: <CreateSpot /> },
+          { path: "current", element: <ManageSpots /> },
           { path: "", element: <h2>spots parent</h2> },
         ],
       },

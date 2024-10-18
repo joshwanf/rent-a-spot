@@ -1,56 +1,24 @@
 import { csrfFetch } from "./csrf";
 
-/**
- * @typedef {{
- *   id: number,
- *   ownerId: number,
- *   address: string,
- *   city: string,
- *   state: string,
- *   country: string,
- *   lat: number,
- *   lng: number,
- *   name: string,
- *   description: string,
- *   price: number,
- *   createdAt: Date,
- *   updatedAt: Date
- * }} Spot
- * @typedef {{ id: number, url: string, preview: boolean }} SpotImage
- * @typedef {{ id: number, firstName: string, lastName: string }} SpotOwner
- */
-
-/**
- * @typedef {Object} AllSpots
- * @prop {Array<Spot & {
- * avgRating: number,
- * previewImage: string
- * }>} Spots
- * @prop {number} page
- * @prop {number} size
- */
-
-/**
- * @typedef {Object<number, Spot>} AllSpotsNorm
- * @prop {number} page
- * @prop {number} size
- */
-
-/**
- * @typedef {Spot & {
- *   numReviews: number,
- *   avgStarRating: number,
- *   SpotImages: Array<SpotImage>
- *   Owner: SpotOwner
- * }} OneSpot
- */
-
-const SET_ALL_SPOTS = "spot/setAllSpots";
-const SET_ONE_SPOT = "spot/setOneSpot";
+const GOT_ALL_SPOTS = "spots/gotAllSpots";
+const GOT_ONE_SPOT = "spots/gotOneSpot";
+const CREATE_SPOT = "spot/createSpot";
+const ADD_IMAGES_TO_SPOT = "spot/addImages";
+const GOT_CURRENT_SPOTS = "spots/gotCurrentSpots";
 
 // Action creators
-const setAllSpots = (spots) => ({ type: SET_ALL_SPOTS, payload: spots });
-const setOneSpot = (spot) => ({ type: SET_ONE_SPOT, payload: spot });
+
+/** @type {(spots: App.GetAllSpotsAPI) => App.GotAllSpotsAction} */
+const setAllSpots = (spots) => ({ type: GOT_ALL_SPOTS, spots });
+
+/** @type {(spot: App.GetSpotByIdAPI) => App.GotSpotByIdAction} */
+const setOneSpot = (spot) => ({ type: GOT_ONE_SPOT, spot });
+
+const createOneSpot = (spot) => ({ type: CREATE_SPOT, payload: spot });
+const addImagesToSpot = (spotId, images) => ({
+  type: ADD_IMAGES_TO_SPOT,
+  payload: { spotId, images },
+});
 
 // Thunk action creators
 export const getAllSpots = () => async (dispatch) => {
@@ -79,40 +47,75 @@ export const getOneSpot = (spotId) => async (dispatch) => {
 };
 
 // Reducer
-const initialState = {
-  page: 1,
-  size: 20,
-  AllSpots: {},
-  CurrentSpot: {},
-};
+const initialState = {};
 /**
- * @param {{
- * page: number
- * size: number
- * CurrentSpot: object
- * AllSpots: AllSpotsNorm
- * }} state
- * @param {{ type: string, payload: AllSpots | Spot }} action
- * @return {AllSpotsNorm}
+ * @param {App.RootState['spots']} state
+ * @param {App.GotAllSpotsAction | App.GotSpotByIdAction} action
+ * @return {App.RootState['spots']}
  */
-export const allSpotsReducer = (state = initialState, action) => {
+export const spotsReducer = (state = {}, action) => {
   switch (action.type) {
-    case SET_ALL_SPOTS: {
-      const newState = { ...state };
-      newState.page = action.payload.page;
-      newState.size = action.payload.size;
-      for (const spot of action.payload.Spots) {
-        newState.AllSpots[spot.id] = spot;
+    case GOT_ALL_SPOTS: {
+      /** @type {App.RootState['spots']} */
+      const newSpots = {};
+      for (const spot of action.spots.Spots) {
+        const { previewImage, ...rest } = spot;
+        const spotImages = { preview: previewImage, regular: [] };
+        newSpots[spot.id] = {
+          ...rest,
+          images: spotImages,
+        };
       }
-      return newState;
-    }
-    case SET_ONE_SPOT: {
-      const newState = {
+      return {
         ...state,
-        CurrentSpot: action.payload,
+        ...newSpots,
       };
-      return newState;
     }
+    case GOT_ONE_SPOT: {
+      console.log("--", action);
+      const { SpotImages, Owner, numReviews, avgStarRating, ...rest } =
+        action.spot;
+
+      //   /** @type {App.SpotSlice} */
+      //   const newSpot = {};
+
+      //   const spotImages = {};
+      /** @type {App.SpotSlice['images']['preview'][]} */
+      const previewImg = action.spot.SpotImages.filter(
+        (image) => image.preview
+      );
+      /** @type {App.SpotSlice['images']['regular']} */
+      const regularImgs = action.spot.SpotImages.filter(
+        (image) => !image.preview
+      );
+
+      /** @type {App.SpotSlice} */
+      const newSpot = {
+        ...rest,
+        numReviews,
+        avgRating: avgStarRating,
+        images: { preview: previewImg[0], regular: regularImgs },
+        owner: action.spot.Owner,
+      };
+      //   newSpot.images = { preview: previewImg[0], regular: regularImgs };
+      //   newSpot.numReviews = action.spot.numReviews;
+      //   newSpot.avgRating = action.spot.avgStarRating;
+      //   newSpot.owner = action.spot.Owner;
+
+      return {
+        ...state,
+        [action.spot.id]: {
+          ...state[action.spot.id],
+          //   images: spotImages,
+          ...newSpot,
+        },
+      };
+    }
+    // case CREATE_SPOT: {
+    //   const newState = {
+    //     ...state,
+    //   };
+    // }
     default:
       return state;
   }

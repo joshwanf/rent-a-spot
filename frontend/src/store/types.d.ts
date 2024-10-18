@@ -19,11 +19,11 @@ declare namespace App {
     city: string;
     state: string;
     country: string;
-    lat: number;
-    lng: number;
+    lat: number | undefined;
+    lng: number | undefined;
     name: string;
     description: string;
-    price: number;
+    price: number | undefined;
   }
   interface Review extends Base {
     id: number;
@@ -52,7 +52,7 @@ declare namespace App {
     Spots: (Spot & { avgRating: number; previewImage: string })[];
   }
   interface SpotsByCurrentUserAPI extends GetAllSpotsAPI {}
-  interface SpotByIdAPI extends Spot {
+  interface GetSpotByIdAPI extends Spot {
     numReviews: number;
     avgStarRating: number;
     SpotImages: SpotImage[];
@@ -78,6 +78,7 @@ declare namespace App {
       >;
     })[];
   }
+  interface CreateReviewBySpotIdAPI extends Review {}
 
   // Normalized data in store
   interface SpotsByIdNorm {}
@@ -88,19 +89,99 @@ declare namespace App {
     [id: number]: ReviewsBySpotIdAPI;
   }
 
-  // Store data
+  // Store state
+  type UserSlice = {
+    id: number;
+    firstName: string;
+    lastName: string;
+  };
+  type SpotSlice = Spot & {
+    numReviews?: number;
+    avgRating: number;
+    images: {
+      preview: SpotImage;
+      regular: Array<SpotImage>;
+    };
+    reviews?: Array<number>;
+    owner: Omit<User, "createdAt" | "updatedAt" | "password">;
+  };
+  type ReviewSlice = Review & {
+    user: UserSlice;
+    images: Array<Omit<ReviewImage, "createdAt" | "updatedAt" | "reviewId">>;
+  };
   interface RootState {
     session: { user: App.User | null };
-    spot: {
-      page: number;
-      size: number;
-      AllSpots: GetAllSpotsAPI;
-      CurrentSpot: SpotByIdAPI;
+    spots: Record<number, SpotSlice>;
+    reviews: Record<number, ReviewSlice>;
+    users: Record<number, UserSlice>;
+  }
+
+  // Store action creators
+  interface GotAllSpotsAction {
+    type: "spots/gotAllSpots";
+    spots: GetAllSpotsAPI;
+  }
+  interface GotSpotByIdAction {
+    type: "spots/gotOneSpot";
+    spot: GetSpotByIdAPI;
+  }
+  interface GotOneUserAction {
+    type: "users/gotOneUser";
+    user: UserAPI;
+  }
+  interface GotReviewsBySpotIdAction {
+    type: "review/gotSpotReviews";
+    reviews: ReviewsBySpotIdAPI;
+  }
+  interface CreatedReviewBySpotIdAction {
+    type: "review/createdReview";
+    payload: {
+      review: CreateReviewBySpotIdAPI;
+      userInfo: App.User;
     };
-    review: {
-      //   spotReviews: App.ReviewsBySpotIdNorm;
-      spotReviews: Record<number, ReviewsBySpotIdAPI["Reviews"][*]>;
-      //   spotReviews: ReviewsBySpotIdAPI["Reviews"][*];
+  }
+  interface ReviewReducerActionTypes {
+    type: "review/gotSpotReviews" | "review/createdReview";
+  }
+
+  // Error responses
+  interface CreateSpotError {
+    message: string;
+    errors: {
+      address?: string;
+      city?: string;
+      state?: string;
+      country?: string;
+      lat?: string;
+      lng?: string;
+      name?: string;
+      description?: string;
+      price?: string;
     };
+  }
+  interface CreateReviewError {
+    message: string;
+    errors: {
+      review?: string;
+      stars?: string;
+    };
+  }
+  // Component types
+  interface CreateSpotForm {}
+  interface CreateSpotFormLabel {
+    heading: string;
+    caption: string;
+    fieldName: string;
+    placeholder: string;
+    value: string | number | undefined;
+    onChangeHandler:
+      | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+      | undefined;
+    isTextarea?: "input" | "textarea";
+    inputType?: "number";
+    hrAfter?: boolean;
+    error?: string;
+
+    error2?: function;
   }
 }

@@ -1,6 +1,6 @@
 .error {
   color: red;
-  background-color: lightyellow;
+  /* background-color: lightyellow; */
   margin: 0;
-  padding: 16px;
+  /* padding: 16px; */
 }
