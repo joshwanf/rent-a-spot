@@ -18,6 +18,9 @@ export const AllSpots = () => {
   //     })();
   //   }, [dispatch]);
 
+  if (!spots) {
+    return "Loadinging all spots...";
+  }
   return (
     <div className="allSpots">
       {spots.map((spot) => (
