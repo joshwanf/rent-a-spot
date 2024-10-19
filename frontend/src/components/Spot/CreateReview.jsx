@@ -5,7 +5,7 @@ import {
   useAppDispatch,
   useAppSelector,
   selectSession,
-  getReviewsBySpot,
+  getReviewsBySpotThunk,
 } from "../../store";
 import { useNavigate } from "react-router-dom";
 import { useModal } from "../../context/Modal";

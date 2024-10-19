@@ -1,18 +1,41 @@
-/**
- * @param {object} props
- * @param {App.ReviewSlice} props.review
- */
-export const ReviewItem = ({ review }) => {
-  // if (!review) return <div>No Reviews!</div>;
+import { useAppSelector } from "../../store";
+import { DeleteOpenModalButton } from "./DeleteOpenModalButton";
+import { DeleteSpotOrReviewModal } from "./DeleteSpotOrReviewModal";
+
+/** @type {(props: {reviewId: number}) => JSX.Element} */
+export const ReviewItem = ({ reviewId }) => {
+  const currentUser = useAppSelector((state) => state.session.user);
+  const review = useAppSelector((state) => state.reviews[reviewId]);
+  const reviewUser = useAppSelector((state) => state.users[review.userId]);
+  if (!review) {
+    return <div>This review doesn't exist!</div>;
+  }
+
   const reviewDate = new Date(review.createdAt);
+  if (!reviewUser) {
+    return <div>This review doesn't have a user!</div>;
+  }
+
   return (
     <div className="review-item">
-      <div>{review.user.firstName}</div>
+      <div>{reviewUser.firstName}</div>
       <div>
         {reviewDate.toLocaleString("default", { month: "long" })}{" "}
         {reviewDate.getFullYear()}
       </div>
       <div>{review.review}</div>
+      {currentUser.id === review.userId && (
+        <DeleteOpenModalButton
+          modalComponent={
+            <DeleteSpotOrReviewModal
+              resourceType="Review"
+              resourceId={review.id}
+              spotId={review.spotId}
+            />
+          }
+          buttonText="Delete"
+        />
+      )}
     </div>
   );
 };

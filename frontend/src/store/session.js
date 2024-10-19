@@ -2,21 +2,6 @@ import { csrfFetch } from "./csrf";
 
 // All actions specific to the session user's information and session user's Redux reducer
 
-/**
- * @typedef {Object} RootState
- * @property {{
- * id: number
- * email: string,
- * username: string,
- * firstName: string,
- * lastName: string
- * }} user
- */
-
-/**
- * @typedef {Array<RootState>} RootStateArray
- */
-
 const SET_USER = "session/addSession";
 const REMOVE_USER = "session/removeSession";
 // const LOG_IN_DEMO_USER = "session/logInDemoUser";
@@ -38,6 +23,7 @@ export const loginUser = (user) => async (dispatch) => {
     });
     const data = await response.json();
     dispatch(setUser(data.user));
+    dispatch({ type: "users/setUsers", payload: [data.user] });
     return response;
   } catch (err) {
     const error = await err.json();
@@ -50,6 +36,7 @@ export const restoreUser = () => async (dispatch) => {
   const data = await response.json();
   if (data.user !== null) {
     dispatch(setUser(data.user));
+    dispatch({ type: "users/setUsers", payload: [data.user] });
   }
   return data;
 };
@@ -63,6 +50,7 @@ export const signupUser = (user) => async (dispatch) => {
     const data = await response.json();
     if (data.user !== null) {
       dispatch(setUser(data.user));
+      dispatch({ type: "users/setUsers", payload: [data.user] });
     }
     return response;
   } catch (err) {
@@ -88,6 +76,7 @@ export const logInDemoUser = () => async (dispatch) => {
     });
     const data = await response.json();
     dispatch(setUser(data.user));
+    dispatch({ type: "users/setUsers", payload: [data.user] });
     return response;
   } catch (err) {
     const error = await err.json();

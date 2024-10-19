@@ -1,2 +1,3 @@
-.spotTile {
+.spotTile:hover {
+  pointer: cursor;
 }

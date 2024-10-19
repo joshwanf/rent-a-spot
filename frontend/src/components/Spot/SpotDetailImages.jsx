@@ -1,19 +1,23 @@
-/** @type {(props: { images: Array<string>, spotId: number}) => JSX.Element} */
+import { useAppSelector } from "../../store";
+/** @type {(props: { images: {preview: number, regular: number[]}, spotId: number}) => JSX.Element} */
 export const SpotDetailImages = ({ images, spotId }) => {
+  const previewImg = useAppSelector(
+    (state) => state.spotImages[images.preview]
+  );
+  const regularImgs = images.regular
+    .map((id) => useAppSelector((state) => state.spotImages[id]))
+    .filter((image) => image !== undefined);
+
   if (!images) {
     return <div>"loading images"</div>;
   }
-  //   const previewImage = images.filter((image) => image.preview)[0];
-  //   const remainingImages = images.filter((image) => !image.preview);
   return (
     <div className="spot-detail-imgs">
-      {images.map((image, i) => (
-        <img
-          key={i}
-          src={`/spot-images/${spotId}/${image}`}
-          className={`"spot-img" ${i === 0 ? "spot-img-preview" : ""}`}
-        />
-      ))}
+      {previewImg && <img src={previewImg.url} className="spot-img-preview" />}
+      {regularImgs.length > 0 &&
+        regularImgs.map((image, i) => (
+          <img key={i} src={image.url} className="spot-img" />
+        ))}
     </div>
   );
 };

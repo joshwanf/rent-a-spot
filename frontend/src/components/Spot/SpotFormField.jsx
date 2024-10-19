@@ -2,10 +2,10 @@ import { Error } from "../Error";
 import "../../css/Error.css";
 /**
  * @param {object} props
- * @param {App.CreateSpotFormLabel} props.propData
+ * @param {App.SpotFormLabel} props.propData
  * @returns {JSX.Element}
  */
-export const CreateSpotField = ({ propData }) => {
+export const SpotFormField = ({ propData }) => {
   const {
     heading,
     caption,
@@ -17,7 +17,6 @@ export const CreateSpotField = ({ propData }) => {
     inputType,
     hrAfter,
     error,
-    error2,
   } = propData;
   return (
     <div>
@@ -48,7 +47,6 @@ export const CreateSpotField = ({ propData }) => {
           />
         )}
         {error && <Error errors={error} />}
-        {error2 && <Error errors={error2()} />}
       </label>
       {hrAfter && <hr />}
     </div>

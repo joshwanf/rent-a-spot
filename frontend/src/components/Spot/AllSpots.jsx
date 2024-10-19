@@ -1,9 +1,30 @@
-import { useAppSelector, selectAllSpots } from "../../store";
+import { useState, useEffect } from "react";
+import {
+  useAppSelector,
+  useAppDispatch,
+  selectAllSpots,
+  selectAllSpotsArr,
+  selectSession,
+  getAllSpots,
+} from "../../store";
 import { SpotTile } from "./SpotTile";
 import "../../css/AllSpots.css";
 
 export const AllSpots = () => {
-  const spots = Object.values(useAppSelector(selectAllSpots));
+  const dispatch = useAppDispatch();
+  const [isLoadedUser, setIsLoadedUser] = useState(false);
+  const [isLoadedSpots, setIsLoadedSpots] = useState(false);
+  const user = useAppSelector(selectSession);
+  const spots = useAppSelector(selectAllSpotsArr);
+
+  useEffect(() => {
+    (() => {
+      // dispatch(restoreUser()).then(() => setIsLoadedUser(true));
+      dispatch(getAllSpots()).then(() => setIsLoadedSpots(true));
+    })();
+  }, [dispatch, setIsLoadedUser, setIsLoadedSpots]);
+
+  // const spots = Object.values(useAppSelector(selectAllSpots));
 
   //   const [isLoadedSpots, setIsLoadedSpots] = useState(false);
   //   useEffect(() => {
@@ -14,13 +35,13 @@ export const AllSpots = () => {
   //   }, [dispatch]);
 
   if (!spots) {
-    return <div className="allSpots">Loading all spots...</div>;
-
+    return <div className="all-spots">Loading all spots...</div>;
   }
+
   return (
-    <div className="allSpots">
-      {spots.reverse().map((spot) => (
-        <SpotTile key={spot.id} spot={spot} />
+    <div className="all-spots">
+      {spots.toReversed().map((spot) => (
+        <SpotTile key={spot.id} spot={spot} showDashboard={false} />
       ))}
     </div>
   );
