@@ -77,6 +77,7 @@ export const spotsReducer = (state = {}, action) => {
             ? `/spot-images/${spot.id}/${previewImage}`
             : "/no-image-found/no_image_available_600_x_450.svg";
         // convert avgRating to decimal with 1 sigfig
+        // need Number(avgRating) because postgres sends back a string somehow
         // console.log(
         //   "toFixed is not a function?",
         //   { avgRating },
@@ -109,7 +110,9 @@ export const spotsReducer = (state = {}, action) => {
       const regularImgs = imgsWithFullUrl
         .filter((image) => !image.preview)
         .map((image) => image.id);
-      const rating = avgStarRating !== 0 ? avgStarRating.toFixed(1) : "New";
+      // need Number(avgRating) because postgres sends back a string somehow
+      const rating =
+        Number(avgStarRating) !== 0 ? Number(avgStarRating).toFixed(1) : "New";
 
       /** @type {Store.State.Spots} */
       const newSpot = {

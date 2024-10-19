@@ -130,7 +130,7 @@ export const getOneSpot = (spotId) => async (dispatch) => {
     dispatch(setUsers([spotOwner]));
     return { type: "spot", spot: data };
   } catch (err) {
-    console.log("unknown error", { err });
+    // console.log("unknown error", { err });
     const error = await err.json();
     return { type: "error", error };
   }
