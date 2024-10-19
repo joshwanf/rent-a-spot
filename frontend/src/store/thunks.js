@@ -132,7 +132,7 @@ export const getOneSpot = (spotId) => async (dispatch) => {
   } catch (err) {
     console.log("unknown error", { err });
     const error = await err.json();
-    return { type: "error", error: err };
+    return { type: "error", error };
   }
 };
 
