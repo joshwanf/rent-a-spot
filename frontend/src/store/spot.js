@@ -77,7 +77,11 @@ export const spotsReducer = (state = {}, action) => {
             ? `/spot-images/${spot.id}/${previewImage}`
             : "/no-image-found/no_image_available_600_x_450.svg";
         // convert avgRating to decimal with 1 sigfig
-        console.log("toFixed is not a function?", { avgRating });
+        console.log(
+          "toFixed is not a function?",
+          { avgRating },
+          typeof avgRating
+        );
         const rating = avgRating !== 0 ? avgRating.toFixed(1) : "New";
 
         newSpots[spot.id] = {
