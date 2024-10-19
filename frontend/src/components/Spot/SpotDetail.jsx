@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { getOneSpot } from "../../store";
-import { getReviewsBySpot } from "../../store";
+import { getReviewsBySpotThunk } from "../../store";
 import {
   useAppSelector,
   useAppDispatch,
   selectSession,
   selectOneSpot,
-  selectReviewsBySpotId,
+  // selectReviewsBySpotId,
 } from "../../store";
 
 import { Price } from "./Price";
@@ -27,28 +27,41 @@ export const SpotDetail = () => {
 
   useEffect(() => {
     (async () => {
-      await dispatch(getOneSpot(spotId));
-      await dispatch(getReviewsBySpot(spotId));
+      await dispatch(getOneSpot(Number(spotId)));
+      await dispatch(getReviewsBySpotThunk(Number(spotId)));
       setIsLoadedSpotAndReviews(true);
     })();
   }, [dispatch, spotId, setIsLoadedSpotAndReviews]);
 
   const spot = useAppSelector(selectOneSpot(Number(spotId)));
+  const spotOwner = useAppSelector((state) => state.users[spot?.ownerId]);
   const thisUser = useAppSelector(selectSession);
-  const thisReviews = useAppSelector(selectReviewsBySpotId(Number(spotId)));
+  // const thisReviews = useAppSelector(selectReviewsBySpotId(Number(spotId)));
+  const thisReviews = useAppSelector((state) =>
+    Object.values(state.reviews)
+  ).filter((review) => review.spotId === Number(spotId));
+  // .map((review) => review.id);
 
   if (!isLoadedSpotAndReviews || !spot) {
     return <div>Loading spot...</div>;
   }
+
+  const spotImages = {
+    preview: spot.previewImg,
+    regular: spot.regularImgs,
+  };
+
   const userHasReviewForSpot =
     thisUser &&
     thisReviews.filter((review) => review.userId === thisUser.id).length > 0;
+  console.log("spotdetail", { thisReviews });
   const canPostReview =
     thisUser && thisUser.id !== spot.ownerId && !userHasReviewForSpot;
-  const spotImages = [
-    spot.images.preview.url,
-    ...spot.images.regular.map((img) => img.url),
-  ];
+  // const spotImages = [
+  //   spot.previewImageUrl,
+  //   // spot.images.preview.url,
+  //   ...spot.images.regular.map((img) => img.url),
+  // ];
 
   /**
    * @param {React.MouseEvent<HTMLElement>} e
@@ -59,10 +72,10 @@ export const SpotDetail = () => {
     alert("Feature coming soon");
   };
 
-  /** @type {(e: React.MouseEvent<HTMLElement>) => void} */
-  const handlePostReview = (e) => {
-    e.preventDefault();
-  };
+  // /** @type {(e: React.MouseEvent<HTMLElement>) => void} */
+  // const handlePostReview = (e) => {
+  //   e.preventDefault();
+  // };
 
   const handleAfterPostReview = async () => {
     await dispatch(getOneSpot(spotId));
@@ -78,13 +91,13 @@ export const SpotDetail = () => {
       <div className="spot-detail">
         <div className="spot-detail-info">
           <div>
-            Hosted by {spot.owner?.firstName} {spot.owner?.lastName}
+            Hosted by {spotOwner?.firstName} {spotOwner?.lastName}
           </div>
           <div>{spot.description}</div>
         </div>
         <div className="spot-detail-book">
           <Price price={spot.price} />
-          <ReviewSummary numReviews={spot.numReviews} rating={spot.avgRating} />
+          <ReviewSummary rating={spot.rating} numReviews={spot.numReviews} />
           <button
             onClick={handleReserveBooking}
             className="spot-detail-book-btn"
@@ -95,7 +108,7 @@ export const SpotDetail = () => {
       </div>
       <hr />
       <div>
-        <ReviewSummary numReviews={spot.numReviews} rating={spot.avgRating} />
+        <ReviewSummary numReviews={spot.numReviews} rating={spot.rating} />
       </div>
       <div>
         {canPostReview && (
@@ -107,7 +120,12 @@ export const SpotDetail = () => {
           />
         )}
       </div>
-      {<Review reviews={thisReviews} user={thisUser} ownerId={spot?.ownerId} />}
+      {
+        <Review
+          reviews={thisReviews.map((review) => review.id)}
+          ownerId={spot.ownerId}
+        />
+      }
     </div>
   );
 };

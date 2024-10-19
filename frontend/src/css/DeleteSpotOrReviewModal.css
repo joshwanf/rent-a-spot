@@ -1,0 +1,10 @@
+.delete-spot-modal {
+  background-color: white;
+  padding: 25px;
+}
+.delete-yes {
+  background-color: red;
+}
+.delete-no {
+  background-color: darkgray;
+}

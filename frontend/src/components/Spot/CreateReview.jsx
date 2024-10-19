@@ -1,48 +1,49 @@
 import { useState } from "react";
 import { FaStar } from "react-icons/fa";
-import { csrfFetch } from "../../store/csrf";
+// import { csrfFetch } from "../../store/csrf";
 import {
   useAppDispatch,
   useAppSelector,
   selectSession,
-  getReviewsBySpot,
+  //   getReviewsBySpotThunk,
 } from "../../store";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import { createReviewThunk } from "../../store";
 import { Error } from "../Error";
 import "../../css/CreateReview.css";
 
-/** @type {({endpoint, body}: {endpoint: string, body: any}) => Promise<Response> } */
-const postAPI = async ({ endpoint, body }) => {
-  return csrfFetch(endpoint, {
-    method: "POST",
-    body: JSON.stringify(body),
-  });
-};
+// /** @type {({endpoint, body}: {endpoint: string, body: any}) => Promise<Response> } */
+// const postAPI = async ({ endpoint, body }) => {
+//   return csrfFetch(endpoint, {
+//     method: "POST",
+//     body: JSON.stringify(body),
+//   });
+// };
 
-/**
- * @typedef {Object} CreateReviewDetails
- * @prop {{review: string, stars: number}} reviewDetails
- * @prop {number} spotId
- * @param {CreateReviewDetails} details
- * @returns {Promise<{type: "review", review: App.Review} | {type: "error", error: App.CreateReviewError}>}
- */
-const handleCreateReview = async ({ reviewDetails, spotId }) => {
-  try {
-    console.log(`/api/spots/${spotId}/reviews`);
-    const createReviewResponse = await postAPI({
-      endpoint: `/api/spots/${spotId}/reviews`,
-      body: reviewDetails,
-    });
-    const review = await createReviewResponse.json();
+// /**
+//  * @typedef {Object} CreateReviewDetails
+//  * @prop {{review: string, stars: number}} reviewDetails
+//  * @prop {number} spotId
+//  * @param {CreateReviewDetails} details
+//  * @returns {Promise<{type: "review", review: App.Review} | {type: "error", error: App.CreateReviewError}>}
+//  */
+// const handleCreateReview = async ({ reviewDetails, spotId }) => {
+//   try {
+//     console.log(`/api/spots/${spotId}/reviews`);
+//     const createReviewResponse = await postAPI({
+//       endpoint: `/api/spots/${spotId}/reviews`,
+//       body: reviewDetails,
+//     });
+//     const review = await createReviewResponse.json();
 
-    return { type: "review", review };
-  } catch (err) {
-    const error = await err.json();
-    return { type: "error", error };
-  }
-};
+//     return { type: "review", review };
+//   } catch (err) {
+//     const error = await err.json();
+//     return { type: "error", error };
+//   }
+// };
+
 export const CreateReview = ({ spotId }) => {
   const [reviewForm, setReviewForm] = useState({ stars: 0, review: "" });
   const [starHover, setStarHover] = useState(0);
@@ -63,11 +64,11 @@ export const CreateReview = ({ spotId }) => {
     }
   };
 
-  const handleStarHoverIn = (star) => (e) => {
+  const handleStarHoverIn = (star) => () => {
     setStarHover(star);
     setIsHovered(true);
   };
-  const handleStarHoverOut = (star) => (e) => {
+  const handleStarHoverOut = () => {
     setStarHover(0);
     setIsHovered(false);
   };
@@ -124,7 +125,7 @@ export const CreateReview = ({ spotId }) => {
               key={star}
               className={star <= reviewForm.stars ? "review-star-active" : ""}
               onMouseEnter={handleStarHoverIn(star)}
-              onMouseLeave={handleStarHoverOut(0)}
+              onMouseLeave={handleStarHoverOut}
             >
               <FaStar
                 onClick={handleStarChange(star)}

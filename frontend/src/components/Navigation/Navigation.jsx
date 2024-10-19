@@ -17,14 +17,16 @@ export const Navigation = () => {
     <nav className="navbar">
       <ul>
         <li>
-          <NavLink to="/">
+          <NavLink to="/" className="nav-link">
             <FaAirbnb />
-            Home
+            <span>Home</span>
           </NavLink>
         </li>
-        <li>
+        <li className="nav-link-profile">
           {session.user && (
-            <button onClick={handleClick}>Create a New Spot</button>
+            <button onClick={handleClick} id="create-spot-btn">
+              Create a New Spot
+            </button>
           )}
           <ProfileButton user={session.user} />
         </li>

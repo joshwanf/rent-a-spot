@@ -7,8 +7,6 @@ import { Error } from "./Error";
 
 import "../css/LoginFormModal.css";
 
-/** @typedef {import('../store').SessionState} SessionState */
-
 export const LoginFormModal = () => {
   const dispatch = useDispatch();
   // const [loginUser, setLoginUser] = useState({
@@ -49,7 +47,7 @@ export const LoginFormModal = () => {
   };
 
   return (
-    <div className="login-form">
+    <div className="login-form" data-testid="login-modal">
       <Error errors={errors} />
       <form onSubmit={handleSubmit}>
         <div>
@@ -61,6 +59,8 @@ export const LoginFormModal = () => {
               placeholder="Username/email"
               name="credential"
               type="text"
+              required
+              data-testid="credential-input" // Identifier
             />
           </label>
         </div>
@@ -73,10 +73,17 @@ export const LoginFormModal = () => {
               defaultValue={password}
               name="password"
               type="password"
+              required
+              data-testid="password-input" // Identifier
             />
           </label>
         </div>
-        <button disabled={isDisabledSubmit}>Submit</button>
+        <button
+          disabled={isDisabledSubmit}
+          data-testid="login-button" // Identifier
+        >
+          Log In
+        </button>
       </form>
       <button onClick={handleLogInDemo}>Log in Demo User</button>
     </div>

@@ -1,15 +1,43 @@
-.allSpots {
+/* flexbox */
+.all-spots-flexbox {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  /* justify-content: center; */
   gap: 1em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.spot-tile-flexbox {
+  border: 1px solid red;
+  /* max-width: 20%; */
+  flex-basis: 20%;
+  min-width: 225px;
+  /* width: calc(100% * (1 / 4) - 10px - 1px); */
+  cursor: pointer;
+  /* height: 15em; */
+}
+
+.all-spots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 16px; /* Adjust the gap between items as needed */
+  padding: 16px; /* Optional padding for the container */
 }
 
 .spot-tile {
-  border: 1px solid red;
-  width: calc(100% * (1 / 4) - 10px - 1px);
+  max-width: 220px;
+  width: 100%; /* Ensures the item takes the full width available up to the max */
+  background-color: #f0f0f0; /* Example background color */
+  border: 1px solid #ccc; /* Example border */
+  border-radius: 8px; /* Optional rounding of corners */
+  padding: 16px; /* Inner padding for content */
+  box-sizing: border-box; /* Ensures padding and border are included in width */
+  opacity: 75%;
+}
+.spot-tile:hover {
   cursor: pointer;
-  /* height: 15em; */
+  opacity: 100%;
 }
 
 .spot-tile img {

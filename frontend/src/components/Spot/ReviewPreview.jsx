@@ -1,12 +1,8 @@
 import { StarRating } from "./StarRating";
-/**
- *
- * @param {object} props
- * @param {number | undefined} props.numReviews
- * @param {number} props.rating
- * @returns {JSX.Element}
- */
+
+/** @type {(props: {numReviews: number, rating: string}) => JSX.Element} */
 export const ReviewSummary = ({ numReviews, rating }) => {
+  // if (!numReviews) return <h1>no reviews</h1>;
   const reviewsText = numReviews === 1 ? "Review" : "Reviews";
   return (
     <div className="spot-review-summary">

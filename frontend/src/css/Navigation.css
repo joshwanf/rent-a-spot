@@ -1,13 +1,58 @@
 .navbar {
   /* background-color: lightgray; */
-  border-bottom: 1px solid darkgray;
+  /* border-bottom: 3px solid darkgray; */
+  margin-bottom: 10px;
 }
 .navbar ul {
   display: flex;
   justify-content: space-between;
   list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
 }
 
 .navbar ul > li {
-  /* width: max-content; */
+  margin: 0;
+  font-size: 24px;
+}
+
+.navbar ul > li svg {
+  fill: #f9a03f;
+  width: 3em;
+  height: auto;
+}
+.nav-link,
+.nav-link-profile {
+  display: flex;
+  align-items: center;
+}
+
+.nav-link svg {
+  margin-right: 10px;
+}
+
+#create-spot-btn {
+  background-color: #ceb5a7; /* Main button color */
+  color: black; /* Text color */
+  border: none; /* No border */
+  border-radius: 15px; /* Rounded corners */
+  padding: 12px 24px; /* Vertical and horizontal padding */
+  font-size: 16px; /* Font size */
+  font-weight: 500; /* Slightly bolder text */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  margin-right: 20px;
+}
+
+#create-spot-btn:hover {
+  background-color: #f7d488; /* Darker shade on hover */
+  transform: translateY(-2px); /* Lift effect on hover */
+  cursor: pointer;
+}
+
+#create-spot-btn:active {
+  transform: translateY(0); /* Reset lift effect on click */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow when active */
 }

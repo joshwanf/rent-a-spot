@@ -1,26 +1,53 @@
 import { useSelector, useDispatch } from "react-redux";
+import { createSelector } from "reselect";
 
 // Imports
 import configureStore from "./store";
 
 // State types
-/** @typedef {import('./session').RootState} SessionState */
-
-/** @typedef {import('./spot').AllSpots} AllSpotsState */
-/** @typedef {import('./spot').AllSpotsNorm} AllSpotsNorm */
-/** @typedef {import('./spot').OneSpot} OneSpotState */
 
 // Exports
 
 // Selectors
-/** @type {(state: App.RootState) => App.RootState['session']['user']} */
+/** @type {() => Store.State.RootState} */
+export const createAppSelector = createSelector.withTypes();
+
+/** @type {(state: Store.State.RootState) => Store.State.RootState['session']['user']} */
 export const selectSession = (state) => state.session.user;
 
-/** @type {(state: App.RootState) => App.RootState['spots']} */
+/** @typedef {(state: Store.State.RootState) => Store.State.RootState['spots']} selectAllSpots */
+/** @type {selectAllSpots} */
 export const selectAllSpots = (state) => state.spots;
 
-/** @type {(spotId: number) => (state: App.RootState) => App.SpotSlice} */
-export const selectOneSpot = (spotId) => (state) => state.spots[spotId];
+export const selectAllSpotsArr = createSelector(selectAllSpots, (state) =>
+  Object.values(state)
+);
+
+// // /** @type {(spotId: number) => (state: Store.State.RootState['spots']) => void} */
+
+// // /**
+// //  * @param {number} spotIds
+// //  */
+// export const selectSpotIds = createAppSelector(
+//   selectAllSpots,
+//   (state) => Object.values(state)
+// );
+
+// old function
+export const selectOneSpot = (spotId) =>
+  createSelector(selectAllSpots, (state) => state[spotId]);
+
+/** @type {(userId: number | undefined) => (state: App.RootState) => App.SpotSlice[] | null} */
+export const selectSpotsByUser = (userId) =>
+  createSelector(selectAllSpots, (state) => {
+    if (!userId) {
+      return null;
+    }
+    const filteredSpots = Object.values(state).filter(
+      (spot) => spot.ownerId === userId
+    );
+    return filteredSpots;
+  });
 
 /** @type {(state: App.RootState) => App.RootState['reviews']} */
 export const selectReviews = (state) => state.reviews;
@@ -31,10 +58,10 @@ export const selectReviewsBySpotId = (spotId) => (state) => {
   return reviews.filter((review) => review.spotId === spotId);
 };
 
-// Custom hoooks
+/** @type {(state: Store.State.RootState) => Store.State.RootState['spotImages']} */
+export const selectAllSpotImgs = (state) => state.spotImages;
 
-/** @type {<T>(_: (_: App.RootState) => T) => T} */
-export const useAppSelector = useSelector;
+// Custom hoooks
 
 /**
  * @typedef {import('react').Dispatch<AnyAction>} Dispatch
@@ -45,14 +72,16 @@ export const useAppSelector = useSelector;
  * @typedef {{
  * (inp:AnyAction): AnyAction;
  * <T>(inp: (_: Dispatch) => Promise<T>): Promise<T>;
- * }} DispatchTy
+ * }} DispatchTy_old
  */
 
-/**
- * @type {() => DispatchTy}
- */
+/** @type {() => Store.ReduxTypes.DispatchTy} */
 export const useAppDispatch = useDispatch;
 
+/** @type {<T>(_: (_: Store.State.RootState) => T) => T} */
+export const useAppSelector = useSelector;
+
+export * from "./thunks";
 export * from "./session";
 export * from "./spot";
 export * from "./review";

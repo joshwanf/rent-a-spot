@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
 
+/** @type {(url: string, options?: {method?: 'POST' | 'PUT' | 'DELETE', body?: any}) => Response} */
 export const csrfFetch = async (url, options = {}) => {
   // set options.method to 'GET' if there is no method
   options.method = options.method || "GET";

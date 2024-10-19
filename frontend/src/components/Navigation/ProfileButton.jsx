@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { VscAccount } from "react-icons/vsc";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { Link } from "react-router-dom";
 
 import { useAppDispatch, logoutUser } from "../../store";
 import OpenModalMenuItem from "./OpenModalMenuItem";
@@ -49,7 +50,11 @@ export const ProfileButton = ({ user }) => {
     navigate("/");
   };
   return (
-    <div className="profile-button" style={{ float: "right" }}>
+    <div
+      className="profile-button"
+      style={{ float: "right" }}
+      data-testid="user-menu-button"
+    >
       <div className="profile-icon" onClick={handleToggleProfile}>
         <RxHamburgerMenu />
         <VscAccount />
@@ -57,6 +62,7 @@ export const ProfileButton = ({ user }) => {
       <div
         ref={profileRef}
         className={`profile-menu ${showMenu ? "" : "hidden"}`}
+        data-testid="user-dropdown-menu"
       >
         {!user ? (
           <ul>
@@ -75,7 +81,11 @@ export const ProfileButton = ({ user }) => {
           <div>
             <div>Hello, {user.username}</div>
             <div>{user.email}</div>
-            <div>Manage Spots</div>
+            <div>
+              <Link to="/spots/current" onClick={() => closeMenu()}>
+                Manage Spots
+              </Link>
+            </div>
             <div>
               <button onClick={handleLogout} className="logout">
                 Log out
