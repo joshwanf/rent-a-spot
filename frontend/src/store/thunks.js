@@ -70,8 +70,8 @@ export const getAllSpots = (userId) => async (dispatch) => {
     return { type: "spots", spots: data };
   } catch (err) {
     // console.log("unknown error", { err });
-    const error = await err.json();
-    return { type: "error", error };
+    // const error = await err.json();
+    return { type: "error", error: err };
   }
 };
 // export const getAllSpotsOld = (userId) => async (dispatch) => {
@@ -130,8 +130,9 @@ export const getOneSpot = (spotId) => async (dispatch) => {
     dispatch(setUsers([spotOwner]));
     return { type: "spot", spot: data };
   } catch (err) {
+    console.log("unknown error", { err });
     const error = await err.json();
-    return { type: "error", error };
+    return { type: "error", error: err };
   }
 };
 
