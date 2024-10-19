@@ -24,7 +24,7 @@ export const ReviewItem = ({ reviewId }) => {
         {reviewDate.getFullYear()}
       </div>
       <div>{review.review}</div>
-      {currentUser.id === review.userId && (
+      {currentUser && currentUser.id === review.userId && (
         <DeleteOpenModalButton
           modalComponent={
             <DeleteSpotOrReviewModal
