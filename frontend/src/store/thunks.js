@@ -69,7 +69,7 @@ export const getAllSpots = (userId) => async (dispatch) => {
     dispatch(setAllSpots(spotsWithFullPreviewImgUrl));
     return { type: "spots", spots: data };
   } catch (err) {
-    console.log("unknown error", { err });
+    // console.log("unknown error", { err });
     const error = await err.json();
     return { type: "error", error };
   }
