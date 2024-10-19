@@ -58,6 +58,9 @@ export const selectReviewsBySpotId = (spotId) => (state) => {
   return reviews.filter((review) => review.spotId === spotId);
 };
 
+/** @type {(state: Store.State.RootState) => Store.State.RootState['spotImages']} */
+export const selectAllSpotImgs = (state) => state.spotImages;
+
 // Custom hoooks
 
 /**

@@ -8,7 +8,7 @@ import {
   useAppDispatch,
   selectSession,
   selectOneSpot,
-  selectReviewsBySpotId,
+  // selectReviewsBySpotId,
 } from "../../store";
 
 import { Price } from "./Price";
@@ -72,10 +72,10 @@ export const SpotDetail = () => {
     alert("Feature coming soon");
   };
 
-  /** @type {(e: React.MouseEvent<HTMLElement>) => void} */
-  const handlePostReview = (e) => {
-    e.preventDefault();
-  };
+  // /** @type {(e: React.MouseEvent<HTMLElement>) => void} */
+  // const handlePostReview = (e) => {
+  //   e.preventDefault();
+  // };
 
   const handleAfterPostReview = async () => {
     await dispatch(getOneSpot(spotId));

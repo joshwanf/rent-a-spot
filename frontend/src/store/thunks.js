@@ -2,15 +2,15 @@ import { csrfFetch } from "./csrf";
 
 const GOT_ALL_SPOTS = "spots/gotAllSpots";
 const GOT_ONE_SPOT = "spots/gotOneSpot";
-const CREATE_SPOT = "spot/createSpot";
-const ADD_IMAGES_TO_SPOT = "spot/addImages";
-const GOT_CURRENT_SPOTS = "spots/gotCurrentSpots";
+// const CREATE_SPOT = "spot/createSpot";
+// const ADD_IMAGES_TO_SPOT = "spot/addImages";
+// const GOT_CURRENT_SPOTS = "spots/gotCurrentSpots";
 const ADD_SPOT_IMAGE = "spotImages/addSpotImage";
 
 // const SET_SPOT_REVIEWS = "review/setSpotReviews";
 const GOT_REVIEWS = "review/gotReviews";
 const CREATED_REVIEW = "review/createdReview";
-const DELETED_REVIEW = "review/deletedReview";
+// const DELETED_REVIEW = "review/deletedReview";
 
 const SET_USERS = "users/setUsers";
 
@@ -22,8 +22,8 @@ const setAllSpots = (spots) => ({ type: GOT_ALL_SPOTS, payload: spots });
 /** @type {(spot: Store.API.GetSpotDetailsById) => Store.ACs.setOneSpot} */
 const setOneSpot = (spot) => ({ type: GOT_ONE_SPOT, payload: spot });
 
-/** @type {(spot: Store.Component.SpotFormSubmit) => Store.ACs.createOneSpot} */
-const createOneSpot = (spot) => ({ type: CREATE_SPOT, payload: spot });
+// /** @type {(spot: Store.Component.SpotFormSubmit) => Store.ACs.createOneSpot} */
+// const createOneSpot = (spot) => ({ type: CREATE_SPOT, payload: spot });
 
 /** @type {(spot: {id: number, spotId: number, url: string, preview: boolean}) => Store.ACs.addSpotImage} */
 const addSpotImage = (image) => ({ type: ADD_SPOT_IMAGE, payload: image });
@@ -52,7 +52,7 @@ const setUsers = (users) => ({ type: SET_USERS, payload: users });
 
 // Thunk action creators
 /**
- * @param {number | undefined} userId
+ * @param {number} [userId]
  * @returns {(_: React.Dispatch<import('redux').AnyAction>) => Promise<Store.ACs.getAllSpotsRes | Store.ACs.getAllSpotsErr>}
  */
 export const getAllSpots = (userId) => async (dispatch) => {
@@ -143,8 +143,9 @@ export const deleteOneSpotThunk = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}`, {
       method: "DELETE",
     });
+    const data = await response.json();
     dispatch(deleteOneSpotAC(spotId));
-    return { type: "success", success: "Successfully deleted" };
+    return { type: "success", success: data.message };
   } catch (err) {
     const error = await err.json();
     return { type: "error", error };

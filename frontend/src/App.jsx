@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
-import { useAppDispatch, selectAllSpots, getAllSpots } from "./store";
+import { useAppDispatch } from "./store";
 
 import { Navigation } from "./components/Navigation";
 import { restoreUser } from "./store";
@@ -16,14 +16,14 @@ import "./css/App.css";
 const Layout = () => {
   const dispatch = useAppDispatch();
   const [isLoadedUser, setIsLoadedUser] = useState(false);
-  const [isLoadedSpots, setIsLoadedSpots] = useState(false);
+  // const [isLoadedSpots, setIsLoadedSpots] = useState(false);
 
   useEffect(() => {
     (() => {
       dispatch(restoreUser()).then(() => setIsLoadedUser(true));
       // dispatch(getAllSpots()).then(() => setIsLoadedSpots(true));
     })();
-  }, [dispatch, setIsLoadedUser, setIsLoadedSpots]);
+  }, [dispatch, setIsLoadedUser]);
 
   return (
     <>

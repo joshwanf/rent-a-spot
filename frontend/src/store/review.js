@@ -1,5 +1,3 @@
-import { csrfFetch } from "./csrf";
-import { getOneSpot } from "./";
 // const SET_SPOT_REVIEWS = "review/setSpotReview";
 const GOT_REVIEWS = "review/gotReviews";
 const CREATED_REVIEW = "review/createdReview";

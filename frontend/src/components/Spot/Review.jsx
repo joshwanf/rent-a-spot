@@ -8,7 +8,7 @@ import "../../css/Review.css";
  * @param {number[]} props.reviews
  * @param {number} props.ownerId
  */
-export const Review = ({ reviews, ownerId }) => {
+export const Review = ({ ownerId }) => {
   const { spotId } = useParams();
   const loggedInUserOrNull = useAppSelector((state) => state.session.user);
   const allReviews = useAppSelector((state) =>

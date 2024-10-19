@@ -419,7 +419,7 @@ declare namespace Store {
       session: Session;
       users: Record<number, Users>;
       spots: Record<number, Spots>;
-      spotImages: Record<number, SpotImages | "noImage", SpotImages>;
+      spotImages: Record<number | "noImage", SpotImages>;
       reviews: Record<number, Reviews>;
       reviewImages: Record<number, ReviewImages>;
     }

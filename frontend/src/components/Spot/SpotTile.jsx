@@ -1,10 +1,4 @@
 import { useNavigate } from "react-router-dom";
-
-import {
-  useAppSelector,
-  useAppDispatch,
-  deleteOneSpotThunk,
-} from "../../store";
 import { StarRating } from "./StarRating";
 import { Price } from "./Price";
 import { DeleteSpotOrReviewModal } from "./DeleteSpotOrReviewModal";
@@ -18,7 +12,6 @@ import { DeleteOpenModalButton } from "./DeleteOpenModalButton";
  */
 export const SpotTile = ({ spot, showDashboard }) => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   /** @type {(spotId: number) => () => void} */
   const handleClickSpotDetails = (spotId) => () => {
@@ -31,11 +24,11 @@ export const SpotTile = ({ spot, showDashboard }) => {
     navigate(`/spots/${spotId}/edit`);
   };
 
-  /** @type {(spotId: number) => (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void} */
-  const handleClickDelete = (spotId) => async (e) => {
-    e.stopPropagation();
-    // const deleteRes = await dispatch(deleteOneSpotThunk(spotId));
-  };
+  // /** @type {(spotId: number) => (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void} */
+  // const handleClickDelete = (spotId) => async (e) => {
+  //   e.stopPropagation();
+  //   // const deleteRes = await dispatch(deleteOneSpotThunk(spotId));
+  // };
 
   return (
     <div

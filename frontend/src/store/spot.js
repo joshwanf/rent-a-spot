@@ -1,10 +1,8 @@
-import { csrfFetch } from "./csrf";
-
 const GOT_ALL_SPOTS = "spots/gotAllSpots";
 const GOT_ONE_SPOT = "spots/gotOneSpot";
-const CREATE_SPOT = "spot/createSpot";
-const ADD_IMAGES_TO_SPOT = "spot/addImages";
-const GOT_CURRENT_SPOTS = "spots/gotCurrentSpots";
+// const CREATE_SPOT = "spot/createSpot";
+// const ADD_IMAGES_TO_SPOT = "spot/addImages";
+// const GOT_CURRENT_SPOTS = "spots/gotCurrentSpots";
 const DELETED_SPOT = "spot/deletedSpot";
 
 // // Action creators
@@ -61,7 +59,7 @@ const DELETED_SPOT = "spot/deletedSpot";
 // };
 
 // Reducer
-const initialState = {};
+
 /**
  * @param {Store.State.RootState['spots']} state
  * @param {Store.ACs.SpotACs} action

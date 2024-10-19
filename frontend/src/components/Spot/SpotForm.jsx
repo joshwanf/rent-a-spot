@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { csrfFetch } from "../../store/csrf";
 
-import { useAppDispatch } from "../../store";
+// import { useAppDispatch } from "../../store";
 import { SpotFormField } from "./SpotFormField";
 import { Error } from "../Error";
 
@@ -37,7 +37,7 @@ const createOrEditSpot = async ({ spotDetails, imgUrls, endpoint }) => {
           body: { url, preview: i === 0 },
         })
       );
-      const addImageRes = await Promise.all(spotImagePromises);
+      await Promise.all(spotImagePromises);
     }
     return { type: "spot", spot };
   } catch (err) {
@@ -48,6 +48,7 @@ const createOrEditSpot = async ({ spotDetails, imgUrls, endpoint }) => {
 
 /** @type {(prop: {initialData?: App.SpotFormData, initialImg?: App.SpotFormImg}) => JSX.Element} */
 export const SpotForm = ({ initialData, initialImg }) => {
+  console.log("in spot form", { initialData, initialImg });
   /** @type {App.SpotFormData} */
   const emptySpotForm = {
     country: "",
@@ -68,16 +69,18 @@ export const SpotForm = ({ initialData, initialImg }) => {
     img3: "",
     img4: "",
   };
+  console.log("before img form state", initialImg || emptyImgForm);
   const { spotId } = useParams();
   const navigate = useNavigate();
   const [spotForm, setSpotForm] = useState(initialData || emptySpotForm);
   const [imgForm, setImgForm] = useState(initialImg || emptyImgForm);
+  console.log("spot form state", { spotForm, imgForm });
 
   /** @type {[Record<string, App.SpotFormValidatorResult>, React.Dispatch<React.SetStateAction<Record<string, App.SpotFormValidatorResult>>>]} */
   const [errors, setErrors] = useState({});
 
-  /** @type {[App.CreateSpotError['errors'], React.Dispatch<React.SetStateAction<App.CreateSpotError>>]} */
-  const [backendErrors, setBackendErrors] = useState({});
+  // /** @type {[App.CreateSpotError['errors'], React.Dispatch<React.SetStateAction<App.CreateSpotError>>]} */
+  // const [backendErrors, setBackendErrors] = useState({});
 
   /** @type {(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void} */
   const handleChangeSpot = (e) => {
@@ -169,14 +172,12 @@ export const SpotForm = ({ initialData, initialImg }) => {
       );
       //   const response = await dispatch(createSpot(spotForm, imgUrls));
 
-      const route = Boolean(initialData)
-        ? `/api/spots/${spotId}`
-        : "/api/spots";
+      const route = initialData ? `/api/spots/${spotId}` : "/api/spots";
       const response = await createOrEditSpot({
         spotDetails: spotForm,
         imgUrls,
         endpoint: {
-          method: Boolean(initialData) ? "PUT" : "POST",
+          method: initialData ? "PUT" : "POST",
           route,
         },
       });
@@ -364,7 +365,7 @@ export const SpotForm = ({ initialData, initialImg }) => {
       <div>
         <h1>{!initialData ? "Create a New Spot" : "Update your Spot"}</h1>
         <button onClick={handleFillDummyData}>Fill in dummy data</button>
-        <h2>Where's your place located?</h2>
+        <h2>Where&apos;s your place located?</h2>
         Guests will only get your exact address once they booked a reservation.
       </div>
       <div>

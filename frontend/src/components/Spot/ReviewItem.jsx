@@ -8,12 +8,12 @@ export const ReviewItem = ({ reviewId }) => {
   const review = useAppSelector((state) => state.reviews[reviewId]);
   const reviewUser = useAppSelector((state) => state.users[review.userId]);
   if (!review) {
-    return <div>This review doesn't exist!</div>;
+    return <div>This review doesn&apos;t exist!</div>;
   }
 
   const reviewDate = new Date(review.createdAt);
   if (!reviewUser) {
-    return <div>This review doesn't have a user!</div>;
+    return <div>This review doesn&apos;t have a user!</div>;
   }
 
   return (

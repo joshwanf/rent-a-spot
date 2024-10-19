@@ -1,5 +1,3 @@
-import { csrfFetch } from "./csrf";
-
 const SET_USERS = "users/setUsers";
 
 export const usersReducer = (state = {}, action) => {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import {
   selectSession,
   useAppDispatch,
@@ -23,10 +23,10 @@ export const ManageSpots = () => {
         // setIsLoadedSpots(true);
       }
     })();
-  }, [dispatch]);
+  }, [dispatch, user]);
 
   if (!user || !userSpots) {
-    return <div>Loading user's current spots...</div>;
+    return <div>Loading user&apos;s current spots...</div>;
   }
   return (
     <>

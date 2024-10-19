@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import {
   useAppSelector,
   useAppDispatch,
-  selectAllSpots,
+  // selectAllSpots,
   selectAllSpotsArr,
-  selectSession,
+  // selectSession,
   getAllSpots,
 } from "../../store";
 import { SpotTile } from "./SpotTile";
@@ -12,17 +12,17 @@ import "../../css/AllSpots.css";
 
 export const AllSpots = () => {
   const dispatch = useAppDispatch();
-  const [isLoadedUser, setIsLoadedUser] = useState(false);
-  const [isLoadedSpots, setIsLoadedSpots] = useState(false);
-  const user = useAppSelector(selectSession);
+  // const [isLoadedUser, setIsLoadedUser] = useState(false);
+  // const [isLoadedSpots, setIsLoadedSpots] = useState(false);
+  // const user = useAppSelector(selectSession);
   const spots = useAppSelector(selectAllSpotsArr);
 
   useEffect(() => {
     (() => {
       // dispatch(restoreUser()).then(() => setIsLoadedUser(true));
-      dispatch(getAllSpots()).then(() => setIsLoadedSpots(true));
+      dispatch(getAllSpots()); //.then(() => setIsLoadedSpots(true));
     })();
-  }, [dispatch, setIsLoadedUser, setIsLoadedSpots]);
+  }, [dispatch]);
 
   // const spots = Object.values(useAppSelector(selectAllSpots));
 
