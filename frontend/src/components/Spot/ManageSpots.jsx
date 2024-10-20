@@ -7,6 +7,7 @@ import {
   getAllSpots,
 } from "../../store";
 import { SpotTile } from "./SpotTile";
+import "../../css/AllSpots.css";
 /**
  * @returns {JSX.Element}
  */
@@ -34,7 +35,7 @@ export const ManageSpots = () => {
         <h1>Manage Spots</h1>
       </div>
       {userSpots.length > 0 ? (
-        <div className="allSpots">
+        <div className="all-spots">
           {userSpots.map((spot) => (
             <SpotTile key={spot.id} spot={spot} showDashboard={true} />
           ))}

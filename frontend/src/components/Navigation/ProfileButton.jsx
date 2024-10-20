@@ -12,7 +12,7 @@ import { SignupFormModal } from "../SignupFormModal";
 import "../../css/ProfileButton.css";
 
 /**
- * @param {App.RootState['session']} props.user
+ * @param {Store.API.User} props.user
  */
 export const ProfileButton = ({ user }) => {
   const dispatch = useAppDispatch();
@@ -50,37 +50,40 @@ export const ProfileButton = ({ user }) => {
     navigate("/");
   };
   return (
-    <div
-      className="profile-button"
-      style={{ float: "right" }}
-      data-testid="user-menu-button"
-    >
-      <div className="profile-icon" onClick={handleToggleProfile}>
+    <div className="profile-button" style={{ float: "right" }}>
+      <div
+        className="profile-icon"
+        onClick={handleToggleProfile}
+        data-testid="user-menu-button"
+      >
         <RxHamburgerMenu />
         <VscAccount />
       </div>
       <div
         ref={profileRef}
         className={`profile-menu ${showMenu ? "" : "hidden"}`}
-        data-testid="user-dropdown-menu"
       >
         {!user ? (
-          <ul>
-            <OpenModalMenuItem
-              itemText="Log In"
-              modalComponent={<LoginFormModal />}
-              onItemClick={closeMenu}
-            />
-            <OpenModalMenuItem
-              itemText="Sign Up"
-              modalComponent={<SignupFormModal />}
-              onItemClick={closeMenu}
-            />
-          </ul>
+          <div data-testid="user-dropdown-menu">
+            <ul>
+              <OpenModalMenuItem
+                itemText="Log in"
+                modalComponent={<LoginFormModal />}
+                onItemClick={closeMenu}
+              />
+              <OpenModalMenuItem
+                itemText="Sign Up"
+                modalComponent={<SignupFormModal />}
+                onItemClick={closeMenu}
+              />
+            </ul>
+          </div>
         ) : (
           <div>
-            <div>Hello, {user.username}</div>
-            <div>{user.email}</div>
+            <div data-testid="user-dropdown-menu">
+              <div>Hello, {user.firstName}</div>
+              <div>{user.email}</div>
+            </div>
             <div>
               <Link to="/spots/current" onClick={() => closeMenu()}>
                 Manage Spots

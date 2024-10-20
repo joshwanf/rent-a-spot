@@ -199,6 +199,7 @@ declare namespace App {
     inputType?: "number";
     hrAfter?: boolean;
     error?: string;
+    testId?: string;
   }
   interface SpotFormValidatorResult {
     pass: boolean;

@@ -5,5 +5,5 @@
  * @returns {JSX.Element}
  */
 export const Price = ({ price }) => {
-  return <div>${price}/night</div>;
+  return <div data-testid="spot-price">${price}/night</div>;
 };

@@ -49,16 +49,46 @@ export const SignupFormModal = () => {
     }
 
     const response = await dispatch(signupUser(user));
-    if (response?.errors) {
-      return setErrors(response.errors);
-    } else if (response?.ok) {
+    if (response.type === "error") {
+      const error = await response.error.json();
+      console.log(error);
+      return setErrors(error);
+    } else if (response.type === "signup") {
+      const user = response.signup.json();
       closeModal();
-      return response;
+      return user;
     }
   };
+
+  /** @type {Record<string, string>} */
+  const dataIdTagsForTesting = {
+    firstName: "firstname-error-message",
+    lastName: "lastname-error-message",
+    username: "username-error-message",
+    password: "password-error-message",
+    confirmPassword: "confirmpassword-error-message",
+    email: "email-error-message",
+  };
+  console.log("errors", { errors });
   return (
-    <div className="signup-form">
-      <Error errors={errors} />
+    <div className="signup-form" data-testid="sign-up-form">
+      {/* <Error errors=" " testId="username-error-message" /> */}
+      {/* {errors && <div data-testid="username-error-message"></div>} */}
+      {["email", "username"].map((field) => {
+        if (errors[field]) {
+          return (
+            <Error
+              key={field}
+              errors={errors[field]}
+              testId={dataIdTagsForTesting[field]}
+            />
+          );
+        } else {
+          return;
+        }
+      })}
+      {/* <Error errors={errors.email} testId="email-error-message" />
+      )} */}
       <form onSubmit={handleSubmit}>
         <div>
           <label className="login-form-item">
@@ -69,6 +99,7 @@ export const SignupFormModal = () => {
               placeholder="First Name"
               name="firstName"
               type="text"
+              data-testid="first-name-input"
             />
           </label>
         </div>
@@ -81,6 +112,7 @@ export const SignupFormModal = () => {
               placeholder="Last Name"
               name="lastName"
               type="text"
+              data-testid="last-name-input"
             />
           </label>
         </div>
@@ -93,6 +125,7 @@ export const SignupFormModal = () => {
               placeholder="Email"
               name="email"
               type="text"
+              data-testid="email-input"
             />
           </label>
         </div>
@@ -105,6 +138,7 @@ export const SignupFormModal = () => {
               placeholder="Username"
               name="username"
               type="text"
+              data-testid="username-input"
             />
           </label>
         </div>
@@ -117,6 +151,7 @@ export const SignupFormModal = () => {
               placeholder="Password"
               name="password"
               type="text"
+              data-testid="password-input"
             />
           </label>
         </div>
@@ -129,10 +164,15 @@ export const SignupFormModal = () => {
               placeholder="Confirm Password"
               name="confirmPassword"
               type="text"
+              data-testid="confirm-password-input"
             />
           </label>
         </div>
-        <button disabled={isDisabledSubmit}>Submit</button>
+        <div className="sign-up-button">
+          <button disabled={isDisabledSubmit} data-testid="form-sign-up-button">
+            Sign up
+          </button>
+        </div>
       </form>
     </div>
   );

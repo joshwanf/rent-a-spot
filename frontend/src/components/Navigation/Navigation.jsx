@@ -18,13 +18,17 @@ export const Navigation = () => {
       <ul>
         <li>
           <NavLink to="/" className="nav-link">
-            <FaAirbnb />
+            <FaAirbnb data-testid="logo" />
             <span>Home</span>
           </NavLink>
         </li>
         <li className="nav-link-profile">
           {session.user && (
-            <button onClick={handleClick} id="create-spot-btn">
+            <button
+              onClick={handleClick}
+              id="create-spot-btn"
+              data-testid="create-new-spot-button"
+            >
               Create a New Spot
             </button>
           )}

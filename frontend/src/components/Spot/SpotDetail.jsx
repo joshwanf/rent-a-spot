@@ -82,32 +82,34 @@ export const SpotDetail = () => {
   };
 
   return (
-    <div>
-      <h2>{spot.name}</h2>
-      <div>
-        {spot.city}, {spot.state}, {spot.country}
+    <div className="spot-detail-container">
+      <h2 data-testid="spot-name">{spot.name}</h2>
+      <div data-testid="spot-location">
+        <span data-testid="spot-city">{spot.city}</span>, {spot.state},{" "}
+        {spot.country}
       </div>
       <SpotDetailImages images={spotImages} spotId={spot.id} />
       <div className="spot-detail">
         <div className="spot-detail-info">
-          <div>
+          <div data-testid="spot-host">
             Hosted by {spotOwner?.firstName} {spotOwner?.lastName}
           </div>
-          <div>{spot.description}</div>
+          <div data-testid="spot-description">{spot.description}</div>
         </div>
-        <div className="spot-detail-book">
+        <div className="spot-detail-book" data-testid="spot-callout-box">
           <Price price={spot.price} />
           <ReviewSummary rating={spot.rating} numReviews={spot.numReviews} />
           <button
             onClick={handleReserveBooking}
             className="spot-detail-book-btn"
+            data-testid="reserve-button"
           >
             Reserve
           </button>
         </div>
       </div>
       <hr />
-      <div>
+      <div data-testid="reviews-heading">
         <ReviewSummary numReviews={spot.numReviews} rating={spot.rating} />
       </div>
       <div>
@@ -117,6 +119,7 @@ export const SpotDetail = () => {
             modalComponent={<CreateReview spotId={spot.id} />}
             onButtonClick={() => {}}
             onModalClose={handleAfterPostReview}
+            testId="review-button"
           />
         )}
       </div>

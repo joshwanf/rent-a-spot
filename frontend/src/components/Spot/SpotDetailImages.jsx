@@ -16,10 +16,21 @@ export const SpotDetailImages = ({ images }) => {
   }
   return (
     <div className="spot-detail-imgs">
-      {previewImg && <img src={previewImg.url} className="spot-img-preview" />}
+      {previewImg && (
+        <img
+          src={previewImg.url}
+          className="spot-img-preview"
+          data-testid="spot-large-image"
+        />
+      )}
       {regularImgs.length > 0 &&
         regularImgs.map((image, i) => (
-          <img key={i} src={image.url} className="spot-img" />
+          <img
+            key={i}
+            src={image.url}
+            className="spot-img-regular"
+            data-testid="spot-small-image"
+          />
         ))}
     </div>
   );

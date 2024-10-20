@@ -1,28 +1,28 @@
-/* flexbox */
-.all-spots-flexbox {
-  display: flex;
-  flex-wrap: wrap;
-  /* justify-content: center; */
-  gap: 1em;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.spot-tile-flexbox {
-  border: 1px solid red;
-  /* max-width: 20%; */
-  flex-basis: 20%;
-  min-width: 225px;
-  /* width: calc(100% * (1 / 4) - 10px - 1px); */
-  cursor: pointer;
-  /* height: 15em; */
-}
-
 .all-spots {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
   gap: 16px; /* Adjust the gap between items as needed */
   padding: 16px; /* Optional padding for the container */
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (max-width: 1280px) {
+  .all-spots {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 850px) {
+  .all-spots {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+  .all-spots {
+    grid-template-columns: 1fr;
+  }
 }
 
 .spot-tile {

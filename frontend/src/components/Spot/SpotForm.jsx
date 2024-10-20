@@ -55,8 +55,8 @@ export const SpotForm = ({ initialData, initialImg }) => {
     address: "",
     city: "",
     state: "",
-    lat: "",
-    lng: "",
+    lat: 0,
+    lng: 0,
     description: "",
     name: "",
     price: "",
@@ -276,12 +276,13 @@ export const SpotForm = ({ initialData, initialImg }) => {
       value: spotForm.country,
       onChangeHandler: handleChangeSpot,
       error: !errors.country?.pass ? errors.country?.message : "",
+      testId: "",
     },
     address: {
       heading: "Street Address",
       caption: "",
       fieldName: "address",
-      placeholder: "Address",
+      placeholder: "Street Address",
       value: spotForm.address,
       onChangeHandler: handleChangeSpot,
       error: !errors.address?.pass ? errors.address?.message : "",
@@ -330,7 +331,7 @@ export const SpotForm = ({ initialData, initialImg }) => {
       caption:
         "Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.",
       fieldName: "description",
-      placeholder: "Description",
+      placeholder: "Please write at least 30 characters",
       value: spotForm.description,
       onChangeHandler: handleChangeSpot,
       isTextarea: "textarea",
@@ -369,7 +370,7 @@ export const SpotForm = ({ initialData, initialImg }) => {
         Guests will only get your exact address once they booked a reservation.
       </div>
       <div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} data-testid="create-spot-form">
           {fieldsToDisplay.map((field) => (
             <SpotFormField key={field} propData={fieldData[field]} />
           ))}
@@ -428,7 +429,7 @@ export const SpotForm = ({ initialData, initialImg }) => {
             </label>
           </fieldset>
           <button disabled={isDisabledSubmit}>
-            {!initialData ? "Create a Spot" : "Update your Spot"}
+            {!initialData ? "Create Spot" : "Update your Spot"}
           </button>
         </form>
       </div>

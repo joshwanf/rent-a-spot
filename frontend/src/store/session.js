@@ -47,15 +47,18 @@ export const signupUser = (user) => async (dispatch) => {
       method: "POST",
       body: JSON.stringify(user),
     });
+
     const data = await response.json();
     if (data.user !== null) {
       dispatch(setUser(data.user));
       dispatch({ type: "users/setUsers", payload: [data.user] });
     }
-    return response;
+    return { type: "signup", signup: response };
   } catch (err) {
-    const error = await err.json();
-    return error;
+    // console.log("in signUpUser", err);
+    return { type: "error", error: err };
+    // const error = await err.json();
+    // return error;
   }
 };
 

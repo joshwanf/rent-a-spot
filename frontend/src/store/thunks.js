@@ -64,7 +64,7 @@ export const getAllSpots = (userId) => async (dispatch) => {
     const data = await response.json();
     const spotsWithFullPreviewImgUrl = data.Spots.map((spot) => ({
       ...spot,
-      [spot["previewImage"]]: `/spot-images/${spot.id}/${spot.previewImage}`,
+      [spot["previewImage"]]: `${spot.previewImage}`,
     }));
     dispatch(setAllSpots(spotsWithFullPreviewImgUrl));
     return { type: "spots", spots: data };

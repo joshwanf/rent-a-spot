@@ -1,3 +1,6 @@
-.spotTile:hover {
-  pointer: cursor;
+.spot-tile-location {
+  max-width: 50%;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  word-break: break-word;
 }

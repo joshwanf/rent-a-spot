@@ -72,10 +72,14 @@ export const spotsReducer = (state = {}, action) => {
       const newSpots = {};
       for (const spot of action.payload) {
         const { previewImage, avgRating, ...rest } = spot;
-        const previewImgWithFullUrl =
+        const previewImgUrl =
           previewImage !== "no preview image"
-            ? `/spot-images/${spot.id}/${previewImage}`
+            ? `${previewImage}`
             : "/no-image-found/no_image_available_600_x_450.svg";
+        // const previewImgWithFullUrl =
+        //   previewImage !== "no preview image"
+        //     ? `/spot-images/${spot.id}/${previewImage}`
+        //     : "/no-image-found/no_image_available_600_x_450.svg";
         // convert avgRating to decimal with 1 sigfig
         // need Number(avgRating) because postgres sends back a string somehow
         // console.log(
@@ -90,7 +94,7 @@ export const spotsReducer = (state = {}, action) => {
           ...state[spot.id],
           ...rest,
           rating,
-          previewImageUrl: previewImgWithFullUrl,
+          previewImageUrl: previewImgUrl,
         };
       }
       return { ...state, ...newSpots };
@@ -101,15 +105,15 @@ export const spotsReducer = (state = {}, action) => {
         id: "noImage",
         url: "/no-image-found/no_image_available_600_x_450.svg",
       };
-      const imgsWithFullUrl = SpotImages.map((spotImg) => ({
-        ...spotImg,
-        url: `/spot-images/${action.payload.id}/${spotImg.url}`,
-      }));
+      //   const imgsWithFullUrl = SpotImages.map((spotImg) => ({
+      //     ...spotImg,
+      //     url: `/spot-images/${action.payload.id}/${spotImg.url}`,
+      //   }));
       const previewImgObj =
-        imgsWithFullUrl.filter((image) => image.preview)[0] || emptyImgObj;
-      const regularImgs = imgsWithFullUrl
-        .filter((image) => !image.preview)
-        .map((image) => image.id);
+        SpotImages.filter((image) => image.preview)[0] || emptyImgObj;
+      const regularImgs = SpotImages.filter((image) => !image.preview).map(
+        (image) => image.id
+      );
       // need Number(avgRating) because postgres sends back a string somehow
       const rating =
         Number(avgStarRating) !== 0 ? Number(avgStarRating).toFixed(1) : "New";

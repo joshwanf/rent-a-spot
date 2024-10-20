@@ -29,7 +29,8 @@ export const LoginFormModal = () => {
     setErrors({});
     const response = await dispatch(loginUser({ credential, password }));
     if (response?.errors) {
-      setErrors(response.errors);
+      // setErrors(response.errors);
+      setErrors({ message: "The provided credentials were invalid" });
     } else {
       closeModal();
     }
@@ -48,7 +49,7 @@ export const LoginFormModal = () => {
 
   return (
     <div className="login-form" data-testid="login-modal">
-      <Error errors={errors} />
+      <Error errors={errors} testId="email-error-message" />
       <form onSubmit={handleSubmit}>
         <div>
           <label className="login-form-item">
@@ -85,7 +86,9 @@ export const LoginFormModal = () => {
           Log In
         </button>
       </form>
-      <button onClick={handleLogInDemo}>Log in Demo User</button>
+      <button onClick={handleLogInDemo} data-testid="demo-user-login">
+        Log in Demo User
+      </button>
     </div>
   );
 };

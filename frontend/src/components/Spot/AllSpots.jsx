@@ -39,7 +39,7 @@ export const AllSpots = () => {
   }
 
   return (
-    <div className="all-spots">
+    <div className="all-spots" data-testid="spots-list">
       {spots.toReversed().map((spot) => (
         <SpotTile key={spot.id} spot={spot} showDashboard={false} />
       ))}

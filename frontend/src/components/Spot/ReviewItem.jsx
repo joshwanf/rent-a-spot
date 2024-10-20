@@ -17,13 +17,13 @@ export const ReviewItem = ({ reviewId }) => {
   }
 
   return (
-    <div className="review-item">
+    <div className="review-item" data-testid="review-item">
       <div>{reviewUser.firstName}</div>
-      <div>
+      <div data-testid="review-date">
         {reviewDate.toLocaleString("default", { month: "long" })}{" "}
         {reviewDate.getFullYear()}
       </div>
-      <div>{review.review}</div>
+      <div data-testid="review-text">{review.review}</div>
       {currentUser && currentUser.id === review.userId && (
         <DeleteOpenModalButton
           modalComponent={

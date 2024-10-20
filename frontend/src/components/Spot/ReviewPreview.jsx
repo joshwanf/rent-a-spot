@@ -9,8 +9,12 @@ export const ReviewSummary = ({ numReviews, rating }) => {
       <StarRating rating={rating} />
       {numReviews !== 0 && (
         <div className="spot-review">
-          <span style={{ padding: "0px 0.25em" }}>&middot;</span>
-          {numReviews} {reviewsText}
+          <p>
+            <span style={{ padding: "0px 0.25em" }}>&middot;</span>
+            <span data-testid="review-count">
+              {numReviews} {reviewsText}
+            </span>
+          </p>
         </div>
       )}
     </div>

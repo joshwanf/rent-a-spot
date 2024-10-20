@@ -2,198 +2,295 @@ const demoSpotImages = [
   {
     spotId: 1,
     images: [
-      { url: "kitchen1.jpg", preview: true },
-      { url: "livingroom1.png" },
-      { url: "diningroom1.png" },
+      {
+        url: "https://live.staticflickr.com/4107/5124184269_eb2486edca_b.jpg",
+        preview: true,
+      },
+      { url: "https://live.staticflickr.com/4013/4590852102_567dcddc64.jpg" },
+      { url: "https://live.staticflickr.com/4037/4590085293_ca0f0651cf.jpg" },
     ],
   },
   {
     spotId: 2,
     images: [
-      { url: "bathroom1.png", preview: true },
-      { url: "bedroom1.png" },
-      { url: "garden1.png" },
-      { url: "pool1.png" },
+      {
+        url: "https://live.staticflickr.com/1244/5168193489_1277bf6b74_b.jpg",
+        preview: true,
+      },
+      { url: "https://live.staticflickr.com/3320/4590230891_695a8bc5ce.jpg" },
+      { url: "https://live.staticflickr.com/4064/4590705552_227faf186a.jpg" },
+      { url: "https://live.staticflickr.com/3302/4590085361_b5ab14280c.jpg" },
     ],
   },
   {
     spotId: 3,
-    images: [{ url: "kitchen2.png", preview: true }, { url: "bathroom2.png" }],
+    images: [
+      {
+        url: "https://live.staticflickr.com/65535/50381047728_614f78fd44_b.jpg",
+        preview: true,
+      },
+      { url: "https://live.staticflickr.com/3320/4590230891_695a8bc5ce.jpg" },
+    ],
   },
   {
     spotId: 4,
     images: [
-      { url: "livingroom2.png", preview: true },
-      { url: "balcony1.png" },
-      { url: "garage1.png" },
+      {
+        url: "https://live.staticflickr.com/4107/4976277599_0cc89d3d66_b.jpg",
+        preview: true,
+      },
+      { url: "https://live.staticflickr.com/4055/4590232053_9ba23b775f.jpg" },
+      { url: "https://live.staticflickr.com/4028/4590705934_d38bd7e049.jpg" },
     ],
   },
   {
     spotId: 5,
-    images: [{ url: "bedroom2.png", preview: true }, { url: "bathroom3.png" }],
+    images: [
+      {
+        url: "https://live.staticflickr.com/6068/6072090065_e62a543073_b.jpg",
+        preview: true,
+      },
+      { url: "https://live.staticflickr.com/4030/4590231877_0bf1febb9b.jpg" },
+      { url: "https://live.staticflickr.com/4025/4590706234_96572a9a0c.jpg" },
+    ],
   },
   {
     spotId: 6,
     images: [
-      { url: "kitchen3.png", preview: true },
-      { url: "diningroom2.png" },
-      { url: "patio1.png" },
+      {
+        url: "https://live.staticflickr.com/4085/4976938834_85af40bd77_b.jpg",
+        preview: true,
+      },
+      { url: "https://live.staticflickr.com/4018/4590851934_1977739384.jpg" },
+      { url: "https://live.staticflickr.com/4023/4590852718_e77fae422d.jpg" },
     ],
   },
-  { spotId: 7, images: [{ url: "livingroom3.png", preview: true }] },
+  {
+    spotId: 7,
+    images: [
+      {
+        url: "https://live.staticflickr.com/3922/15215909139_f1c3c20b50_b.jpg",
+        preview: true,
+      },
+    ],
+  },
   {
     spotId: 8,
     images: [
-      { url: "garden2.png", preview: true },
-      { url: "bathroom4.png" },
-      { url: "bedroom3.png" },
+      {
+        url: "https://live.staticflickr.com/4838/45679323142_9931072216_b.jpg",
+        preview: true,
+      },
+      { url: "https://live.staticflickr.com/3318/4590851660_a82bfa1191.jpg" },
+      { url: "https://live.staticflickr.com/4036/4590085847_21e184fcf3.jpg" },
     ],
   },
   {
     spotId: 9,
     images: [
-      { url: "kitchen4.png", preview: true },
-      { url: "diningroom3.png" },
-      { url: "office1.png" },
+      {
+        url: "https://live.staticflickr.com/6193/6105136138_73efd632d5_b.jpg",
+        preview: true,
+      },
+      { url: "https://live.staticflickr.com/4062/4590851148_30cca7ee79.jpg" },
+      { url: "https://live.staticflickr.com/4037/4590851096_b5d16aeeb3.jpg" },
     ],
   },
-  { spotId: 10, images: [{ url: "balcony2.png", preview: true }] },
+  {
+    spotId: 10,
+    images: [
+      {
+        url: "https://upload.wikimedia.org/wikipedia/commons/4/46/Mansion_Resort_and_Spa_in_Bali_-_8.jpg",
+        preview: true,
+      },
+    ],
+  },
   {
     spotId: 11,
-    images: [{ url: "garage2.png", preview: true }, { url: "garden3.png" }],
+    images: [
+      {
+        url: "https://live.staticflickr.com/6043/6231361467_b858103606_b.jpg",
+        preview: true,
+      },
+      { url: "https://live.staticflickr.com/3327/4590851802_9bbea5620d.jpg" },
+    ],
   },
   {
     spotId: 12,
     images: [
-      { url: "livingroom4.png", preview: true },
-      { url: "diningroom4.png" },
+      {
+        url: "https://live.staticflickr.com/3877/15336217452_6f8ce8a52d_b.jpg",
+        preview: true,
+      },
+      { url: "https://live.staticflickr.com/4065/4590852324_9f1680a07e.jpg" },
     ],
   },
   {
     spotId: 13,
-    images: [{ url: "kitchen5.png", preview: true }, { url: "bathroom5.png" }],
+    images: [
+      {
+        url: "https://live.staticflickr.com/5178/5394290367_e2df18b026_b.jpg",
+        preview: true,
+      },
+      { url: "https://live.staticflickr.com/4030/4590230837_6f5e94e1d0.jpg" },
+    ],
   },
   {
     spotId: 14,
     images: [
-      { url: "bedroom4.png", preview: true },
-      { url: "garage3.png" },
-      { url: "patio2.png" },
+      {
+        url: "https://live.staticflickr.com/5178/5394290367_e2df18b026_b.jpg",
+        preview: true,
+      },
+      { url: "https://live.staticflickr.com/4010/4590085735_0300a4eed5.jpg" },
+      { url: "https://live.staticflickr.com/4059/4590851218_2997af0391.jpg" },
     ],
   },
   {
     spotId: 15,
     images: [
-      { url: "kitchen6.png", preview: true },
-      { url: "livingroom5.png" },
-      { url: "diningroom5.png" },
+      {
+        url: "https://live.staticflickr.com/2942/15333365271_8e24227600_b.jpg",
+        preview: true,
+      },
+      { url: "https://live.staticflickr.com/4025/4590706026_2819f548d1.jpg" },
+      { url: "https://live.staticflickr.com/3324/4590231983_16315f2403.jpg" },
     ],
   },
-  { spotId: 16, images: [{ url: "bathroom6.png", preview: true }] },
-  {
-    spotId: 17,
-    images: [{ url: "garden4.png", preview: true }, { url: "balcony3.png" }],
-  },
-  {
-    spotId: 18,
-    images: [{ url: "office2.png", preview: true }, { url: "kitchen7.png" }],
-  },
-  {
-    spotId: 19,
-    images: [{ url: "bedroom5.png", preview: true }, { url: "bathroom7.png" }],
-  },
-  {
-    spotId: 20,
-    images: [
-      { url: "livingroom6.png", preview: true },
-      { url: "diningroom6.png" },
-    ],
-  },
-  // Additional images to reach 200 total
-  {
-    spotId: 1,
-    images: [
-      { url: "kitchen1_2.png" },
-      { url: "livingroom1_2.png", preview: true },
-      { url: "diningroom1_2.png" },
-    ],
-  },
-  {
-    spotId: 2,
-    images: [
-      { url: "bathroom1_2.png", preview: true },
-      { url: "garden1_2.png" },
-    ],
-  },
-  {
-    spotId: 3,
-    images: [
-      { url: "kitchen2_2.png", preview: true },
-      { url: "livingroom2_2.png" },
-    ],
-  },
-  {
-    spotId: 4,
-    images: [
-      { url: "bathroom2_2.png", preview: true },
-      { url: "diningroom2_2.png" },
-    ],
-  },
-  { spotId: 5, images: [{ url: "kitchen3_2.png", preview: true }] },
-  {
-    spotId: 6,
-    images: [
-      { url: "livingroom3_2.png" },
-      { url: "balcony1_2.png", preview: true },
-    ],
-  },
-  { spotId: 7, images: [{ url: "diningroom3_2.png", preview: true }] },
-  {
-    spotId: 8,
-    images: [
-      { url: "garden2_2.png" },
-      { url: "bathroom4_2.png", preview: true },
-    ],
-  },
-  {
-    spotId: 9,
-    images: [
-      { url: "kitchen4_2.png" },
-      { url: "diningroom4_2.png", preview: true },
-    ],
-  },
-  { spotId: 10, images: [{ url: "livingroom4_2.png", preview: true }] },
-  {
-    spotId: 11,
-    images: [{ url: "garage2_2.png" }, { url: "garden3_2.png", preview: true }],
-  },
-  { spotId: 12, images: [{ url: "livingroom5_2.png", preview: true }] },
-  {
-    spotId: 13,
-    images: [
-      { url: "kitchen5_2.png", preview: true },
-      { url: "bathroom5_2.png" },
-    ],
-  },
-  { spotId: 14, images: [{ url: "bedroom4_2.png", preview: true }] },
-  { spotId: 15, images: [{ url: "kitchen6_2.png", preview: true }] },
   {
     spotId: 16,
     images: [
-      { url: "livingroom6_2.png", preview: true },
-      { url: "diningroom6_2.png" },
+      {
+        url: "https://live.staticflickr.com/8383/8607911758_06bd427535.jpg",
+        preview: true,
+      },
     ],
   },
-  { spotId: 17, images: [{ url: "garden4_2.png", preview: true }] },
-  { spotId: 18, images: [{ url: "office2_2.png", preview: true }] },
-  { spotId: 19, images: [{ url: "bedroom5_2.png", preview: true }] },
+  {
+    spotId: 17,
+    images: [
+      {
+        url: "https://live.staticflickr.com/3893/15187594681_2029259728_b.jpg",
+        preview: true,
+      },
+      { url: "https://live.staticflickr.com/4012/4590851600_fccc26213f.jpg" },
+    ],
+  },
+  {
+    spotId: 18,
+    images: [
+      {
+        url: "https://live.staticflickr.com/5585/14887422569_1ddcd53cc4_b.jpg",
+        preview: true,
+      },
+      { url: "https://live.staticflickr.com/4025/4590085223_a35f0b0fe2.jpg" },
+    ],
+  },
+  {
+    spotId: 19,
+    images: [
+      {
+        url: "https://live.staticflickr.com/4118/4740869245_27c32922b2_b.jpg",
+        preview: true,
+      },
+      { url: "https://live.staticflickr.com/4008/4590851272_206d2336c9.jpg" },
+    ],
+  },
   {
     spotId: 20,
     images: [
-      { url: "livingroom7.png", preview: true },
-      { url: "diningroom7.png" },
+      {
+        url: "https://live.staticflickr.com/4076/4740868471_bc50cb676b_b.jpg",
+        preview: true,
+      },
+      { url: "https://live.staticflickr.com/4050/4590231737_bd5faeb997.jpg" },
     ],
   },
+  // Additional images to reach 200 total
+  //   {
+  //     spotId: 1,
+  //     images: [
+  //       { url: "livingroom1_2.png", preview: true },
+  //       { url: "https://live.staticflickr.com/4044/4588701537_4cf3c34cf5.jpg" },
+  //       { url: "https://live.staticflickr.com/4048/4588187734_6e43cc8212.jpg" },
+  //     ],
+  //   },
+  //   {
+  //     spotId: 2,
+  //     images: [
+  //       { url: "bathroom1_2.png", preview: true },
+  //       { url: "garden1_2.png" },
+  //     ],
+  //   },
+  //   {
+  //     spotId: 3,
+  //     images: [
+  //       { url: "kitchen2_2.png", preview: true },
+  //       { url: "livingroom2_2.png" },
+  //     ],
+  //   },
+  //   {
+  //     spotId: 4,
+  //     images: [
+  //       { url: "bathroom2_2.png", preview: true },
+  //       { url: "diningroom2_2.png" },
+  //     ],
+  //   },
+  //   { spotId: 5, images: [{ url: "kitchen3_2.png", preview: true }] },
+  //   {
+  //     spotId: 6,
+  //     images: [
+  //       { url: "livingroom3_2.png" },
+  //       { url: "balcony1_2.png", preview: true },
+  //     ],
+  //   },
+  //   { spotId: 7, images: [{ url: "diningroom3_2.png", preview: true }] },
+  //   {
+  //     spotId: 8,
+  //     images: [
+  //       { url: "garden2_2.png" },
+  //       { url: "bathroom4_2.png", preview: true },
+  //     ],
+  //   },
+  //   {
+  //     spotId: 9,
+  //     images: [
+  //       { url: "kitchen4_2.png" },
+  //       { url: "diningroom4_2.png", preview: true },
+  //     ],
+  //   },
+  //   { spotId: 10, images: [{ url: "livingroom4_2.png", preview: true }] },
+  //   {
+  //     spotId: 11,
+  //     images: [{ url: "garage2_2.png" }, { url: "garden3_2.png", preview: true }],
+  //   },
+  //   { spotId: 12, images: [{ url: "livingroom5_2.png", preview: true }] },
+  //   {
+  //     spotId: 13,
+  //     images: [
+  //       { url: "kitchen5_2.png", preview: true },
+  //       { url: "bathroom5_2.png" },
+  //     ],
+  //   },
+  //   { spotId: 14, images: [{ url: "bedroom4_2.png", preview: true }] },
+  //   { spotId: 15, images: [{ url: "kitchen6_2.png", preview: true }] },
+  //   {
+  //     spotId: 16,
+  //     images: [
+  //       { url: "livingroom6_2.png", preview: true },
+  //       { url: "diningroom6_2.png" },
+  //     ],
+  //   },
+  //   { spotId: 17, images: [{ url: "garden4_2.png", preview: true }] },
+  //   { spotId: 18, images: [{ url: "office2_2.png", preview: true }] },
+  //   { spotId: 19, images: [{ url: "bedroom5_2.png", preview: true }] },
+  //   {
+  //     spotId: 20,
+  //     images: [
+  //       { url: "livingroom7.png", preview: true },
+  //       { url: "diningroom7.png" },
+  //     ],
+  //   },
 ];
 
 const oldSpotImages = [

@@ -17,6 +17,7 @@ export const SpotFormField = ({ propData }) => {
     inputType,
     hrAfter,
     error,
+    testId,
   } = propData;
   return (
     <div>
@@ -36,6 +37,7 @@ export const SpotFormField = ({ propData }) => {
             placeholder={placeholder}
             value={value}
             onChange={onChangeHandler}
+            data-testid={testId ?? ""}
           />
         ) : (
           <input
@@ -44,6 +46,7 @@ export const SpotFormField = ({ propData }) => {
             placeholder={placeholder}
             value={value}
             onChange={onChangeHandler}
+            data-testid={testId ?? ""}
           />
         )}
         {error && <Error errors={error} />}

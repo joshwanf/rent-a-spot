@@ -111,7 +111,7 @@ export const CreateReview = ({ spotId }) => {
     }
   };
   return (
-    <div className="create-review">
+    <div className="create-review" data-testid="review-form">
       <h1>How was your stay?</h1>
       <Error errors={errors} />
       <form onSubmit={handleSubmitReview}>
@@ -126,6 +126,7 @@ export const CreateReview = ({ spotId }) => {
               className={star <= reviewForm.stars ? "review-star-active" : ""}
               onMouseEnter={handleStarHoverIn(star)}
               onMouseLeave={handleStarHoverOut}
+              data-testid="review-star-clickable"
             >
               <FaStar
                 onClick={handleStarChange(star)}

@@ -24,7 +24,7 @@ export const Review = ({ ownerId }) => {
     return <div>Be the first to leave a review!</div>;
   }
   return (
-    <div>
+    <div data-testid="review-list">
       {allReviews.toReversed().map((review) => (
         <ReviewItem key={review} reviewId={review} />
       ))}
