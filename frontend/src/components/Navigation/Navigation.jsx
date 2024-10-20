@@ -19,7 +19,7 @@ export const Navigation = () => {
         <li>
           <NavLink to="/" className="nav-link">
             <FaAirbnb data-testid="logo" />
-            <span>Home</span>
+            <span>Rent a Spot</span>
           </NavLink>
         </li>
         <li className="nav-link-profile">

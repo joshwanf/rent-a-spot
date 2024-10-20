@@ -54,7 +54,7 @@ export const SpotDetail = () => {
   const userHasReviewForSpot =
     thisUser &&
     thisReviews.filter((review) => review.userId === thisUser.id).length > 0;
-  console.log("spotdetail", { thisReviews });
+  // console.log("spotdetail", { thisReviews });
   const canPostReview =
     thisUser && thisUser.id !== spot.ownerId && !userHasReviewForSpot;
   // const spotImages = [
