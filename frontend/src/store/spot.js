@@ -100,7 +100,8 @@ export const spotsReducer = (state = {}, action) => {
       return { ...state, ...newSpots };
     }
     case GOT_ONE_SPOT: {
-      const { SpotImages, Owner, avgStarRating, ...rest } = action.payload;
+      const { SpotImages, Owner, avgStarRating, numReviews, ...rest } =
+        action.payload;
       const emptyImgObj = {
         id: "noImage",
         url: "/no-image-found/no_image_available_600_x_450.svg",
@@ -121,6 +122,7 @@ export const spotsReducer = (state = {}, action) => {
       /** @type {Store.State.Spots} */
       const newSpot = {
         ...rest,
+        numReviews: Number(numReviews),
         rating,
         previewImageUrl: previewImgObj.url,
         previewImg: previewImgObj.id,
