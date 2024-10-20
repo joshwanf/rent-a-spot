@@ -16,17 +16,27 @@ module.exports = {
      * }], {});
      */
     console.log("demoSpotImages length", demoSpotImages.length);
-    for (const spot of demoSpotImages) {
-      console.log("inserting images into spot", spot);
-      const images = spot.images.map((image) => ({
+    const allImages = demoSpotImages.map((spot) => {
+      const images = spot.images.map((img) => ({
         spotId: spot.spotId,
-        url: image.url,
-        preview: image.preview || false,
+        url: img.url,
+        preview: img.preview || false,
       }));
-      SpotImage.bulkCreate(images);
-      // for (const image of images) {
-      // }
-    }
+      return images;
+    });
+    console.log("inserting images into spot", allImages);
+    SpotImage.bulkCreate(allImages);
+    // for (const spot of demoSpotImages) {
+    //   console.log("inserting images into spot", spot);
+    //   const images = spot.images.map((image) => ({
+    //     spotId: spot.spotId,
+    //     url: image.url,
+    //     preview: image.preview || false,
+    //   }));
+    //   SpotImage.bulkCreate(images);
+    //   // for (const image of images) {
+    //   // }
+    // }
     // for (const spotImages of demoSpotImages) {
     //   for (const image of spotImages.images) {
     //     SpotImage.create({
