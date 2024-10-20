@@ -7,7 +7,7 @@ const ADD_SPOT_IMAGE = "spotImages/addSpotImage";
 export const spotImagesReducer = (state = {}, action) => {
   switch (action.type) {
     case ADD_SPOT_IMAGE: {
-      console.log("WEIRD SPOT IMAGE", action.payload);
+      //   console.log("WEIRD SPOT IMAGE", action.payload);
       //   if (!action.payload.id) return state;
       const { url } = action.payload;
       const emptyImgObj = {
