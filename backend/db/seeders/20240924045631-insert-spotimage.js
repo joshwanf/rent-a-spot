@@ -15,6 +15,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
+    console.log("demoSpotImages length", demoSpotImages.length);
     for (const spot of demoSpotImages) {
       const images = spot.images.map((image) => ({
         spotId: spot.spotId,
