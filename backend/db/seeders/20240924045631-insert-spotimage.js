@@ -17,14 +17,15 @@ module.exports = {
      */
     console.log("demoSpotImages length", demoSpotImages.length);
     for (const spot of demoSpotImages) {
+      console.log("inserting images into spot", spot);
       const images = spot.images.map((image) => ({
         spotId: spot.spotId,
         url: image.url,
         preview: image.preview || false,
       }));
-      for (const image of images) {
-        SpotImage.create(image);
-      }
+      SpotImage.bulkCreate(images);
+      // for (const image of images) {
+      // }
     }
     // for (const spotImages of demoSpotImages) {
     //   for (const image of spotImages.images) {
