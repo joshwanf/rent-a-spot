@@ -15,16 +15,18 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
-    console.log("demoSpotImages length", demoSpotImages.length);
-    const allImages = demoSpotImages.map((spot) => {
-      const images = spot.images.map((img) => ({
-        spotId: spot.spotId,
-        url: img.url,
-        preview: img.preview || false,
-      }));
-      return images;
-    });
-    console.log("inserting images into spot", allImages);
+    // console.log("demoSpotImages length", demoSpotImages.length);
+    const allImages = demoSpotImages
+      .map((spot) => {
+        const images = spot.images.map((img) => ({
+          spotId: spot.spotId,
+          url: img.url,
+          preview: img.preview || false,
+        }));
+        return images;
+      })
+      .flat(1);
+    // console.log("inserting images into spot", allImages);
     await SpotImage.bulkCreate(allImages);
   },
 
