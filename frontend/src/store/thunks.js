@@ -108,7 +108,7 @@ export const getOneSpot = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}`);
     /** @type {Store.API.GetSpotDetailsById} */
     const data = await response.json();
-
+    console.log("raw data from db", { data });
     const emptyImgObj = {
       id: "noImage",
       url: "/no-image-found/no_image_available_600_x_450.svg",
