@@ -8,6 +8,12 @@ const demoSpotImages = [
       },
       { url: "https://live.staticflickr.com/4013/4590852102_567dcddc64.jpg" },
       { url: "https://live.staticflickr.com/4037/4590085293_ca0f0651cf.jpg" },
+      {
+        url: "https://live.staticflickr.com/5587/14886966569_af8ae06705_b.jpg",
+      },
+      {
+        url: "https://upload.wikimedia.org/wikipedia/commons/b/b0/Holy_Water_Temple_Ubud%2C_Bali%2C_indonesia_-_panoramio_%289%29.jpg",
+      },
     ],
   },
   {

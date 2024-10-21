@@ -38,6 +38,16 @@ const createOrEditSpot = async ({ spotDetails, imgUrls, endpoint }) => {
         })
       );
       await Promise.all(spotImagePromises);
+    } else if (endpoint.method === "PUT") {
+      // TODO: there is no "Edit a spot's image" method
+      // Option 1: edit the backend
+      //  - write a `PUT /api/spot-images/:imageId` endpoint in the backend
+      //  - figure out if an image is being edited or added
+      //  - call PUT on old images, call POST on new images
+      // Option 2: delete all old images
+      //  - get all spotImages.id for a spot
+      //  - call DELETE on those images
+      //  - call POST on new images (even if they haven't changed)
     }
     return { type: "spot", spot };
   } catch (err) {
@@ -48,7 +58,7 @@ const createOrEditSpot = async ({ spotDetails, imgUrls, endpoint }) => {
 
 /** @type {(prop: {initialData?: App.SpotFormData, initialImg?: App.SpotFormImg}) => JSX.Element} */
 export const SpotForm = ({ initialData, initialImg }) => {
-  console.log("in spot form", { initialData, initialImg });
+  // console.log("in spot form", { initialData, initialImg });
   /** @type {App.SpotFormData} */
   const emptySpotForm = {
     country: "",
@@ -69,12 +79,12 @@ export const SpotForm = ({ initialData, initialImg }) => {
     img3: "",
     img4: "",
   };
-  console.log("before img form state", initialImg || emptyImgForm);
+  // console.log("before img form state", initialImg || emptyImgForm);
   const { spotId } = useParams();
   const navigate = useNavigate();
   const [spotForm, setSpotForm] = useState(initialData || emptySpotForm);
   const [imgForm, setImgForm] = useState(initialImg || emptyImgForm);
-  console.log("spot form state", { spotForm, imgForm });
+  // console.log("spot form state", { spotForm, imgForm });
 
   /** @type {[Record<string, App.SpotFormValidatorResult>, React.Dispatch<React.SetStateAction<Record<string, App.SpotFormValidatorResult>>>]} */
   const [errors, setErrors] = useState({});
@@ -144,7 +154,7 @@ export const SpotForm = ({ initialData, initialImg }) => {
     /** @type {(url: string) => boolean} */
     const isValidImgUrl = (url) => {
       const urlExt = url.slice(-4);
-      return [".jpg", ".png"].includes(urlExt);
+      return [".jpg", ".png", ".svg"].includes(urlExt);
     };
     for (const [key, value] of Object.entries(imgForm)) {
       if (value !== "" && !isValidImgUrl(value)) {
@@ -222,7 +232,7 @@ export const SpotForm = ({ initialData, initialImg }) => {
       return { pass: typeof Number(value) === "number", message };
     },
     lat: function (value) {
-      console.log("--", typeof value);
+      // console.log("--", typeof value);
       return this.latOrLng(value);
     },
     lng: function (value) {

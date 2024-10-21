@@ -5,6 +5,7 @@ export const DeleteOpenModalButton = ({
   buttonText,
   onButtonClick,
   onModalClose,
+  className,
 }) => {
   const { setModalContent, setOnModalClose } = useModal();
 
@@ -15,5 +16,9 @@ export const DeleteOpenModalButton = ({
     if (typeof onButtonClick === "function") onButtonClick();
   };
 
-  return <button onClick={handleClick}>{buttonText}</button>;
+  return (
+    <button className={className} onClick={handleClick}>
+      {buttonText}
+    </button>
+  );
 };

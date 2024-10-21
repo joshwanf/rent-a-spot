@@ -1,3 +1,23 @@
 .review-item {
-  border: 1px solid red;
+  /* border: 1px solid red; */
+  padding: 2em;
+  border-radius: 25px;
+}
+
+.review-item:nth-child(even) {
+  background-color: lightgray;
+}
+
+.review-delete-button {
+  background-color: lightskyblue;
+  color: black;
+  border: none;
+  border-radius: 15px;
+  padding: 5px 12px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
 }

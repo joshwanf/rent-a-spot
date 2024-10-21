@@ -1,11 +1,6 @@
 .profile-button {
-  /* border: 1px solid red; */
-  /* background-color: lightsteelblue; */
   position: relative;
   display: inline-block;
-  /* grid-template-columns: 10%; */
-  /* align-items: start; */
-  /* padding: 1em 0em; */
 }
 
 .hidden {
@@ -15,22 +10,14 @@
   border: 1px solid black;
   border-radius: 25px;
   font-size: 8px;
-  /* float: right; */
-  /* width: 10%; */
-  /* max-height: 10%; */
+
   padding: 0.5em 1em;
-  /* text-align: center; */
 }
 .profile-icon:hover {
   cursor: pointer;
 }
-.profile-icon * {
-  /* max-width: 100%; */
-  /* fill: red; */
-  /* size: 1em; */
-}
+
 .profile-menu {
-  /* float: bottom; */
   width: max-content;
   position: absolute;
   z-index: 1;
@@ -38,13 +25,11 @@
   right: 10px;
 }
 .profile-menu > * {
-  /* border: 1px solid red; */
   border-radius: 10px;
   background-color: darkgray;
   margin: 0;
   padding: 1em;
   list-style: none;
-  /* width: 5em; */
 }
 
 .profile-menu li {

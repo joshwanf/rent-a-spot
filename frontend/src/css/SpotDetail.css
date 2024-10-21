@@ -6,25 +6,24 @@
 
 .spot-detail-imgs {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Three columns */
-  grid-template-rows: repeat(2, auto); /* Two rows */
-  gap: 16px; /* Optional: space between items */
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: repeat(2, auto);
+  gap: 16px;
 }
 
 .spot-img-preview {
-  grid-column: span 2; /* Span 2 columns */
-  grid-row: span 2; /* Span 2 rows */
+  grid-row: span 2;
 }
 
 .spot-img-regular {
-  grid-column: span 1; /* Each takes up 1 column width */
+  grid-column: span 1;
 }
 
 .spot-img-preview,
 .spot-img-regular {
-  max-width: 100%; /* Ensure the image does not exceed its container's width */
-  max-height: 100%; /* Ensure the image does not exceed its container's height */
-  object-fit: cover; /* Cover the container while maintaining aspect ratio */
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
 }
 
 .spot-detail {
@@ -33,19 +32,14 @@
 }
 
 .spot-detail-book {
-  border: 1px solid red;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  align-items: center;
 }
 .spot-review-summary {
   display: flex;
-  /* justify-content: space-between; */
   align-items: center;
 }
-/* .spot-review::before {
-  content: " - ";
-  white-space: pre;
-} */
 
 .spot-rating {
   display: flex;

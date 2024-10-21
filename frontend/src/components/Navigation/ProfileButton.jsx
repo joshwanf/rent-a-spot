@@ -65,18 +65,20 @@ export const ProfileButton = ({ user }) => {
       >
         {!user ? (
           <div data-testid="user-dropdown-menu">
-            <ul>
-              <OpenModalMenuItem
-                itemText="Log in"
-                modalComponent={<LoginFormModal />}
-                onItemClick={closeMenu}
-              />
+            <div>
               <OpenModalMenuItem
                 itemText="Sign Up"
                 modalComponent={<SignupFormModal />}
                 onItemClick={closeMenu}
               />
-            </ul>
+            </div>
+            <div>
+              <OpenModalMenuItem
+                itemText="Log in"
+                modalComponent={<LoginFormModal />}
+                onItemClick={closeMenu}
+              />
+            </div>
           </div>
         ) : (
           <div>

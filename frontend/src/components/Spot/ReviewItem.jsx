@@ -33,6 +33,7 @@ export const ReviewItem = ({ reviewId }) => {
               spotId={review.spotId}
             />
           }
+          className="review-delete-button"
           buttonText="Delete"
         />
       )}
