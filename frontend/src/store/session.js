@@ -52,8 +52,10 @@ export const signupUser = (user) => async (dispatch) => {
     if (data.user !== null) {
       dispatch(setUser(data.user));
       dispatch({ type: "users/setUsers", payload: [data.user] });
+      return { type: "signup", signup: data };
+    } else {
+      return { type: "error", error: "Couldn't sign up user!" };
     }
-    return { type: "signup", signup: response };
   } catch (err) {
     // console.log("in signUpUser", err);
     return { type: "error", error: err };

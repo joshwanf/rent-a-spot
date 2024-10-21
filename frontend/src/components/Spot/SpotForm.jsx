@@ -166,11 +166,11 @@ export const SpotForm = ({ initialData, initialImg }) => {
     const hasFormErrors =
       Object.values(emptyErrors).some((error) => !error.pass) ||
       spotForm.description.length < 30;
-    console.log("inside handleSubmit", {
-      hasFormErrors,
-      emptyErrors,
-      spotFormDesLen: spotForm.description.length,
-    });
+    // console.log("inside handleSubmit", {
+    //   hasFormErrors,
+    //   emptyErrors,
+    //   spotFormDesLen: spotForm.description.length,
+    // });
 
     if (hasFormErrors) {
       setErrors({ ...emptyErrors });
@@ -192,7 +192,7 @@ export const SpotForm = ({ initialData, initialImg }) => {
         },
       });
       if (response.type === "error") {
-        console.log("got errors", response.error.errors);
+        // console.log("got errors", response.error.errors);
 
         // Pass on back end errors
         const backendErrors = {};

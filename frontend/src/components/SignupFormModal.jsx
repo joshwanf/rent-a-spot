@@ -51,10 +51,10 @@ export const SignupFormModal = () => {
     const response = await dispatch(signupUser(user));
     if (response.type === "error") {
       const error = await response.error.json();
-      console.log(error);
+      // console.log(error);
       return setErrors(error);
     } else if (response.type === "signup") {
-      const user = response.signup.json();
+      const user = response.signup;
       closeModal();
       return user;
     }
@@ -69,7 +69,7 @@ export const SignupFormModal = () => {
     confirmPassword: "confirmpassword-error-message",
     email: "email-error-message",
   };
-  console.log("errors", { errors });
+  // console.log("errors", { errors });
   return (
     <div className="signup-form" data-testid="sign-up-form">
       {/* <Error errors=" " testId="username-error-message" /> */}

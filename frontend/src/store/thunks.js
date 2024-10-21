@@ -195,7 +195,6 @@ export const createReviewThunk =
         }
       );
       const review = await createReviewResponse.json();
-      console.log("52452314", { review });
       await dispatch(createReviewAC({ review, userInfo }));
       //   await dispatch(getReviewsBySpot(spotId));
       await dispatch(getOneSpot(spotId));
