@@ -3,12 +3,12 @@ import { useAppSelector } from "../../store";
 import { useParams } from "react-router-dom";
 
 import "../../css/Review.css";
-/**
- * @param {object} props
- * @param {number[]} props.reviews
- * @param {number} props.ownerId
- */
-export const Review = ({ ownerId }) => {
+
+interface Props {
+  ownerId: number;
+}
+
+export const Review = ({ ownerId }: Props) => {
   const { spotId } = useParams();
   const loggedInUserOrNull = useAppSelector((state) => state.session.user);
   const allReviews = useAppSelector((state) =>

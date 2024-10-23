@@ -2,8 +2,11 @@ import { useAppSelector } from "../../store";
 import { DeleteOpenModalButton } from "./DeleteOpenModalButton";
 import { DeleteSpotOrReviewModal } from "./DeleteSpotOrReviewModal";
 
-/** @type {(props: {reviewId: number}) => JSX.Element} */
-export const ReviewItem = ({ reviewId }) => {
+interface Props {
+  reviewId: number;
+}
+
+export const ReviewItem = ({ reviewId }: Props) => {
   const currentUser = useAppSelector((state) => state.session.user);
   const review = useAppSelector((state) => state.reviews[reviewId]);
   const reviewUser = useAppSelector((state) => state.users[review.userId]);

@@ -179,7 +179,7 @@ export const getReviewsBySpotThunk = (spotId) => async (dispatch) => {
  * @typedef {Object} CreateReviewDetails
  * @prop {{review: string, stars: number}} reviewDetails
  * @prop {number} spotId
- * @prop {App.User | null} userInfo
+ * @prop {Store.State.RootState['session']['user']} userInfo
  * @param {CreateReviewDetails} details
  * @returns {(dispatch) => Promise<{type: "review", review: App.Review} | {type: "error", error: App.CreateReviewError}>}
  */

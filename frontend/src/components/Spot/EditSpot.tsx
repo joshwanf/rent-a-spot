@@ -36,7 +36,7 @@ export const EditSpot = () => {
   const [img1, img2, img3, img4] = regularImgUrls.map((img) => img.url);
 
   // spotData and spotImg aren't closer to spot and img definitions because component return depends on having spot
-  /** @type {App.SpotFormData} */
+  // /** @type {App.SpotFormData} */
   const spotData = {
     country: spot.country,
     address: spot.address,
@@ -48,7 +48,7 @@ export const EditSpot = () => {
     name: spot.name,
     price: spot.price,
   };
-  /** @type {App.SpotFormImg} */
+  // /** @type {App.SpotFormImg} */
   const spotImg = {
     imgPreview: previewImgUrl,
     img1: img1 || "",

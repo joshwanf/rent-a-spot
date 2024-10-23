@@ -450,7 +450,7 @@ declare namespace Store {
       name: string;
       description: string;
       price: number;
-      rating: string;
+      rating: number;
       numReviews?: number;
       previewImageUrl: string;
       previewImg?: SpotImages["id"];

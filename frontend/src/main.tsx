@@ -11,21 +11,30 @@ import * as sessionActions from "./store/session";
 
 const store = configureStore();
 
+// @ts-expect-error aA crap
 if (import.meta.env.MODE !== "production") {
   restoreCSRF();
 
+  // @ts-expect-error aA crap
   window.csrfFetch = csrfFetch;
+  // @ts-expect-error aA crap
   window.store = store;
+  // @ts-expect-error aA crap
   window.sessionActions = sessionActions;
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <ModalProvider>
-      <Provider store={store}>
-        <App />
-        <Modal />
-      </Provider>
-    </ModalProvider>
-  </React.StrictMode>
-);
+const rootElement = document.getElementById("root");
+if (rootElement) {
+  ReactDOM.createRoot(rootElement).render(
+    <React.StrictMode>
+      <ModalProvider>
+        <Provider store={store}>
+          <App />
+          <Modal />
+        </Provider>
+      </ModalProvider>
+    </React.StrictMode>
+  );
+} else {
+  console.error("Root element not found!");
+}

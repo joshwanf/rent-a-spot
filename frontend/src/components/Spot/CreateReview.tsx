@@ -44,7 +44,11 @@ import "../../css/CreateReview.css";
 //   }
 // };
 
-export const CreateReview = ({ spotId }) => {
+interface Props {
+  spotId: number;
+}
+
+export const CreateReview = ({ spotId }: Props) => {
   const [reviewForm, setReviewForm] = useState({ stars: 0, review: "" });
   const [starHover, setStarHover] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -56,7 +60,7 @@ export const CreateReview = ({ spotId }) => {
   const isDisabledSubmit =
     reviewForm.stars < 1 || reviewForm.review.length < 10;
   //   const { spotId } = useParams();
-  const isActiveStar = (star) => {
+  const isActiveStar = (star: number) => {
     if (isHovered) {
       return star <= starHover;
     } else {
@@ -64,7 +68,7 @@ export const CreateReview = ({ spotId }) => {
     }
   };
 
-  const handleStarHoverIn = (star) => () => {
+  const handleStarHoverIn = (star: number) => () => {
     setStarHover(star);
     setIsHovered(true);
   };
@@ -72,30 +76,32 @@ export const CreateReview = ({ spotId }) => {
     setStarHover(0);
     setIsHovered(false);
   };
-  const handleReviewChange = (e) => {
+  const handleReviewChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newState = {
       ...reviewForm,
-      review: e.target.value,
+      // review: e.target.value,
+      review: e.currentTarget.value,
     };
     setReviewForm(newState);
   };
-  const handleStarChange = (star) => (e) => {
-    e.preventDefault();
-    if (star === reviewForm.stars) {
-      setReviewForm({
-        ...reviewForm,
-        stars: 0,
-      });
-    } else {
-      const newState = {
-        ...reviewForm,
-        stars: star,
-      };
-      setReviewForm(newState);
-    }
-  };
+  const handleStarChange =
+    (star: number) => (e: React.MouseEvent<SVGElement>) => {
+      e.preventDefault();
+      if (star === reviewForm.stars) {
+        setReviewForm({
+          ...reviewForm,
+          stars: 0,
+        });
+      } else {
+        const newState = {
+          ...reviewForm,
+          stars: star,
+        };
+        setReviewForm(newState);
+      }
+    };
 
-  const handleSubmitReview = async (e) => {
+  const handleSubmitReview = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
     const response = await dispatch(
       createReviewThunk({

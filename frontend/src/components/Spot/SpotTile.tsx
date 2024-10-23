@@ -5,26 +5,26 @@ import { DeleteSpotOrReviewModal } from "./DeleteSpotOrReviewModal";
 import { DeleteOpenModalButton } from "./DeleteOpenModalButton";
 import "../../css/SpotTile.css";
 
-/**
- * @param {object} props
- * @param {Store.State.Spots} props.spot
- * @param {boolean} props.showDashboard
- * @returns {JSX.Element}
- */
-export const SpotTile = ({ spot, showDashboard }) => {
+interface Props {
+  spot: Store.State.Spots;
+  showDashboard: boolean;
+}
+
+export const SpotTile = ({ spot, showDashboard }: Props) => {
   const navigate = useNavigate();
 
-  /** @type {(spotId: number) => (e) => void} */
-  const handleClickSpotDetails = (spotId) => () => {
+  // /** @type {(spotId: number) => (e) => void} */
+  const handleClickSpotDetails = (spotId: number) => () => {
     // e.target.href = `/spots/${spotId}`;
     navigate(`/spots/${spotId}`);
   };
 
-  /** @type {(spotId: number) => (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void} */
-  const handleClickUpdate = (spotId) => (e) => {
-    e.stopPropagation();
-    navigate(`/spots/${spotId}/edit`);
-  };
+  // /** @type {(spotId: number) => (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void} */
+  const handleClickUpdate =
+    (spotId: number) => (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      navigate(`/spots/${spotId}/edit`);
+    };
   // const tileLinkToDetails = `/spots/${spot.id}`;
   // /** @type {(spotId: number) => (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void} */
   // const handleClickDelete = (spotId) => async (e) => {
@@ -37,7 +37,6 @@ export const SpotTile = ({ spot, showDashboard }) => {
       onClick={handleClickSpotDetails(spot.id)}
       data-testid="spot-tile"
       className="spot-tile2"
-      href={`/spots/${spot.id}`}
     >
       <div data-testid="spot-tooltip" title={spot.name} className="spot-tile">
         <div data-testid="spot-link">

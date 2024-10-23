@@ -1,7 +1,11 @@
 import { StarRating } from "./StarRating";
 
-/** @type {(props: {numReviews: number, rating: string}) => JSX.Element} */
-export const ReviewSummary = ({ numReviews, rating }) => {
+interface Props {
+  numReviews: number;
+  rating: number;
+}
+
+export const ReviewSummary = ({ numReviews, rating }: Props) => {
   // if (!numReviews) return <h1>no reviews</h1>;
   // console.log("num reviews and type", numReviews, typeof numReviews);
   const reviewsText = numReviews === 1 ? "Review" : "Reviews";
